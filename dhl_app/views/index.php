@@ -4,19 +4,18 @@
             <div class="row text-center">
                 <div class="form-group col-xs-12">
                     <label for="delivering" >Delivering To:</label>
-                    <select class="form-control input-group-lg" id="country" name="country">
-                        <option>India</option>
-                        <option>Pakistan</option>
-                        <option>Srilanka</option>
-                    </select>
+                    <?php
+                    $attributes = 'class = "form-control" id = "country" name="country" ';
+                    echo form_dropdown('item_type',$country,set_value('country'),$attributes);?>
                     <label for="zipcode">&nbsp;</label>
                     <input id="zipcode" class="form-control input-group-lg reg_name" type="text" name="zipcode" placeholder="Zipcode">
                 </div>
+
             </div>
             <div class="row text-center">
                 <div class="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <label for="delivering" >Parcel Type:</label>
-                    <select class="form-control input-group-lg" id="country" name="country">
+                    <select class="form-control input-group-lg" id="parcel" name="parcel">
                         <option>Select Parcel Type</option>
                         <option>Documents</option>
                         <option>Parcel</option>
@@ -24,10 +23,9 @@
                 </div>
                 <div class="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <label for="delivering" >No of Items:</label>
-                    <select class="form-control input-group-lg" id="country" name="country">
+                    <select class="form-control input-group-lg" id="noitem" name="noitem">
                         <option>Select No of Items</option>
-                        <option>1</option>
-                        <option>2</option>
+                        <?php for($i=1;$i<=100;$i++){echo "<option value='".$i."'>".$i."</option>"; }?>
                     </select>
                 </div>
                 <div class="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">

@@ -63,13 +63,13 @@ $active_group = 'default';
 $query_builder = TRUE;
 
 $db['default'] = array(
-	'dsn'	=> '',
-	'hostname' => 'localhost',
-	'username' => '',
+	'dsn'	=> 'mysql:host=localhost;dbname=smartdhl',
+	//'hostname' => 'localhost',
+	'username' => 'root',
 	'password' => '',
-	'database' => '',
-	'dbdriver' => 'mysqli',
-	'dbprefix' => '',
+	'database' => 'smartdhl',
+	'dbdriver' => 'pdo',
+	'dbprefix' => 'sd_',
 	'pconnect' => FALSE,
 	'db_debug' => TRUE,
 	'cache_on' => FALSE,
