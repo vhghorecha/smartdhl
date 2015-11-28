@@ -1,5 +1,8 @@
-<script src="<?= RES_URL; ?>js/jquery.min.js"></script>
-    <script src="<?= RES_URL; ?>js/bootstrap.min.js"></script>
-    <script src="<?= RES_URL; ?>js/scripts.js"></script>
-  </body>
+</div>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('select').select2();
+        });
+    </script>
+    </body>
 </html>

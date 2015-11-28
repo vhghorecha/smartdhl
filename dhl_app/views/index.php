@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-12">
-        <form class="form-group form-inline">
+        <?php echo form_open('#',array('class' => 'form-group form-inline','id' => 'frmcalc'));?>
             <div class="row text-center">
                 <div class="form-group col-xs-12">
                     <label for="delivering" >Delivering To:</label>
@@ -36,9 +36,47 @@
                 </div>
             </div>
             <div class="text-center col-lg-12">
-                <input type="submit" class="btn btn-primary" name="btncalc" id="btncalc" value="Calculate Rate">
+                <a id="modal-575041" href="#modal-container-575041" role="button" class="btn btn-primary" data-toggle="modal">Calculate Rate</a>
             </div>
-            </div>
-        </form>
+        <?php echo form_close();?>
     </div>
 </div>
+<div class="modal fade" id="modal-container-575041" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <i class="fa fa-close"></i>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    SmartDHL Rate
+                </h4>
+            </div>
+            <div class="modal-body">
+                ...
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn btn-default" data-dismiss="modal">
+                    Close
+                </button>
+                <button type="button" class="btn btn-primary">
+                    Login
+                </button>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+<?php $this->load->view('scripts');?>
+<script type="text/javascript">
+    $(document).ready(function(){
+        //this will stop the submit of the form but allow the native HTML5 validation (which is what i believe you are after)
+        $("#frmcalc").on('submit',function(e){
+            e.preventDefault();
+            //ajax code here
+        });
+    });
+</script>
