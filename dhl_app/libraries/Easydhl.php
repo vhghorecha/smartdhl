@@ -6,5 +6,6 @@ require_once APPPATH."/third_party/easypost.php";
 class Easydhl
 {
     public function __construct() {
+        \EasyPost\EasyPost::setApiKey('MA4XauyRM4TW3UOkSWHXmQ');
     }
 }

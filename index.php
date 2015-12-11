@@ -230,6 +230,9 @@ switch (ENVIRONMENT)
 	// Name of the "system folder"
 	define('SYSDIR', trim(strrchr(trim(BASEPATH, '/'), '/'), '/'));
 
+	// Path to resources files
+	define('RESPATH', dirname(__FILE__) . DIRECTORY_SEPARATOR . 'dhl_asset' . DIRECTORY_SEPARATOR);
+
 	// The path to the "application" folder
 	if (is_dir($application_folder))
 	{

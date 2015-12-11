@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 27, 2015 at 02:18 PM
+-- Generation Time: Dec 11, 2015 at 12:13 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -26,8 +26,10 @@ SET time_zone = "+00:00";
 -- Table structure for table `sd_addresses`
 --
 
+DROP TABLE IF EXISTS `sd_addresses`;
 CREATE TABLE IF NOT EXISTS `sd_addresses` (
   `adr_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Address Unique ID in System',
+  `adr_name` varchar(45) NOT NULL,
   `adr_street1` varchar(100) NOT NULL,
   `adr_street2` varchar(100) DEFAULT NULL,
   `adr_city` int(10) unsigned DEFAULT NULL,
@@ -36,6 +38,7 @@ CREATE TABLE IF NOT EXISTS `sd_addresses` (
   `adr_zip` varchar(6) NOT NULL,
   `adr_phone` varchar(15) DEFAULT NULL,
   `adr_ep_ref` varchar(20) DEFAULT NULL,
+  `adr_userid` int(10) unsigned NOT NULL,
   PRIMARY KEY (`adr_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -45,6 +48,7 @@ CREATE TABLE IF NOT EXISTS `sd_addresses` (
 -- Table structure for table `sd_city`
 --
 
+DROP TABLE IF EXISTS `sd_city`;
 CREATE TABLE IF NOT EXISTS `sd_city` (
   `city_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `city_name` varchar(60) NOT NULL,
@@ -47663,6 +47667,7 @@ INSERT INTO `sd_city` (`city_id`, `city_name`, `city_state_id`) VALUES
 -- Table structure for table `sd_country`
 --
 
+DROP TABLE IF EXISTS `sd_country`;
 CREATE TABLE IF NOT EXISTS `sd_country` (
   `cnt_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `cnt_code` char(2) NOT NULL,
@@ -47901,6 +47906,7 @@ INSERT INTO `sd_country` (`cnt_id`, `cnt_code`, `cnt_name`, `cnt_regcode`) VALUE
 -- Table structure for table `sd_shipments`
 --
 
+DROP TABLE IF EXISTS `sd_shipments`;
 CREATE TABLE IF NOT EXISTS `sd_shipments` (
   `shp_id` bigint(40) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Shipment UniqueID in system',
   `shp_from` int(10) unsigned NOT NULL COMMENT 'Shipment From Address, link to sd_addresses',
@@ -47926,6 +47932,7 @@ CREATE TABLE IF NOT EXISTS `sd_shipments` (
 -- Table structure for table `sd_state`
 --
 
+DROP TABLE IF EXISTS `sd_state`;
 CREATE TABLE IF NOT EXISTS `sd_state` (
   `state_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `state_name` varchar(60) NOT NULL,
@@ -52065,14 +52072,24 @@ INSERT INTO `sd_state` (`state_id`, `state_name`, `state_cnt_id`) VALUES
 -- Table structure for table `sd_users`
 --
 
+DROP TABLE IF EXISTS `sd_users`;
 CREATE TABLE IF NOT EXISTS `sd_users` (
   `user_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique UserID for join with other tables',
   `user_email` varchar(255) NOT NULL COMMENT 'Email address which will be used for login',
   `user_pass` varchar(32) NOT NULL COMMENT 'Password, will be encrypted so that it will not display to admin also',
   `user_name` varchar(45) NOT NULL COMMENT 'Name will display on front end.',
+  `verify_code` varchar(32) DEFAULT NULL,
+  `is_verified` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_email_UNIQUE` (`user_email`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `sd_users`
+--
+
+INSERT INTO `sd_users` (`user_id`, `user_email`, `user_pass`, `user_name`, `verify_code`, `is_verified`) VALUES
+(1, 'vimal14569@gmail.com', 'd1e831a08968c589e477cc992f2ef732', 'Vimal Ghorecha', '249af8ad59bb2b9c3e6b63f19d7a9ab6', 1);
 
 -- --------------------------------------------------------
 
@@ -52080,6 +52097,7 @@ CREATE TABLE IF NOT EXISTS `sd_users` (
 -- Table structure for table `sd_user_addr`
 --
 
+DROP TABLE IF EXISTS `sd_user_addr`;
 CREATE TABLE IF NOT EXISTS `sd_user_addr` (
   `ua_id` bigint(40) unsigned NOT NULL AUTO_INCREMENT,
   `ua_user_id` int(11) DEFAULT NULL,

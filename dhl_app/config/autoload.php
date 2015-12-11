@@ -60,7 +60,7 @@ $autoload['packages'] = array();
 |	$autoload['libraries'] = array('user_agent' => 'ua');
 */
 
-$autoload['libraries'] = array('easydhl','database');
+$autoload['libraries'] = array('easydhl','database','session','form_validation', 'datatables');
 
 
 /*

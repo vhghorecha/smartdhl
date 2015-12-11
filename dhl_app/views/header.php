@@ -10,9 +10,12 @@
     <meta name="description" content="International Shipping Documents at $24.99 Fast, Reliable Service provided by DHL only better price. Conveniently send from Home or Office.">
     <meta name="author" content="Eryushion TechSol Pvt Ltd">
 
+    <link href="<?= RES_URL; ?>css/select2.min.css" rel="stylesheet">
     <link href="<?= RES_URL; ?>css/bootstrap.min.css" rel="stylesheet">
     <link href="<?= RES_URL; ?>css/font-awesome.min.css" rel="stylesheet">
-    <link href="<?= RES_URL; ?>css/select2.min.css" rel="stylesheet">
+    <link href="<?= RES_URL; ?>css/jquery.dataTables.min.css" rel="stylesheet">
+    <link href="<?= RES_URL; ?>css/dataTables.responsive.css" rel="stylesheet">
+    <link href="<?= RES_URL; ?>css/style.css" rel="stylesheet">
 
 </head>
 <body>
@@ -35,24 +38,25 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li class="active">
-                            <a href="#">Home</a>
+                            <a href="<?=base_url();?>"><i class="fa fa-home"></i> Home</a>
                         </li>
                         <li>
-                            <a href="#">About Us</a>
+                            <a href="#"><i class="fa fa-info"></i> About Us</a>
                         </li>
                         <li>
-                            <a href="#">Pricing</a>
+                            <a href="#"><i class="fa fa-money"></i> Pricing</a>
                         </li>
                         <li>
-                            <a href="#">Contact Us</a>
+                            <a href="#"><i class="fa fa-connectdevelop"></i> Contact Us</a>
                         </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        <form class="navbar-form navbar-left" role="search">
-                            <div class="form-group">
-                                <input class="form-control" type="text" placeholder="search">
-                            </div>
-                        </form>
+                        <?php if(!empty($user_info['validated'])){ ?>
+                            <li><a href="<?=site_url('user/logout');?>"><i class="fa fa-sign-out"></i> Logout</a></li>
+                        <?php }else{ ?>
+                            <li><a href="#modal-container-575041" data-toggle="modal"><i class="fa fa-sign-in"></i> Login</a></li>
+                            <li><a href="<?=site_url('user/register');?>"><i class="fa fa-user"></i> Register</a></li>
+                        <?php } ?>
                     </ul>
                 </div>
 

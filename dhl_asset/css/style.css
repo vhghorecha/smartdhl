@@ -1,0 +1,13 @@
+.valid{
+    background: url(../images/valid.png) no-repeat 99% center;
+}
+.warning{
+    background: url(../images/error.png) no-repeat 99% center;
+}
+.form-group.required .control-label:after {
+    content:"*";
+    color:red;
+}
+.select2-container--default .select2-selection--single {
+    height: 34px !important;
+}
