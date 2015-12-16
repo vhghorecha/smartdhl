@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 11, 2015 at 12:13 PM
+-- Generation Time: Dec 16, 2015 at 05:35 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -30,6 +30,7 @@ DROP TABLE IF EXISTS `sd_addresses`;
 CREATE TABLE IF NOT EXISTS `sd_addresses` (
   `adr_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Address Unique ID in System',
   `adr_name` varchar(45) NOT NULL,
+  `adr_contact` varchar(100) NOT NULL,
   `adr_street1` varchar(100) NOT NULL,
   `adr_street2` varchar(100) DEFAULT NULL,
   `adr_city` int(10) unsigned DEFAULT NULL,
@@ -37,10 +38,21 @@ CREATE TABLE IF NOT EXISTS `sd_addresses` (
   `adr_country` char(2) DEFAULT 'US',
   `adr_zip` varchar(6) NOT NULL,
   `adr_phone` varchar(15) DEFAULT NULL,
-  `adr_ep_ref` varchar(20) DEFAULT NULL,
+  `adr_email` varchar(255) NOT NULL,
+  `adr_type` varchar(20) NOT NULL,
   `adr_userid` int(10) unsigned NOT NULL,
+  `adr_default` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`adr_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+
+--
+-- Dumping data for table `sd_addresses`
+--
+
+INSERT INTO `sd_addresses` (`adr_id`, `adr_name`, `adr_contact`, `adr_street1`, `adr_street2`, `adr_city`, `adr_state`, `adr_country`, `adr_zip`, `adr_phone`, `adr_email`, `adr_type`, `adr_userid`, `adr_default`) VALUES
+(8, 'Vimal', 'Ghorecha', 'Punit Nagar', 'Gondal Road', 1011, 12, 'IN', '360004', '7405100630', 'vimal14569@gmail.com', 'Sender', 1, 1),
+(9, 'Hardik', 'Maheta', 'Rasala Road', NULL, 1094, 12, 'IN', '363621', '9427157507', 'hardik.rkcet@gmail.com', 'Sender', 1, 0),
+(10, 'Mehul', 'Shukla', 'Ambaji Kadva Plot', 'Gondal Road', 1011, 12, 'IN', '360004', '9909986510', 'shuklamehul007@gmail.com', 'Receiver', 1, 0);
 
 -- --------------------------------------------------------
 

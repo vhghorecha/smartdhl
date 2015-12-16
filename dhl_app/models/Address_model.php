@@ -17,6 +17,77 @@ class Address_model extends CI_Model
     public function get_iso_code_from_country($country){
         return $this->general_model->get_single_val('cnt_code','country', array('cnt_id' => $country));
     }
+
+    public function get_states_from_country($country){
+        $this->db->select('state_id,state_name');
+        $this->db->from('state');
+        $this->db->where('state_cnt_id', $country);
+        return $this->db->get()->result_array();
+    }
+
+    public function get_cities_from_state($state){
+        $this->db->select('city_id,city_name');
+        $this->db->from('city');
+        $this->db->where('city_state_id', $state);
+        return $this->db->get()->result_array();
+    }
+
+    public function insert_addr($data){
+        $this->db->insert('addresses', $data);
+        return $this->db->insert_id();
+    }
+
+    public function get_address($adr_id){
+        $this->db->select("adr_id, adr_name, adr_contact, adr_street1, adr_street2, city_name, state_name, cnt_name, adr_zip, adr_phone, adr_type, adr_email, adr_default,");
+        $this->db->from('addresses as a');
+        $this->db->join('country as co', 'adr_country = cnt_code');
+        $this->db->join('state as s', 'adr_state = state_id');
+        $this->db->join('city as c', 'adr_city = city_id');
+        $this->db->where('adr_id', $adr_id);
+        return $this->db->get()->row_array();
+    }
+
+    public function upd_default_addr($adr_id,$adr_type,$user_id){
+        $this->db->set('adr_default', '0');
+        $this->db->where(array('adr_userid' => $user_id, 'adr_type' => $adr_type));
+        $this->db->update('addresses');
+        $this->db->set('adr_default', '1');
+        $this->db->where(array('adr_userid' => $user_id, 'adr_type' => $adr_type, 'adr_id' => $adr_id));
+        $this->db->update('addresses');
+    }
+
+    public function get_country_code_from_name($country_name){
+        $this->db->select('cnt_code');
+        $this->db->where('cnt_name', $country_name);
+        $this->db->from('country');
+        $query = $this->db->get()->row_array();
+        if(!is_null($query)){
+            return current($query);
+        }
+        return false;
+    }
+
+    public function get_state_id_from_name($state_name){
+        $this->db->select('state_id');
+        $this->db->where('state_name', $state_name);
+        $this->db->from('state');
+        $query = $this->db->get()->row_array();
+        if(!is_null($query)){
+            return current($query);
+        }
+        return false;
+    }
+
+    public function get_city_id_from_name($city_name){
+        $this->db->select('city_id');
+        $this->db->where('city_name', $city_name);
+        $this->db->from('city');
+        $query = $this->db->get()->row_array();
+        if(!is_null($query)){
+            return current($query);
+        }
+        return false;
+    }
 }
 
 ?>

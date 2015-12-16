@@ -103,9 +103,9 @@ class User_model extends CI_Model
 
     public function get_user_addr(){
         $user_id = $this->get_current_user_id();
-        $this->datatables->select("a.adr_id, adr_name, adr_street1, adr_street2, city_name, state_name, cnt_name, adr_zip, adr_phone, adr_ep_ref")
+        $this->datatables->select("adr_id, adr_name, adr_contact, adr_street1, adr_street2, city_name, state_name, cnt_name, adr_zip, adr_phone, adr_type, adr_email")
             ->from('addresses as a')
-            ->join('country as co', 'adr_country = co.cnt_id')
+            ->join('country as co', 'adr_country = cnt_code')
             ->join('state as s', 'adr_state = state_id')
             ->join('city as c', 'adr_city = city_id')
             ->where('adr_userid', $user_id);

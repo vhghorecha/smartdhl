@@ -41,10 +41,16 @@
                             <a href="<?=base_url();?>"><i class="fa fa-home"></i> Home</a>
                         </li>
                         <li>
-                            <a href="#"><i class="fa fa-info"></i> About Us</a>
+                            <a href="#"><i class="fa fa-info"></i> Who Us</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-question"></i> How it works</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-money"></i> Pricing</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-support"></i> FAQ's</a>
                         </li>
                         <li>
                             <a href="#"><i class="fa fa-connectdevelop"></i> Contact Us</a>
@@ -52,6 +58,9 @@
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <?php if(!empty($user_info['validated'])){ ?>
+                            <li><a href="<?=site_url('user/booking');?>"><i class="fa fa-book"></i> Book Now</a></li>
+                            <li><a href="<?=site_url('user/addrbook');?>"><i class="fa fa-list"></i> Address Book</a></li>
+                            <li><a href="<?=site_url('user/history');?>"><i class="fa fa-history"></i> Transactions</a></li>
                             <li><a href="<?=site_url('user/logout');?>"><i class="fa fa-sign-out"></i> Logout</a></li>
                         <?php }else{ ?>
                             <li><a href="#modal-container-575041" data-toggle="modal"><i class="fa fa-sign-in"></i> Login</a></li>
