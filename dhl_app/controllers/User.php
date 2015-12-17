@@ -3,10 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class User extends CI_Controller {
 
+    private $is_logged;
     function __construct(){
         parent::__construct();
         $this->load->model('user_model');
         $this->load->model('address_model');
+        $this->load->model('shipping_model');
+        $this->is_logged = $this->user_model->is_logged();
     }
 
     public function index()
@@ -141,6 +144,7 @@ class User extends CI_Controller {
     }
 
     public function booking(){
+        if(!$this->is_logged) { redirect("user/login"); }
         $btnbooking = $this->input->post('btnbooking');
         if(!empty($btnbooking)){
             $config = array(
@@ -153,7 +157,7 @@ class User extends CI_Controller {
                     )
                 ),
                 array(
-                    'field' => 'txtsstreet1',
+                    'field' => 'txtsstr1',
                     'label' => 'Sender Street Address',
                     'rules' => 'required',
                     'errors' => array(
@@ -177,7 +181,7 @@ class User extends CI_Controller {
                     )
                 ),
                 array(
-                    'field' => 'txtszipcode',
+                    'field' => 'txtszip',
                     'label' => 'Sender Zipcode',
                     'rules' => 'required|max_length[6]',
                     'errors' => array(
@@ -211,7 +215,7 @@ class User extends CI_Controller {
                     )
                 ),
                 array(
-                    'field' => 'txtrstreet1',
+                    'field' => 'txtrstr1',
                     'label' => 'Receiver Street Address',
                     'rules' => 'required',
                     'errors' => array(
@@ -235,7 +239,7 @@ class User extends CI_Controller {
                     )
                 ),
                 array(
-                    'field' => 'txtrzipcode',
+                    'field' => 'txtrzip',
                     'label' => 'Receiver Zipcode',
                     'rules' => 'required|max_length[6]',
                     'errors' => array(
@@ -323,61 +327,89 @@ class User extends CI_Controller {
                     )
                 ),
             );
-            $to_country = $this->address_model->get_iso_code_from_country($this->input->post('txtrcountry'));
+
             $this->form_validation->set_rules($config);
             if ($this->form_validation->run() == true) {
+                $user_id = $this->user_model->get_current_user_id();
 
-                try
-                {
-                    $from_address = \EasyPost\Address::create_and_verify(
-                        array(
-                            'name' => $this->input->post('txtsname'),
-                            'street1' => $this->input->post('txtsstreet1'),
-                            'city' => $this->input->post('txtscity'),
-                            'state' => $this->input->post('txtsstate'),
-                            'zip' => $this->input->post('txtszipcode'),
-                            'country' => 'US',
-                            'phone' => $this->input->post('txtsphone'),
-                            'email' => $this->input->post('txtsemail')
-                        )
+                //save sender address
+                $selfromaddr = $this->input->post('selfromaddr');
+                if(empty($selfromaddr)){
+                    $country_code = $this->address_model->get_iso_code_from_country($this->input->post('txtscountry'));
+                    $data = array(
+                        'adr_name' => $this->input->post('txtsname'),
+                        'adr_contact' => $this->input->post('txtscontact'),
+                        'adr_street1' => $this->input->post('txtsstr1'),
+                        'adr_street2' => $this->input->post('txtsstr2'),
+                        'adr_city' => $this->input->post('txtscity'),
+                        'adr_state' => $this->input->post('txtsstate'),
+                        'adr_country' => $country_code,
+                        'adr_phone' => $this->input->post('txtsphone'),
+                        'adr_zip' => $this->input->post('txtszip'),
+                        'adr_email' => $this->input->post('txtsemail'),
+                        'adr_type' => 'Sender',
+                        'adr_userid' => $user_id,
                     );
-
-                    $to_address = \EasyPost\Address::create(
-                        array(
-                            'name' => $this->input->post('txtrname'),
-                            'street1' => $this->input->post('txtrstreet1'),
-                            'city' => $this->input->post('txtrcity'),
-                            'state' => $this->input->post('txtrstate'),
-                            'zip' => $this->input->post('txtrzipcode'),
-                            'country' => $to_country,
-                            'phone' => $this->input->post('txtrphone'),
-                            'email' => $this->input->post('txtremail')
-                        )
-                    );
-
-                    $shipment = \EasyPost\Shipment::create(array(
-                        "to_address" => $to_address,
-                        "from_address" => $from_address,
-                        "parcel" => array(
-                            "length" => $this->input->post('txtlength'),
-                            "width" => $this->input->post('txtwidth'),
-                            "height" => $this->input->post('txtheight'),
-                            "weight" => $this->input->post('txtweight')
-                        ),
-                        /*"customs_info" => array(
-                            "description" => $this->input->post('txtdesc'),
-                            "quantity" => $this->input->post('txtquantity'),
-                            "weight" => $this->input->post('txtweight'),
-                            "value" => $this->input->post('txtvalue'),
-                            "origin_country" => 'US'
-                        ),*/
-                        //"carrier_accounts" => array(array('id' => 'ca_2bafcd3ab9b34db9a4de8040f143917f')),
-                    ));
-                    $response = $shipment->buy($shipment->lowest_rate());
-                    print_r($response);
-                }catch(Exception $ex){
-                    $error = $ex->getMessage();
+                    $selfromaddr = $this->address_model->insert_addr($data);
                 }
+
+                //save receiver address
+                $seltoaddr = $this->input->post('seltoaddr');
+                if(empty($seltoaddr)){
+                    $country_code = $this->address_model->get_iso_code_from_country($this->input->post('txtrcountry'));
+                    $data = array(
+                        'adr_name' => $this->input->post('txtrname'),
+                        'adr_contact' => $this->input->post('txtrcontact'),
+                        'adr_street1' => $this->input->post('txtrstr1'),
+                        'adr_street2' => $this->input->post('txtrstr2'),
+                        'adr_city' => $this->input->post('txtrcity'),
+                        'adr_state' => $this->input->post('txtrstate'),
+                        'adr_country' => $country_code,
+                        'adr_phone' => $this->input->post('txtrphone'),
+                        'adr_zip' => $this->input->post('txtrzip'),
+                        'adr_email' => $this->input->post('txtremail'),
+                        'adr_type' => 'Receiver',
+                        'adr_userid' => $user_id,
+                    );
+                    $seltoaddr = $this->address_model->insert_addr($data);
+                }else{
+                    $country_code = $this->address_model->get_iso_code_from_adrid($seltoaddr);
+                }
+
+                //Package Details
+                $length = $this->input->post('txtlength');
+                $width = $this->input->post('txtwidth');
+                $height = $this->input->post('txtheight');
+                $weight = $this->input->post('txtweight');
+                $item_type = $this->input->post('item_type');
+
+                //Custom Information
+                $txtdesc = $this->input->post('txtdesc');
+                $quantity = $this->input->post('txtquantity');
+                $shp_value = $this->input->post('txtvalue');
+                $rate = $this->shipping_model->get_rate($country_code,$item_type,$quantity,$weight/16);
+                $rate_amount = $rate['rate_amount'];
+
+                $data = array(
+                    'shp_user' => $user_id,
+                    'shp_from' => $selfromaddr,
+                    'shp_to' => $seltoaddr,
+                    'shp_rate' => $rate_amount,
+                    'shp_date' => date('Y-m-d'),
+                    'shp_length' => $length,
+                    'shp_width' => $width,
+                    'shp_height' => $height,
+                    'shp_weight' => $weight,
+                    'shp_desc' => $txtdesc,
+                    'shp_quantity' => $quantity,
+                    'shp_value' => $shp_value,
+                    'shp_type' => $item_type,
+                );
+                $shp_id = $this->shipping_model->insert($data);
+                $data['shp_id'] = $shp_id;
+                $data['message'] = $rate['rate'];
+                $this->load->template('payment',$data);
+                return;
             }else{
                 $error = validation_errors();
             }
@@ -385,16 +417,26 @@ class User extends CI_Controller {
         if(!empty($error)){
             $data['error'] = $error;
         }
-        $data['country']=$this->general_model->get_country_combo();
+        $data['last_rate'] = $this->session->userdata('last_rate');
+        $data['country']=$this->address_model->get_country_combo();
+        $data['fromaddr']=$this->address_model->get_addr_combo('Sender');
+        $data['toaddr']=$this->address_model->get_addr_combo('Receiver');
         $this->load->template('booking',$data);
     }
 
     public function addrbook(){
-        $data['country']=$this->general_model->get_country_combo();
+        if(!$this->is_logged) { redirect("user/login"); }
+        $data['country']=$this->address_model->get_country_combo();
         $this->load->template('addrbook',$data);
     }
 
+    public function transactions(){
+        if(!$this->is_logged) { redirect("user/login"); }
+        $this->load->template('history');
+    }
+
     public function impaddrbk(){
+        if(!$this->is_logged) { redirect("user/login"); }
         $is_import = $this->input->post('btnimport');
         $data = array();
 
@@ -498,7 +540,12 @@ class User extends CI_Controller {
         die($this->user_model->get_user_addr());
     }
 
+    public function get_trans(){
+        die($this->user_model->get_user_trans());
+    }
+
     public function del_addr(){
+        if(!$this->is_logged) { redirect("user/login"); }
         $adr_id = $this->input->post('adr_id');
         $user_id = $this->user_model->get_current_user_id();
         $data = array(
@@ -511,6 +558,7 @@ class User extends CI_Controller {
     }
 
     public function del_addr_all(){
+        if(!$this->is_logged) { redirect("user/login"); }
         $user_id = $this->user_model->get_current_user_id();
         $data = array(
             'adr_userid' => $user_id,
@@ -521,7 +569,7 @@ class User extends CI_Controller {
     }
 
     public function updateaddr(){
-
+        if(!$this->is_logged) { redirect("user/login"); }
         $result = array();
         $user_id = $this->user_model->get_current_user_id();
         $this->security->xss_clean($_POST);
@@ -564,6 +612,7 @@ class User extends CI_Controller {
     }
 
     public function export_addr(){
+        if(!$this->is_logged) { redirect("user/login"); }
         $this->load->dbutil();
         $user_id = $this->user_model->get_current_user_id();
         $this->db->select("adr_id, adr_name, adr_contact, adr_street1, adr_street2, city_name, state_name, cnt_name, adr_zip, adr_phone, adr_type, adr_default, adr_email");

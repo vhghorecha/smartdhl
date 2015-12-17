@@ -63,6 +63,10 @@
                     if(typeof data.rate !== 'undefined'){
                         $('#rate_res').html('');
                         $('#update_res').html('<div class="alert alert-success">' + data.rate + '</div>');
+                        if(data.is_login){
+                            window.location = "<?=site_url('user/booking');?>";
+                            return false;
+                        }
                         $('#hidredirect').val('<?=site_url('user/booking');?>');
                         $('#modal-container-575041').modal('show');
                     }else{

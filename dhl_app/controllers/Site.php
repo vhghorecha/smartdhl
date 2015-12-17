@@ -11,7 +11,7 @@ class Site extends CI_Controller {
 
     public function index()
     {
-        $data['country']=$this->general_model->get_country_combo();
+        $data['country']=$this->address_model->get_country_combo();
         $this->load->template('index',$data);
     }
 

@@ -8,10 +8,61 @@ class Address_model extends CI_Model
     {
         parent::__construct();
         $this->load->model('general_model');
+        $this->load->model('user_model');
+    }
+
+    public function get_country_combo()
+    {
+        $this->db->select('cnt_name,cnt_id');
+        $this->db->from('country');
+        $this->db->order_by('cnt_name');
+        $query=$this->db->get();
+        $results = $query->result();
+
+        $cnt_code = array('Select');
+        $cnt_name = array('Select Country');
+
+
+        foreach ($results as $result) {
+            array_push($cnt_code, $result->cnt_id);
+            array_push($cnt_name, $result->cnt_name);
+        }
+        return $country = array_combine($cnt_code, $cnt_name);
+    }
+
+    public function get_addr_combo($type = 'Reciever')
+    {
+        $this->db->select('adr_name,adr_id,adr_default');
+        $this->db->from('addresses');
+        $this->db->order_by('adr_name');
+        $this->db->where('adr_userid', $this->user_model->get_current_user_id());
+        $this->db->where('adr_type', $type);
+        $query=$this->db->get();
+        $results = $query->result();
+
+        $adr_id = array('0');
+        $adr_name = array('New Address');
+
+
+        foreach ($results as $result) {
+            array_push($adr_id, $result->adr_id);
+            array_push($adr_name, $result->adr_name);
+        }
+        return $country = array_combine($adr_id, $adr_name);
     }
 
     public function get_reg_code_from_country($country){
         return $this->general_model->get_single_val('cnt_regcode','country', array('cnt_id' => $country));
+    }
+
+    public function get_reg_code_from_country_code($country){
+        return $this->general_model->get_single_val('cnt_regcode','country', array('cnt_code' => $country));
+    }
+
+    public function get_iso_code_from_adrid($adr_id){
+        $country_id = $this->general_model->get_single_val('adr_country','addresses',array('adr_id' => $adr_id));
+        $reg_code = $this->get_reg_code_from_country_code($country_id);
+        return $reg_code;
     }
 
     public function get_iso_code_from_country($country){
@@ -39,6 +90,15 @@ class Address_model extends CI_Model
 
     public function get_address($adr_id){
         $this->db->select("adr_id, adr_name, adr_contact, adr_street1, adr_street2, city_name, state_name, cnt_name, adr_zip, adr_phone, adr_type, adr_email, adr_default,");
+        $this->db->from('addresses as a');
+        $this->db->join('country as co', 'adr_country = cnt_code');
+        $this->db->join('state as s', 'adr_state = state_id');
+        $this->db->join('city as c', 'adr_city = city_id');
+        $this->db->where('adr_id', $adr_id);
+        return $this->db->get()->row_array();
+    }
+
+    public function get_booking_addr($adr_id){
         $this->db->from('addresses as a');
         $this->db->join('country as co', 'adr_country = cnt_code');
         $this->db->join('state as s', 'adr_state = state_id');

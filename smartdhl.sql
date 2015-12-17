@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 16, 2015 at 05:35 AM
+-- Generation Time: Dec 17, 2015 at 08:44 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -43,16 +43,16 @@ CREATE TABLE IF NOT EXISTS `sd_addresses` (
   `adr_userid` int(10) unsigned NOT NULL,
   `adr_default` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`adr_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `sd_addresses`
 --
 
 INSERT INTO `sd_addresses` (`adr_id`, `adr_name`, `adr_contact`, `adr_street1`, `adr_street2`, `adr_city`, `adr_state`, `adr_country`, `adr_zip`, `adr_phone`, `adr_email`, `adr_type`, `adr_userid`, `adr_default`) VALUES
-(8, 'Vimal', 'Ghorecha', 'Punit Nagar', 'Gondal Road', 1011, 12, 'IN', '360004', '7405100630', 'vimal14569@gmail.com', 'Sender', 1, 1),
-(9, 'Hardik', 'Maheta', 'Rasala Road', NULL, 1094, 12, 'IN', '363621', '9427157507', 'hardik.rkcet@gmail.com', 'Sender', 1, 0),
-(10, 'Mehul', 'Shukla', 'Ambaji Kadva Plot', 'Gondal Road', 1011, 12, 'IN', '360004', '9909986510', 'shuklamehul007@gmail.com', 'Receiver', 1, 0);
+(1, 'Vimal', 'Vimal Ghorecha', 'Punit Nagar', 'Gondal Road', 1011, 12, 'IN', '360004', '7405100630', 'vimal14569@gmail.com', 'Sender', 1, 1),
+(2, 'JIN KIM', 'CHRIS KIM', '14101 SULLYFIELD CIRCLE', '#340', 46660, 3974, 'US', '20151', '7035318485', 'chriskim1975@gmail.com', 'Sender', 1, 0),
+(3, 'Vimal Ghorecha', 'Vimal', '5FL daesung bld, 55-44 songpa-gu', 'seocho-gu. Dongdarmun--gu', 25751, 2074, 'KR', '05693', '7035318485', 'vimal14569@gmail.com', 'Receiver', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -47891,6 +47891,7 @@ INSERT INTO `sd_country` (`cnt_id`, `cnt_code`, `cnt_name`, `cnt_regcode`) VALUE
 (228, 'UA', 'UKRAINE', 'E'),
 (229, 'AE', 'UNITED ARAB EMIRATES', 'L'),
 (230, 'GB', 'UNITED KINGDOM', 'C'),
+(231, 'US', 'UNITED STATES', 'A'),
 (233, 'UY', 'URUGUAY', 'K'),
 (234, 'UZ', 'UZBEKISTAN', 'E'),
 (235, 'VU', 'VANUATU', 'I'),
@@ -47921,22 +47922,38 @@ INSERT INTO `sd_country` (`cnt_id`, `cnt_code`, `cnt_name`, `cnt_regcode`) VALUE
 DROP TABLE IF EXISTS `sd_shipments`;
 CREATE TABLE IF NOT EXISTS `sd_shipments` (
   `shp_id` bigint(40) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Shipment UniqueID in system',
+  `shp_user` int(10) unsigned NOT NULL,
   `shp_from` int(10) unsigned NOT NULL COMMENT 'Shipment From Address, link to sd_addresses',
   `shp_to` int(10) unsigned NOT NULL COMMENT 'Shipment To Address, link to sd_addresses',
   `shp_rate` decimal(5,2) NOT NULL COMMENT 'Shipment Rate',
+  `shp_date` date DEFAULT NULL,
   `shp_trackingcode` varchar(100) DEFAULT NULL COMMENT 'Shipment Tracking Code for future reference',
   `shp_labelurl` text COMMENT 'Shipment Print Label URL',
   `shp_length` double(8,2) DEFAULT NULL,
   `shp_width` double(8,2) DEFAULT NULL,
   `shp_height` double(8,2) DEFAULT NULL,
   `shp_weight` double(8,2) DEFAULT NULL,
+  `shp_desc` text,
+  `shp_quantity` int(11) DEFAULT NULL,
+  `shp_value` double(8,2) DEFAULT NULL,
   `shp_estdate` varchar(45) DEFAULT NULL COMMENT 'Estimated Delivery Date',
   `shp_status` varchar(45) DEFAULT NULL COMMENT 'Last Status of Shipment',
   `shp_updateat` varchar(45) DEFAULT NULL COMMENT 'Status update datetime',
   `shp_signedby` varchar(100) DEFAULT NULL COMMENT 'The name of the person who signed for the package (if available)',
-  `shp_ep_ref` varchar(20) DEFAULT NULL,
+  `shp_ep_ref` varchar(45) DEFAULT NULL,
+  `shp_transno` varchar(45) DEFAULT NULL,
+  `shp_gatewayid` varchar(255) DEFAULT NULL,
+  `shp_payment` varchar(20) DEFAULT NULL,
+  `shp_type` varchar(20) NOT NULL,
   PRIMARY KEY (`shp_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `sd_shipments`
+--
+
+INSERT INTO `sd_shipments` (`shp_id`, `shp_user`, `shp_from`, `shp_to`, `shp_rate`, `shp_date`, `shp_trackingcode`, `shp_labelurl`, `shp_length`, `shp_width`, `shp_height`, `shp_weight`, `shp_desc`, `shp_quantity`, `shp_value`, `shp_estdate`, `shp_status`, `shp_updateat`, `shp_signedby`, `shp_ep_ref`, `shp_transno`, `shp_gatewayid`, `shp_payment`, `shp_type`) VALUES
+(1, 1, 2, 3, 24.95, '2015-12-17', 'EZ1000000001', 'http://assets.geteasypost.com/postage_labels/labels/20151217/bfa8e4c3df4a462d995a6fc702addc9f.png', 2.00, 3.00, 2.00, 23.00, 'Testing', 1, 100.00, NULL, NULL, NULL, NULL, 'pl_2c084ef7d9c64a709dfbb203c05c8556', NULL, 'buyer@finan.cl', 'Pending', 'document');
 
 -- --------------------------------------------------------
 

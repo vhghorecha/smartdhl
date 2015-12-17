@@ -100,7 +100,7 @@
                         <div class="form-group">
                             <label class="control-label">Country</label>
                             <div class="col-xs-12"><?php
-                            $attributes = ' id = "txtcountry" name="txtcountry" style="width:100%"';
+                            $attributes = ' id = "txtcountry" name="txtcountry" class="form-control"';
                             echo form_dropdown('txtcountry',$country,set_value('txtcountry'),$attributes);?></div>
                         </div>
                     </div>
@@ -110,7 +110,7 @@
                         <div class="form-group required">
                             <label class="control-label">State</label>
                             <div class="col-xs-12">
-                                <select id="txtstate" name="txtstate">
+                                <select id="txtstate" name="txtstate" class="form-control">
                                     <option value="">Select State</option>
                                 </select>
                             </div>
@@ -120,7 +120,7 @@
                         <div class="form-group required">
                             <label class="control-label">City</label>
                             <div class="col-xs-12">
-                                <select id="txtcity" name="txtcity">
+                                <select id="txtcity" name="txtcity" class="form-control">
                                     <option value="">Select City</option>
                                 </select>
                             </div>
@@ -151,7 +151,7 @@
                         <div class="form-group required">
                             <label class="control-label">Address Type</label>
                             <div class="col-xs-12">
-                                <select id="txttype" name="txttype">
+                                <select id="txttype" name="txttype" class="form-control">
                                     <option value="Sender">Sender</option>
                                     <option value="Receiver">Receiver</option>
                                 </select>
@@ -180,15 +180,19 @@
 
 <?php $this->load->view('scripts');?>
 <script type="text/javascript">
-    var strstate, strcity;
+    var strstate = strcity='';
 
-    $('#txtzip, #txtstr1').blur(function(){
+    $('#btnadd').click(function(){
+        strstate = strcity = '';
+    });
+
+    /*$('#txtzip, #txtstr1').blur(function(){
         zip = $('#txtzip').val();
         street = $('#txtstr1').val();
         if(zip != "" && street != "" && isedit == 0){
             filterAddress(zip,street);
         }
-    });
+    });*/
 
     function filterAddress(zip, street){
         $('#select2-txtcountry-container, #select2-txtstate-container, #select2-txtcity-container').html('Loading...');
@@ -199,7 +203,7 @@
             data: {txtzip: zip, txtstr1: street},
             success:function(data, textStatus, jqXHR){
                 if(typeof data.country !== 'undefined'){
-                    $('#txtcountry').val($('#txtcountry option').filter(function () { return $(this).html().toUpperCase() == data.country.toUpperCase(); }).val()).trigger('change').select2();
+                    $('#txtcountry').val($('#txtcountry option').filter(function () { return $(this).html().toUpperCase() == data.country.toUpperCase(); }).val()).trigger('change');
                     strstate = data.state;
                     strcity = data.city;
                 }
@@ -220,10 +224,13 @@
             success:function(data, textStatus, jqXHR){
                 if(typeof data.states !== 'undefined'){
                     $('#txtstate').find('option').remove().end();
+                    $('<option>').val('').text('Select State').appendTo('#txtstate');
                     $.each( data.states , function( index, value ){
                         $('<option>').val(value.state_id).text(value.state_name).appendTo('#txtstate');
                     });
-                    $('#txtstate').val($('#txtstate option').filter(function () { return $(this).html().toUpperCase() == strstate.toUpperCase(); }).val()).trigger('change').select2();
+                    if(strstate != ''){
+                        $('#txtstate').val($('#txtstate option').filter(function () { return $(this).html().toUpperCase() == strstate.toUpperCase(); }).val()).trigger('change');
+                    }
                 }
             },
             error:function(data){
@@ -243,10 +250,11 @@
             success:function(data, textStatus, jqXHR){
                 if(typeof data.cities !== 'undefined'){
                     $('#txtcity').find('option').remove().end();
+                    $('<option>').val('').text('Select City').appendTo('#txtcity');
                     $.each( data.cities , function( index, value ){
                         $('<option>').val(value.city_id).text(value.city_name).appendTo('#txtcity');
                     });
-                    $('#txtcity').val($('#txtcity option').filter(function () { return $(this).html().toUpperCase() == strcity.toUpperCase(); }).val()).trigger('change').select2();
+                    $('#txtcity').val($('#txtcity option').filter(function () { return $(this).html().toUpperCase() == strcity.toUpperCase(); }).val()).trigger('change');
                 }
             },
             error:function(data){
@@ -360,7 +368,7 @@
                         $('#txttype').val(data.adr_type).trigger('change');
                         strstate = data.state_name;
                         strcity = data.city_name;
-                        $('#txtcountry').val($('#txtcountry option').filter(function () { return $(this).html().toUpperCase() == data.cnt_name.toUpperCase(); }).val()).trigger('change').select2();
+                        $('#txtcountry').val($('#txtcountry option').filter(function () { return $(this).html().toUpperCase() == data.cnt_name.toUpperCase(); }).val()).trigger('change');
                         if(data.adr_default > 0){
                             $('#isdefault').prop('checked',true);
                         }else{

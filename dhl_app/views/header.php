@@ -10,7 +10,6 @@
     <meta name="description" content="International Shipping Documents at $24.99 Fast, Reliable Service provided by DHL only better price. Conveniently send from Home or Office.">
     <meta name="author" content="Eryushion TechSol Pvt Ltd">
 
-    <link href="<?= RES_URL; ?>css/select2.min.css" rel="stylesheet">
     <link href="<?= RES_URL; ?>css/bootstrap.min.css" rel="stylesheet">
     <link href="<?= RES_URL; ?>css/font-awesome.min.css" rel="stylesheet">
     <link href="<?= RES_URL; ?>css/jquery.dataTables.min.css" rel="stylesheet">
@@ -19,7 +18,12 @@
 
 </head>
 <body>
-
+<div class="dhlmodal" style="display: none">
+    <div class="dhlcenter">
+        <img alt="" src="<?=RES_URL;?>images/ajax-loader.gif" />
+    </div>
+    <div id="ajaxerror" class="alert alert-danger"></div>
+</div>
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12 col-xs-10 text-center">

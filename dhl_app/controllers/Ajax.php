@@ -7,6 +7,7 @@ class Ajax extends CI_Controller {
         parent::__construct();
         $this->load->model('general_model');
         $this->load->model('address_model');
+        $this->load->model('shipping_model');
     }
 
     public function index()
@@ -16,7 +17,6 @@ class Ajax extends CI_Controller {
 
     public function get_rate(){
         $this->security->xss_clean($_POST);
-        $this->load->library('escsv');
         $config = array(
             array(
                 'field' => 'country',
@@ -54,29 +54,14 @@ class Ajax extends CI_Controller {
         );
         $this->form_validation->set_rules($config);
         if ($this->form_validation->run() == true) {
-            $weight = sprintf("%.2f",round($this->input->post('weight'),0));
+            $weight = $this->input->post('weight');
             $country = $this->input->post('country');
             $reg_code = $this->address_model->get_reg_code_from_country($country);
             $item_type = $this->input->post('item_type');
             $noitem = intval($this->input->post('noitem'));
-            $rate_data = $this->escsv->parse_file(base_url() . 'dhl_asset/files/' . $item_type . '.csv');
-            if($item_type == 'parcel'){
-                $result = array('rate' => "Total rate for $noitem $item_type(s) is : <b>$" . $rate_data[$weight][$reg_code] * $noitem);
-            }else{
-                if($weight <= 8){
-                    $rate = 24.95;
-                }else if($weight <= 32){
-                    $rate = 49.95;
-                }else{
-                    $rate = 0;
-                }
-                if($rate > 0){
-                    $result = array('rate' => "Total rate for $noitem $item_type(s) is : <b>$" . $rate * $noitem);
-                }else{
-                    $result = array('error' => "Documents more than 2 lbs (32 oz) not allowed");
-                }
-            }
-
+            $result = $this->shipping_model->get_rate($reg_code,$item_type,$noitem,$weight);
+            $result['is_login'] = $this->user_model->is_logged();
+            $this->session->set_userdata('last_rate', $result);
         }else{
             $error = validation_errors();
             $result = array('error' => $error);

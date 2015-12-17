@@ -111,6 +111,22 @@ class User_model extends CI_Model
             ->where('adr_userid', $user_id);
         return $this->datatables->generate();
     }
+
+    public function get_user_trans(){
+        $user_id = $this->get_current_user_id();
+        $this->datatables->select("shp_ep_ref, fa.adr_contact as sender_name, ta.adr_contact as receiver_name, DATE_FORMAT(shp_date,'%d-%m-%Y') as shp_date, shp_rate, shp_trackingcode, shp_estdate, shp_status, shp_signedby, shp_type, shp_payment")
+            ->from('shipments as s')
+            ->join('addresses as fa', 'fa.adr_id = shp_from')
+            ->join('addresses as ta', 'ta.adr_id = shp_to')
+            ->join('country as fco', 'fa.adr_country = fco.cnt_code')
+            ->join('state as fs', 'fa.adr_state = fs.state_id')
+            ->join('city as fc', 'fa.adr_city = fc.city_id')
+            ->join('country as tco', 'ta.adr_country = tco.cnt_code')
+            ->join('state as ts', 'ta.adr_state = ts.state_id')
+            ->join('city as tc', 'ta.adr_city = tc.city_id')
+            ->where('s.shp_user', $user_id);
+        return $this->datatables->generate();
+    }
 }
 
 ?>

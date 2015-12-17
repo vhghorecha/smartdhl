@@ -49,8 +49,23 @@
 </div>
     <script type="text/javascript">
         $(document).ready(function(){
-            $('select').select2();
+            //$('select').select2();
+            $(".dhlmodal").click(function(){
+                $(this).hide();
+                $('.dhlcenter').show();
+                $("#ajaxerror").hide();
+            })
         });
+        $(document)
+            .ajaxStart(function(){
+                $(".dhlmodal").show();
+            })
+            .ajaxStop(function(){
+                $(".dhlmodal").hide();
+            }).ajaxError(function( event, jqxhr, settings, thrownError ) {
+                $(".dhlcenter").hide();
+                $("ajaxerror").html(thrownError).show();
+            });
     </script>
     </body>
 </html>
