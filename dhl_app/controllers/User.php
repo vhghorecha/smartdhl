@@ -628,4 +628,20 @@ class User extends CI_Controller {
         $this->load->helper('download');
         force_download('addressbook.csv', $csv_string);
     }
+
+    public function view_trans($usrid){
+        if(!$this->is_logged) { redirect("user/login"); }
+        //$this->load->template("viewtrans");
+
+        $shiping_data = $this->shipping_model->get_shipment($usrid);
+        $sender_data = $this->address_model->get_address($shiping_data['shp_from']);
+        $receiver_data = $this->address_model->get_address($shiping_data['shp_to']);
+        $shiping_data['from']=$sender_data;
+        $shiping_data['to']=$receiver_data;
+        $this->load->template("viewtrans",$shiping_data);
+
+
+
+
+    }
 }
