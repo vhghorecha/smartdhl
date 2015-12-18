@@ -64,7 +64,7 @@
                         <?php if(!empty($user_info['validated'])){ ?>
                             <li><a href="<?=site_url('user/booking');?>"><i class="fa fa-book"></i> Book Now</a></li>
                             <li><a href="<?=site_url('user/addrbook');?>"><i class="fa fa-list"></i> Address Book</a></li>
-                            <li><a href="<?=site_url('user/history');?>"><i class="fa fa-history"></i> Transactions</a></li>
+                            <li><a href="<?=site_url('user/transactions');?>"><i class="fa fa-history"></i> Transactions</a></li>
                             <li><a href="<?=site_url('user/logout');?>"><i class="fa fa-sign-out"></i> Logout</a></li>
                         <?php }else{ ?>
                             <li><a href="#modal-container-575041" data-toggle="modal"><i class="fa fa-sign-in"></i> Login</a></li>

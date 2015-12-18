@@ -127,9 +127,15 @@ class Shipping_model extends CI_Model
                 $lowest_rate = $shipment->lowest_rate();
                 $response = $shipment->buy($lowest_rate);
                 $response = json_decode($response);
-                //$tracking_code = $response->tracking_code;
+                $tracking_code = $response->tracking_code;
+                if(is_null($tracking_code)){
+                    $tracking_code = '';
+                }
                 $tracking_code = 'EZ1000000001';
                 $label_url = $response->postage_label;
+                if(is_null($label_url)){
+                    $label_url = '';
+                }
                 $ep_ref = $response->id;
             }else{
                 //$tracking_code = $ship_array['tracking_code'];
@@ -142,6 +148,9 @@ class Shipping_model extends CI_Model
             $tracker = \EasyPost\Tracker::create(array('tracking_code' => $tracking_code, 'carrier' => $carrier));
             $tracker = json_decode($tracker);
             $est_date = $tracker->est_delivery_date;
+            if(is_null($est_date)){
+                $est_date = '';
+            }
 
             $result = array(
                 'shp_trackingcode' => $tracking_code,
