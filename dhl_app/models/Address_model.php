@@ -89,7 +89,7 @@ class Address_model extends CI_Model
     }
 
     public function get_address($adr_id){
-        $this->db->select("adr_id, adr_name, adr_contact, adr_street1, adr_street2, city_name, state_name, cnt_name, adr_zip, adr_phone, adr_type, adr_email, adr_default,");
+        $this->db->select("adr_id, adr_name, adr_contact, adr_street1, adr_street2, city_name, state_name, cnt_name, adr_zip, adr_phone, adr_type, adr_email, adr_default,adr_userid,");
         $this->db->from('addresses as a');
         $this->db->join('country as co', 'adr_country = cnt_code');
         $this->db->join('state as s', 'adr_state = state_id');

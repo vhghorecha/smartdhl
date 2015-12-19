@@ -366,9 +366,7 @@ class Datatables
             $iFilteredTotal = $this->get_total_results(TRUE);
         }
 
-        foreach($rResult->result_array() as $row_val) { $aaData[] = array_values($row_val); }
-
-        /*foreach ($rResult->result_array() as $row_key => $row_val) {
+        foreach ($rResult->result_array() as $row_key => $row_val) {
             $aaData[$row_key] = ($this->check_cType()) ? $row_val : array_values($row_val);
 
             foreach ($this->add_columns as $field => $val)
@@ -387,7 +385,9 @@ class Datatables
             if (!$this->check_cType())
                 $aaData[$row_key] = array_values($aaData[$row_key]);
 
-        }*/
+        }
+
+        $aaData = array_map('array_values',$aaData);
 
         if ($output == 'json') {
             $sOutput = array

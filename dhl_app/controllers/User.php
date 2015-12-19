@@ -540,9 +540,13 @@ class User extends CI_Controller {
         die($this->user_model->get_user_addr());
     }
 
-    public function get_trans(){
-        die($this->user_model->get_user_trans());
+    public function get_addrs_admin(){
+        die($this->user_model->get_user_addr_admin());
     }
+
+
+
+
 
     public function del_addr(){
         if(!$this->is_logged) { redirect("user/login"); }
@@ -639,9 +643,8 @@ class User extends CI_Controller {
         $shiping_data['from']=$sender_data;
         $shiping_data['to']=$receiver_data;
         $this->load->template("viewtrans",$shiping_data);
-
-
-
-
     }
+
+
+
 }
