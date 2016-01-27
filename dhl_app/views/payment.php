@@ -12,6 +12,15 @@ echo form_open('payment/init',$attributes);?>
                 </div>
             </div>
         <?php } ?>
+        <?php if(!empty($error)) { ?>
+            <div class="col-sm-12">
+                <div class="alert alert-danger alert-dismissable">
+                    <button contenteditable="false" type="button" class="close" data-dismiss="alert"
+                            aria-hidden="true"><i class="fa fa-close"></i></button>
+                    <?=$error?>
+                </div>
+            </div>
+        <?php } ?>
 
         <div class="col-xs-12 text-center">
             <div class="payment-selector">
@@ -27,6 +36,8 @@ echo form_open('payment/init',$attributes);?>
 <?php $this->load->view('scripts');?>
 <script type="text/javascript">
     $(document).ready(function(){
-
+        $('#login-form').submit(function(){
+            $(".dhlmodal").show();
+        })
     }); // end document.ready
 </script>

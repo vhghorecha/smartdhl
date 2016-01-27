@@ -35,14 +35,14 @@ class Ajax extends CI_Controller {
                     'required' => 'You must provide a %s',
                 )
             ),
-            array(
+            /*array(
                 'field' => 'noitem',
                 'label' => 'No. of item',
                 'rules' => 'required|numeric|greater_than[0]',
                 'errors' => array(
                     'required' => 'You must provide a %s',
                 )
-            ),
+            ),*/
             array(
                 'field' => 'weight',
                 'label' => 'Weight',
@@ -58,7 +58,8 @@ class Ajax extends CI_Controller {
             $country = $this->input->post('country');
             $reg_code = $this->address_model->get_reg_code_from_country($country);
             $item_type = $this->input->post('item_type');
-            $noitem = intval($this->input->post('noitem'));
+            //$noitem = intval($this->input->post('noitem'));
+            $noitem = 1;
             $result = $this->shipping_model->get_rate($reg_code,$item_type,$noitem,$weight);
             $result['is_login'] = $this->user_model->is_logged();
             $this->session->set_userdata('last_rate', $result);
@@ -70,7 +71,7 @@ class Ajax extends CI_Controller {
     }
 
     public function get_captcha($id = 0){
-        $this->load->library('Escaptcha', array('id' => $id));
+        $this->load->library('escaptcha', array('id' => $id));
         return $this->escaptcha->get_html();
     }
 

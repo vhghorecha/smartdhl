@@ -15,20 +15,20 @@
             </div>
             <div class="row"></div>
             <div class="row text-center">
-                <div class="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <label for="delivering" >Item Type:</label>
                     <select class="form-control input-group-lg" id="item_type" name="item_type">
                         <option value="document">Document</option>
                         <option value="parcel">Parcel</option>
                     </select>
                 </div>
-                <div class="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                <?php /*<div class="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
                     <label for="delivering" >No of Items:</label>
                     <select class="form-control input-group-lg" id="noitem" name="noitem">
                         <?php for($i=1;$i<=100;$i++){echo "<option value='".$i."'>".$i."</option>"; }?>
                     </select>
-                </div>
-                <div class="form-group col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                </div>*/ ?>
+                <div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <label for="weight" >Weight:</label>
                     <input id="weight" class="form-control input-group-lg reg_name" type="number" name="weight" placeholder="Weight in Oz" min="1" step="0.01" max="150.00" required>
                 </div>

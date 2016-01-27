@@ -98,7 +98,7 @@
                 <div class="panel-body">
                     <p><b>Shipping Date : </b><?=$shp_date;?></p>
                     <p><b>Tracing code : </b><?=$shp_trackingcode;?></p>
-                    <p><b>Label Url : </b><?=$shp_labelurl;?></p>
+                    <p><b>Label Url : </b><a href="<?=$shp_labelurl;?>" target="_blank">View</a></p>
                     <p><b>Estimate Date : </b><?=$shp_estdate;?></p>
                     <p><b>Status : </b><?=$shp_status;?></p>
                     <p><b>Updated At : </b><?=$shp_updateat;?></p>

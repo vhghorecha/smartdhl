@@ -152,6 +152,7 @@
                             <label class="control-label">Address Type</label>
                             <div class="col-xs-12">
                                 <select id="txttype" name="txttype" class="form-control">
+                                    <option value="">Select Type</option>
                                     <option value="Sender">Sender</option>
                                     <option value="Receiver">Receiver</option>
                                 </select>
@@ -189,6 +190,7 @@
 
     $('#btnadd').click(function(){
         strstate = strcity = '';
+        $('input[type!="submit"], select, textarea').val('');
     });
 
     /*$('#txtzip, #txtstr1').blur(function(){
@@ -452,7 +454,7 @@
                 success:function(data){
                     if(typeof data.success !== 'undefined'){
                         $('#update_res').html('<div class="alert alert-success">' + data.success + '</div>');
-                        setTimeout('window.location.reload()',3000);
+                        table.fnDraw();
                     }else{
                         $('#update_res').html('<div class="alert alert-danger">The following error occurred: ' + data.error + '</div>');
                     }

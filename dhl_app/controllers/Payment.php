@@ -52,7 +52,7 @@ class Payment extends CI_Controller {
                 'currency' => "USD",
                 'returnUrl' => $returnUrl,
                 'cancelUrl' => $cancelUrl,
-                'logoImageUrl' => base_url() . 'dhl_asset/images/' . 'favicon.jpg',
+                'logoImageUrl' => base_url() . 'dhl_asset/images/' . 'logo.png',
                 'brandName' => 'SmartDHL'
             );
             $txnItems = new \Omnipay\Common\ItemBag();
@@ -72,82 +72,101 @@ class Payment extends CI_Controller {
                 echo $response->getMessage();
             }
         }
-
     }
 
     public function processpay($shp_id){
-        if(empty($shp_id)){
-            redirect("/");
-        }else{
-            if(is_numeric($shp_id)){
-                $ship_data = $this->shipping_model->get_shipment($shp_id);
-                $txnParams = $this->session->userdata('txnParams');
-                $txnItems = $this->session->userdata('txnItems');
-                if(!empty($txnParams)){
-                    $shp_transno = '';
-                    $trans_message = '';
-                    $this->initGateway();
-                    $response = $this->gateway->fetchCheckout($txnParams)->setItems($txnItems)->send();
-                    $shp_payment = "Pending";
-                    if($response->isSuccessful()){
-                        $paydata = $response->getData();
-                        $shp_gatewayid = $paydata['EMAIL'];
-                        $user_id = $this->user_model->get_current_user_id();
-                        if($user_id != $ship_data['shp_user']){
-                            $trans_message = 'Invalid User...';
-                        }else{
-                            $response = $this->gateway->completePurchase($txnParams)->setItems($txnItems)->send();
-                            if($response->isSuccessful()){
-                                $shp_payment = "Completed";
-                                $shp_result = $this->shipping_model->savebooking($shp_id);
-                                if(is_array($shp_result)){
-                                    $where = array('shp_id' => $shp_id);
-                                    $response = $this->shipping_model->update($shp_result, $where);
-                                    $trans_message = 'Your shipment booked successfully';
+        try
+        {
+            $shp_result = array();
+            if(empty($shp_id)){
+                redirect("/");
+            }else{
+                if(is_numeric($shp_id)){
+                    $ship_data = $this->shipping_model->get_shipment($shp_id);
+                    $txnParams = $this->session->userdata('txnParams');
+                    $txnItems = $this->session->userdata('txnItems');
+                    if(!empty($txnParams)){
+                        $shp_transno = '';
+                        $trans_message = '';
+                        $this->initGateway();
+                        $response = $this->gateway->fetchCheckout($txnParams)->setItems($txnItems)->send();
+                        $shp_payment = "Pending";
+                        if($response->isSuccessful() && is_object($response)){
+                            $paydata = $response->getData();
+                            $shp_gatewayid = $paydata['EMAIL'];
+                            $user_id = $this->user_model->get_current_user_id();
+                            if($user_id != $ship_data['shp_user']){
+                                $trans_message = 'Invalid User...';
+                            }else{
+                                $response = $this->gateway->completePurchase($txnParams)->setItems($txnItems)->send();
+                                if($response->isSuccessful()){
+                                    $shp_payment = "Completed";
+                                    $shp_result = $this->shipping_model->purchaseship($ship_data);
+                                    if(is_array($shp_result)){
+                                        $where = array('shp_id' => $shp_id);
+                                        $response = $this->shipping_model->update($shp_result, $where);
+                                        $trans_message = 'Your shipment booked successfully';
+                                        $this->shipping_model->send_notify($ship_data);
+                                    }else{
+                                        $trans_message = $shp_result;
+                                    }
+
+                                }else if($response->isCancelled()){
+                                    $shp_payment = "Cancelled";
+                                }else{
+                                    $shp_payment = "Invalid";
                                 }
 
-                            }else if($response->isCancelled()){
-                                $shp_payment = "Cancelled";
-                            }else{
-                                $shp_payment = "Invalid";
+                                if(isset($paydata['AMT'])){
+                                    $shp_amount = $paydata['AMT'];
+                                }
+                                if(isset($paydata['PAYMENTREQUEST_0_AMT'])){
+                                    $shp_amount = $paydata['PAYMENTREQUEST_0_AMT'];
+                                }
+
+                                if(isset($paydata["PAYMENTREQUEST_0_TRANSACTIONID"])){
+                                    $shp_transno = $paydata["PAYMENTREQUEST_0_TRANSACTIONID"]; 	//' Unique transaction ID of the payment. Note:  If the PaymentAction of the request was Authorization or Order, this value is your AuthorizationID for use with the Authorization & Capture APIs.
+                                }
+                                if(isset($paydata["PAYMENTINFO_0_TRANSACTIONID"])){
+                                    $shp_transno = $paydata["PAYMENTINFO_0_TRANSACTIONID"]; 	//' Unique transaction ID of the payment. Note:  If the PaymentAction of the request was Authorization or Order, this value is your AuthorizationID for use with the Authorization & Capture APIs.
+                                }
+                                if($shp_amount != $ship_data['shp_rate']){
+                                    $shp_payment = 'Pending';
+                                    $trans_message = 'Insufficient amount paid...';
+                                }
                             }
-                            $paydata = $response->getData();
-                            $shp_amount = $paydata['PAYMENTINFO_0_AMT'];
-                            $shp_transno = $paydata['PAYMENTINFO_0_TRANSACTIONID'];
-                            if($shp_amount != $ship_data['shp_rate']){
-                                $shp_payment = 'Pending';
-                                $trans_message = 'Insufficient amount paid...';
-                            }
+
+                            $data = array(
+                                'shp_transno' => $shp_transno,
+                                'shp_gatewayid' => $shp_gatewayid,
+                                'shp_payment' => $shp_payment,
+                            );
+
+                            $where = array(
+                                'shp_id' => $shp_id,
+                                'shp_user' => $user_id,
+                            );
+
+                            $this->shipping_model->update($data,$where);
+                        }else{
+                            $trans_message = $response->getMessage();
                         }
-
-                        $data = array(
-                            'shp_transno' => $shp_transno,
-                            'shp_gatewayid' => $shp_gatewayid,
-                            'shp_payment' => $shp_payment,
-                        );
-
-                        $where = array(
-                            'shp_id' => $shp_id,
-                            'shp_user' => $user_id,
-                        );
-
-                        $this->shipping_model->update($data,$where);
+                        $data['trans_message'] = $trans_message;
+                        $data['trans_status'] = $shp_payment;
+                        $data['shp_result'] = $shp_result;
+                        $this->session->unset_userdata('txnParams');
+                        $this->session->unset_userdata('txnItems');
                     }else{
-                        $trans_message = $response->getMessage();
+                        redirect("/");
                     }
-                    $data['trans_message'] = $trans_message;
-                    $data['trans_status'] = $shp_payment;
-                    $data['shp_result'] = $shp_result;
-                    $this->session->unset_userdata('txnParams');
-                    $this->session->unset_userdata('txnItems');
-                    $this->load->template('processpay',$data);
                 }else{
                     redirect("/");
                 }
-            }else{
-                redirect("/");
             }
+        }catch(Exception $ex){
+            $data['trans_message'] = $ex->getMessage();
         }
-    }
 
+        $this->load->template('processpay',$data);
+    }
 }

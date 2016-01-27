@@ -2,6 +2,7 @@
     <?php
     $attributes = 'id = "booking-form" name="booking-form" ';
     echo form_open('',$attributes);?>
+        <input type="hidden" name="shp_id" id="shp_id" value="<?=(@$shp_id > 0 ? $shp_id : 0);?>"/>
         <div class="container-fluid">
             <?php if(!empty($error)) { ?>
             <div class="col-sm-12">
@@ -37,44 +38,44 @@
                         <div class="col-xs-12">
                             <div class="col-xs-4 text-right"><label class="control-label" for="selfromaddr">Address from Address Book</label></div>
                             <div class="col-xs-8"><?php
-                            $attributes = ' id = "selfromaddr" name="selfromaddr" class="form-control"';
+                            $attributes = ' id = "selfromaddr" name="selfromaddr" class="form-control input-sm"';
                             echo form_dropdown('selfromaddr',$fromaddr,set_value('selfromaddr'),$attributes);?></div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
-                            <div class="col-xs-4 text-right"><label class="control-label" for="txtsname">Name your address</label></div>
-                            <div class="col-xs-8"><input type="text" class="form-control" name="txtsname" id="txtsname" value="<?=set_value('txtsname')?>"></div>
+                            <div class="col-xs-4 text-right"><label class="control-label" for="txtsname">Address Name</label></div>
+                            <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtsname" id="txtsname" value="<?=set_value('txtsname')?>"></div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
                             <div class="col-xs-4 text-right"><label class="control-label" for="txtscontact">Contact name</label></div>
-                            <div class="col-xs-8"><input type="text" class="form-control" name="txtscontact" id="txtscontact" value="<?=set_value('txtscontact')?>"></div>
+                            <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtscontact" id="txtscontact" value="<?=set_value('txtscontact')?>"></div>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
                             <div class="col-xs-4 text-right"><label class="control-label" for="txtsstr1">Street 1</label></div>
-                            <div class="col-xs-8"><input type="text" class="form-control" name="txtsstr1" id="txtsstr1" value="<?=set_value('txtsstr1')?>"></div>
+                            <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtsstr1" id="txtsstr1" value="<?=set_value('txtsstr1')?>"></div>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group">
                             <div class="col-xs-4 text-right"><label class="control-label" for="txtsstr2">Street 2</label></div>
-                            <div class="col-xs-8"><input type="text" class="form-control" name="txtsstr2" id="txtsstr2" value="<?=set_value('txtsstr2')?>"></div>
+                            <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtsstr2" id="txtsstr2" value="<?=set_value('txtsstr2')?>"></div>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
                             <div class="col-xs-4 text-right"><label class="control-label" for="txtszip">Zip code</label></div>
-                            <div class="col-xs-8"><input type="text" class="form-control" name="txtszip" id="txtszip" value="<?=set_value('txtszip')?>"></div>
+                            <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtszip" id="txtszip" value="<?=set_value('txtszip')?>"></div>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
                             <div class="col-xs-4 text-right"><label class="control-label" for="country">Country</label></div>
                             <div class="col-xs-8"><?php
-                                $attributes = ' id = "txtscountry" name="txtscountry" class="form-control"';
-                                echo form_dropdown('txtscountry',$country,set_value('txtscountry'),$attributes);?></div>
+                                $attributes = ' id = "txtscountry" name="txtscountry" class="form-control input-sm"';
+                                echo form_dropdown('txtscountry',$scountry,set_value('txtscountry'),$attributes);?></div>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
                             <div class="col-xs-4 text-right"><label class="control-label" for="txtsstate">State</label></div>
                             <div class="col-xs-8">
-                                <select id="txtsstate" name="txtsstate" class="form-control">
+                                <select id="txtsstate" name="txtsstate" class="form-control input-sm">
                                     <option value="">Select State</option>
                                 </select>
                             </div>
@@ -83,7 +84,7 @@
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
                             <div class="col-xs-4 text-right"><label class="control-label" for="txtscity">City</label></div>
                             <div class="col-xs-8">
-                                <select id="txtscity" name="txtscity" class="form-control">
+                                <select id="txtscity" name="txtscity" class="form-control input-sm">
                                     <option value="">Select city</option>
                                 </select>
                             </div>
@@ -91,12 +92,12 @@
 
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
                             <div class="col-xs-4 text-right"><label class="control-label" for="txtsphone">Phone</label></div>
-                            <div class="col-xs-8"><input type="text" class="form-control" name="txtsphone" id="txtsphone" value="<?=set_value('txtsphone')?>"></div>
+                            <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtsphone" id="txtsphone" value="<?=set_value('txtsphone')?>"></div>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
                             <div class="col-xs-4 text-right"><label class="control-label" for="txtsemail">Email</label></div>
-                            <div class="col-xs-8"><input type="text" class="form-control" name="txtsemail" id="txtsemail" value="<?=set_value('txtsemail')?>"></div>
+                            <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtsemail" id="txtsemail" value="<?=set_value('txtsemail')?>"></div>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -119,44 +120,44 @@
                         <div class="col-xs-12">
                             <div class="col-xs-4 text-right"><label class="control-label" for="selfromaddr">Address from Address Book</label></div>
                             <div class="col-xs-8"><?php
-                                $attributes = ' id = "seltoaddr" name="seltoaddr" class="form-control"';
+                                $attributes = ' id = "seltoaddr" name="seltoaddr" class="form-control input-sm"';
                                 echo form_dropdown('seltoaddr',$toaddr,set_value('seltoaddr'),$attributes);?></div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
-                            <div class="col-xs-4 text-right"><label class="control-label" for="txtrname">Name your address</label></div>
-                            <div class="col-xs-8"><input type="text" class="form-control" name="txtrname" id="txtrname" value="<?=set_value('txtrname')?>"></div>
+                            <div class="col-xs-4 text-right"><label class="control-label" for="txtrname">Address Name</label></div>
+                            <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtrname" id="txtrname" value="<?=set_value('txtrname')?>"></div>
                         </div>
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
                             <div class="col-xs-4 text-right"><label class="control-label" for="txtrcontact">Contact name</label></div>
-                            <div class="col-xs-8"><input type="text" class="form-control" name="txtrcontact" id="txtrcontact" value="<?=set_value('txtrcontact')?>"></div>
+                            <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtrcontact" id="txtrcontact" value="<?=set_value('txtrcontact')?>"></div>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
                             <div class="col-xs-4 text-right"><label class="control-label" for="txtrstr1">Street 1</label></div>
-                            <div class="col-xs-8"><input type="text" class="form-control" name="txtrstr1" id="txtrstr1" value="<?=set_value('txtrstr1')?>"></div>
+                            <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtrstr1" id="txtrstr1" value="<?=set_value('txtrstr1')?>"></div>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group">
                             <div class="col-xs-4 text-right"><label class="control-label" for="txtrstr2">Street 2</label></div>
-                            <div class="col-xs-8"><input type="text" class="form-control" name="txtrstr2" id="txtrstr2" value="<?=set_value('txtrstr2')?>"></div>
+                            <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtrstr2" id="txtrstr2" value="<?=set_value('txtrstr2')?>"></div>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
                             <div class="col-xs-4 text-right"><label class="control-label" for="txtrzip">Zip code</label></div>
-                            <div class="col-xs-8"><input type="text" class="form-control" name="txtrzip" id="txtrzip" value="<?=set_value('txtrzip')?>"></div>
+                            <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtrzip" id="txtrzip" value="<?=set_value('txtrzip')?>"></div>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
                             <div class="col-xs-4 text-right"><label class="control-label" for="rcountry">Country</label></div>
                             <div class="col-xs-8"><?php
-                                $attributes = ' id = "txtrcountry" name="txtrcountry" class="form-control"';
+                                $attributes = ' id = "txtrcountry" name="txtrcountry" class="form-control input-sm"';
                                 echo form_dropdown('txtrcountry',$country,set_value('txtrcountry'),$attributes);?></div>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
                             <div class="col-xs-4 text-right"><label class="control-label" for="txtrstate">State</label></div>
                             <div class="col-xs-8">
-                                <select id="txtrstate" name="txtrstate" class="form-control">
+                                <select id="txtrstate" name="txtrstate" class="form-control input-sm">
                                     <option value="">Select State</option>
                                 </select>
                             </div>
@@ -165,7 +166,7 @@
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
                             <div class="col-xs-4 text-right"><label class="control-label" for="txtrcity">City</label></div>
                             <div class="col-xs-8">
-                                <select id="txtrcity" name="txtrcity" class="form-control">
+                                <select id="txtrcity" name="txtrcity" class="form-control input-sm">
                                     <option value="">Select city</option>
                                 </select>
                             </div>
@@ -173,12 +174,12 @@
 
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
                             <div class="col-xs-4 text-right"><label class="control-label" for="txtrphone">Phone</label></div>
-                            <div class="col-xs-8"><input type="text" class="form-control" name="txtrphone" id="txtrphone" value="<?=set_value('txtrphone')?>"></div>
+                            <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtrphone" id="txtrphone" value="<?=set_value('txtrphone')?>"></div>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
                             <div class="col-xs-4 text-right"><label class="control-label" for="txtremail">Email</label></div>
-                            <div class="col-xs-8"><input type="text" class="form-control" name="txtremail" id="txtremail" value="<?=set_value('txtremail')?>"></div>
+                            <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtremail" id="txtremail" value="<?=set_value('txtremail')?>"></div>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
@@ -196,48 +197,104 @@
                 <div class="panel panel-primary">
                     <div class="panel-heading">Packaging Details</div>
                     <div class="panel-body">
-                        <div class="col-lg-4 col-md-5 col-sm-5 col-xs-12 form-group required">
+                        <div class="col-sm-3 col-xs-12 form-group required">
                             <label class="control-label">Item Type</label>
-                            <select class="form-control" id="item_type" name="item_type">
-                                <option value="document" <?=($last_rate['item_type'] == 'document' ? 'selected="selected"' : '');?>>Document</option>
-                                <option value="parcel" <?=($last_rate['item_type'] == 'parcel' ? 'selected="selected"' : '');?>>Parcel</option>
-                            </select>
+                            <?php $options = array('' => 'Select Item Type', 'document' => 'DHL Document', 'parcel' => 'DHL Parcel');
+                                echo form_dropdown('item_type', $options, set_value('item_type',$last_rate['item_type']), 'id="item_type" class ="form-control"');
+                            ?>
                         </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6 form-group required">
-                            <label class="control-label">Length (INCH)</label>
-                            <input type="number" class="form-control" id="txtlength" name="txtlength" step="0.1" placeholder="Length" value="<?=set_value('txtlength')?>"/>
+                        <div class="col-sm-1 col-xs-3 form-group">
+                            <label class="control-label">Length</label>
+                            <input type="number" class="form-control input-sm" id="txtlength" name="txtlength" step="0.1" placeholder="Length" value="<?=set_value('txtlength')?>"/>
                         </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6 form-group required">
-                            <label class="control-label">Width (INCH)</label>
-                            <input type="number" class="form-control" id="txtwidth" name="txtwidth" step="0.1" placeholder="Width" value="<?=set_value('txtwidth')?>"/>
+                        <div class="col-sm-1 col-xs-3 form-group">
+                            <label class="control-label">Width</label>
+                            <input type="number" class="form-control input-sm" id="txtwidth" name="txtwidth" step="0.1" placeholder="Width" value="<?=set_value('txtwidth')?>"/>
                         </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6 form-group required">
-                            <label class="control-label">Height (INCH)</label>
-                            <input type="number" class="form-control" id="txtheight" name="txtheight" step="0.1" placeholder="Height" value="<?=set_value('txtheight')?>"/>
+                        <div class="col-sm-1 col-xs-3 form-group">
+                            <label class="control-label">Height</label>
+                            <input type="number" class="form-control input-sm" id="txtheight" name="txtheight" step="0.1" placeholder="Height" value="<?=set_value('txtheight')?>"/>
                         </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-6 form-group required">
-                            <label class="control-label">Weight (Oz)</label>
-                            <input type="number" class="form-control" id="txtweight" name="txtweight" step="0.1" placeholder="Weight" value="<?=($last_rate['weight'] > 0 ? $last_rate['weight'] : set_value('txtweight'));?>"/>
+                        <div class="col-sm-1 col-xs-3 form-group">
+                            <label class="control-label">Weight</label>
+                            <input type="number" class="form-control input-sm" id="txtweight" name="txtweight" step="0.1" placeholder="Weight" value="<?=($last_rate['weight'] > 0 ? $last_rate['weight'] : set_value('txtweight'));?>"/>
+                        </div>
+                        <div class="col-sm-3 col-xs-8 form-group">
+                            <label class="control-label">Signature Option:</label>
+                            <input type="text" class="form-control input-sm" id="txtsign" name="txtsign" value="No Signature Required" disabled="disabled"/>
+                        </div>
+                        <div class="col-sm-1 col-xs-4 form-group">
+                            <label class="control-label">Insurance?</label><br/>
+                            <input type="checkbox" name="insurance" id="insurance" value="1" checked disabled="disabled"/>
+                        </div>
+                        <div class="col-xs-12 text-danger">
+                            <strong>
+                                *All dimensions in INCH, *Weight in Oz
+                                <br/>*Maximum of 8 oz. allowed for DHL Document shipment.
+                            </strong>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="col-xs-12">
+            <div class="col-sm-6 col-xs-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">Custom Details</div>
                     <div class="panel-body">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required" >
+                        <div class="col-xs-8 form-group required" >
                             <label class="control-label">Description</label>
-                            <textarea class="form-control" id="txtdesc" name="txtdesc" placeholder="Package Description" style="resize: none;"><?=set_value('txtdesc')?></textarea>
+                            <textarea class="form-control input-sm" id="txtdesc" name="txtdesc" placeholder="Package Description" style="resize: none;" rows="3"><?=set_value('txtdesc')?></textarea>
                         </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 form-group required">
+                        <?php /*<div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 form-group required">
                             <label class="control-label">Quantity</label>
-                            <input type="number" class="form-control" id="txtquantity" name="txtquantity" placeholder="Quantity" value="<?=set_value('txtquantity')?>"/>
-                        </div>
-                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-6 form-group required">
+                            <input type="number" class="form-control input-sm" id="txtquantity" name="txtquantity" placeholder="Quantity" value="<?=set_value('txtquantity')?>"/>
+                        </div>*/?>
+                        <div class="col-xs-4 form-group required">
                             <label class="control-label">Value (USD)</label>
-                            <input type="number" class="form-control" id="txtvalue" name="txtvalue" placeholder="Value(USD)" value="<?=set_value('txtvalue')?>"/>
+                            <input type="number" class="form-control input-sm" id="txtvalue" name="txtvalue" placeholder="Value(USD)" value="<?=set_value('txtvalue')?>"/>
+                        </div>
+                        <small class="pull-left clearfix">Dutiable shipments with a single commodity valued over 2500 USD may require you to file an SED/EEI.
+                            If your shipment requires you to file an SED/EEI please visit <a href="https://aesdirect.census.gov/" target="_blank">AESDirect</a> for more information.</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6 col-xs-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Additional Details</div>
+                    <div class="panel-body">
+                        <div class="col-lg-8 col-xs-12 form-group" >
+                            <label class="control-label">Notification Email(s)</label>
+                            <textarea class="form-control input-sm" id="txtnotemails" name="txtnotemails" placeholder="Notification Email(s) Comma Separated" style="resize: none;" rows="3"><?=set_value('txtnotemails')?></textarea>
+                            <label class="control-label">Add Emails</label>
+                            <a id="btnsender" role="button" class="btn btn-primary btn-xs">Sender</a>
+                            <a id="btnreceiver" role="button" class="btn btn-primary btn-xs">Receiver</a>
+                        </div>
+                        <div class="col-lg-4 col-xs-12 form-group" >
+                            <label class="control-label">FTR <a href="https://webship.dhl-usa.com/Shipment/DHL%20Help%20%20FTR.asp" target="_blank"><i class="fa fa-question-circle"></i></a></label>
+                            <select class="form-control input-sm" id="txtftr" name="txtftr">
+                                <option value="">Select</option>
+                                <option value='30.2(d)(2)'>30.2(d)(2)</option>
+                                <option value='30.36'>30.36</option>
+                                <option value='30.37(a)'>30.37(a)</option>
+                                <option value='30.37(b)'>30.37(b)</option>
+                                <option value='30.37(e)'>30.37(e)</option>
+                                <option value='30.37(f)'>30.37(f)</option>
+                                <option value='30.37(g)'>30.37(g)</option>
+                                <option value='30.37(h)'>30.37(h)</option>
+                                <option value='30.37(i)'>30.37(i)</option>
+                                <option value='30.37(k)'>30.37(k)</option>
+                                <option value='30.37(o)'>30.37(o)</option>
+                                <option value='30.37(q)'>30.37(q)</option>
+                                <option value='30.37(r)'>30.37(r)</option>
+                                <option value='30.39'>30.39</option>
+                                <option value='30.40(a)'>30.40(a)</option>
+                                <option value='30.40(b)'>30.40(b)</option>
+                                <option value='30.40(c)'>30.40(c)</option>
+                                <option value='30.40(d)'>30.40(d)</option>
+                            </select>
+                            <label class="control-label">ITN <a href="https://webship.dhl-usa.com/Shipment/DHL%20Help%20Internal.asp" target="_blank"><i class="fa fa-question-circle"></i></a></label>
+                            <input type="text" class="form-control input-sm" id="txtitn" name="txtitn"/>
                         </div>
                     </div>
                 </div>
@@ -256,13 +313,14 @@
     var refsaddr = refraddr = true;
     $(document).ready(function(){
 
+        var def_addr = '<?=$def_addr;?>';
+
         $('#lnkcaptcha').click(function(e){
             e.preventDefault();
             change_captch('register');
         });
 
         $('#booking-form').validate({
-
             rules: {
                 //sender rules
                 txtsname: {
@@ -335,7 +393,7 @@
                     required: true,
                     email:true,
                 },
-                txtlength: {
+                /*txtlength: {
                     required: true,
                     number:true,
                 },
@@ -351,12 +409,12 @@
                     required: true,
                     number:true,
                 },
-                txtdesc: {
-                    required:true,
-                },
                 txtquantity:{
                     required:true,
                     number:true,
+                },*/
+                txtdesc: {
+                    required:true,
                 },
                 txtvalue:{
                     required:true,
@@ -381,6 +439,12 @@
                     _popover.data("bs.popover").options.content = value.message;
                     return $(value.element).popover("show");*/
                 });
+            },
+            submitHandler: function(form) {
+                // do other things for a valid form
+                form.submit();
+                $("#booking-form").html('<center><img src="<?php echo RES_URL;?>/images/loading.gif" class="img-responsive"/></center>');
+
             }
         });
         //sender
@@ -441,7 +505,7 @@
         }
         //sender
         $('#txtscountry').change(function(){
-            if(!refsaddr) return;
+            //if(!refsaddr) return;
             $.ajax({
                 type:'POST',
                 url: '<?=site_url("ajax/get_state_from_country");?>',
@@ -464,9 +528,10 @@
             });
 
         });
+
         //receiver
         $('#txtrcountry').change(function(){
-            if(!refraddr) return;
+            //if(!refraddr) return;
             $.ajax({
                 type:'POST',
                 url: '<?=site_url("ajax/get_state_from_country");?>',
@@ -489,9 +554,10 @@
             });
 
         });
+
         //sender
         $('#txtsstate').change(function(){
-            if(!refsaddr) return;
+            //if(!refsaddr) return;
             $.ajax({
                 type:'POST',
                 url: '<?=site_url("ajax/get_city_from_state");?>',
@@ -516,7 +582,7 @@
         });
         //receiver
         $('#txtrstate').change(function(){
-            if(!refraddr) return;
+            //if(!refraddr) return;
             $.ajax({
                 type:'POST',
                 url: '<?=site_url("ajax/get_city_from_state");?>',
@@ -562,8 +628,8 @@
                             strsstate = data.state_name;
                             strscity = data.city_name;
                             $('#txtscountry').val($('#txtscountry option').filter(function () { return $(this).html().toUpperCase() == data.cnt_name.toUpperCase(); }).val()).trigger('change');
-                            refsaddr = true;
-                            $('#savesaddr').prop('disabled',true);
+                            //refsaddr = true;
+                            //$('#savesaddr').prop('disabled',true);
                         }
                     },
                     error:function(jqXHR, textStatus, error){
@@ -571,13 +637,18 @@
                     }
                 });
             }else{
-                refsaddr = false;
-                $('#savesaddr').prop('disabled',false);
+                //refsaddr = false;
+                //$('#savesaddr').prop('disabled',false);
                 $('#txtsname, #txtscontact, #txtsstr1, #txtsstr2, #txtszip, #txtsphone, #txtsemail').val('');
                 $('#txtscountry, #txtsstate, #txtscity').val('').trigger('change');
-                setTimeout('refsaddr=true;',3000);
+                //setTimeout('refsaddr=true;',3000);
             }
         });
+
+        //sender
+        if($("#selfromaddr").val() != ''){
+            $("#selfromaddr").trigger("change");
+        }
 
         $('#seltoaddr').change(function(){
             //refsaddr = false;
@@ -601,8 +672,8 @@
                             strrstate = data.state_name;
                             strrcity = data.city_name;
                             $('#txtrcountry').val($('#txtrcountry option').filter(function () { return $(this).html().toUpperCase() == data.cnt_name.toUpperCase(); }).val()).trigger('change');
-                            refraddr = true;
-                            $('#saveraddr').prop('disabled',true);
+                            //refraddr = true;
+                            //$('#saveraddr').prop('disabled',true);
                         }
                     },
                     error:function(jqXHR, textStatus, error){
@@ -610,14 +681,54 @@
                     }
                 });
             }else{
-                refraddr = false;
-                $('#saveraddr').prop('disabled',false);
+                //refraddr = false;
+                //$('#saveraddr').prop('disabled',false);
                 $('#txtrname, #txtrcontact, #txtrstr1, #txtrstr2, #txtrzip, #txtrphone, #txtremail').val('');
                 $('#txtrcountry, #txtrstate, #txtrcity').val('').trigger('change');
-                setTimeout('refraddr=true;',3000);
+                //setTimeout('refraddr=true;',3000);
             }
 
-        })
+        });
 
+        //sender
+        if($("#seltoaddr").val() != ''){
+            $("#seltoaddr").trigger("change");
+        }
+
+        if(def_addr != ''){
+            $('#selfromaddr').val(def_addr).trigger('change');
+        }
+
+        $("#item_type").change(function(){
+           if($(this).val() == 'document' ){
+               $('#txtlength, #txtwidth, #txtheight, #txtweight, #txtitn, #txtftr').prop("disabled",true);
+           }else{
+               $('#txtlength, #txtwidth, #txtheight, #txtweight, #txtitn, #txtftr').prop("disabled",false);
+           }
+        });
+
+        $("#btnsender").click(function(){
+            $notify = $("#txtnotemails").val();
+            $email =$("#txtsemail").val();
+            if($email != ''){
+                if($notify != ''){
+                    $("#txtnotemails").val($notify + "," + $email);
+                }else{
+                    $("#txtnotemails").val($email);
+                }
+            }
+        });
+
+        $("#btnreceiver").click(function(){
+            $notify = $("#txtnotemails").val();
+            $email =$("#txtremail").val();
+            if($email != ''){
+                if($notify != ''){
+                    $("#txtnotemails").val($notify + "," + $email);
+                }else{
+                    $("#txtnotemails").val($email);
+                }
+            }
+        });
     }); // end document.ready
 </script>

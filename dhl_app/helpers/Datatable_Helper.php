@@ -28,3 +28,11 @@ function callback_shipment_ref($ship_ref){
     }
 }
 
+function callback_shipment_link($shp_trackingcode, $shp_labelurl){
+    if(!empty($shp_labelurl) && !empty($shp_trackingcode)){
+        return '<a href="' . $shp_labelurl . '">' . $shp_trackingcode . '</a>';
+    }else{
+        return '';
+    }
+}
+

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="6c3a44d7-e248-4d63-aaba-89703fa7eee2" name="SmartDHL" url="http://ftp.smartdhl.net">
+        <fileTransfer host="ftp.smartdhl.net" port="21" rootFolder="/public_html" accessType="FTPS" password="dfe0dfc3dfc4dfc1dfc3dfc7df9bdf98df99df9e" username="smartdhl1234">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

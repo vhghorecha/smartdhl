@@ -83,3 +83,25 @@ $db['default'] = array(
 	'failover' => array(),
 	'save_queries' => TRUE
 );
+
+$db['production'] = array(
+	'dsn'	=> 'mysql:host=localhost;dbname=smartdhl',
+	//'hostname' => 'localhost',
+	'username' => 'smartdhl_vimal',
+	'password' => 'a@5,GSs351}9@^[giR',
+	'database' => 'smartdhl',
+	'dbdriver' => 'pdo',
+	'dbprefix' => 'sd_',
+	'pconnect' => FALSE,
+	'db_debug' => TRUE,
+	'cache_on' => FALSE,
+	'cachedir' => '',
+	'char_set' => 'utf8',
+	'dbcollat' => 'utf8_general_ci',
+	'swap_pre' => '',
+	'encrypt' => FALSE,
+	'compress' => FALSE,
+	'stricton' => FALSE,
+	'failover' => array(),
+	'save_queries' => TRUE
+);

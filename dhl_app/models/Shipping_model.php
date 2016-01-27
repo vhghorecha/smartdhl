@@ -10,6 +10,9 @@ class Shipping_model extends CI_Model
     }
 
     public function get_rate($reg_code,$item_type,$noitem,$weight){
+        if($weight <= 1){
+            $weight = 1;
+        }
         $weight = sprintf("%.2f",round($weight,0));
         $this->load->library('escsv');
         $rate_data = $this->escsv->parse_file(base_url() . 'dhl_asset/files/' . $item_type . '.csv');
@@ -20,19 +23,18 @@ class Shipping_model extends CI_Model
         }else{
             if($weight <= 8){
                 $rate = 24.95;
-            }else if($weight <= 32){
-                $rate = 49.95;
             }else{
                 $rate = 0;
             }
             if($rate > 0){
                 $result = array('rate' => "Total rate for $noitem $item_type(s) is : <b>$" . $rate * $noitem . "</b>", 'rate_amount' => $rate * $noitem);
             }else{
-                $result = array('error' => "Documents more than 2 lbs (32 oz) not allowed");
+                $result = array('error' => "You have enter Exceed weight on Document, Please send Less than 8oz");
             }
         }
         $result['item_type'] = $item_type;
         $result['weight'] = $weight;
+        $this->session->set_userdata('last_rate', $result);
         return $result;
     }
 
@@ -95,26 +97,40 @@ class Shipping_model extends CI_Model
                     )
                 );
 
-                $shipment = \EasyPost\Shipment::create(array(
-                    "to_address" => $to_address,
-                    "from_address" => $from_address,
-                    "parcel" => array(
+                if($ship_data['shp_type'] == 'document'){
+                    $parcel = \EasyPost\Parcel::create(
+                        array(
+                            "predefined_package" => 'DHLExpressEnvelope',
+                            "weight" => $ship_data['shp_weight'],
+                        )
+                    );
+                }else{
+                    $parcel = array(
                         "length" => $ship_data['shp_length'],
                         "width" => $ship_data['shp_width'],
                         "height" => $ship_data['shp_height'],
                         "weight" => $ship_data['shp_weight'],
-                    ),
+                    );
+                }
+
+                $shipment = \EasyPost\Shipment::create(array(
+                    "to_address" => $to_address,
+                    "from_address" => $from_address,
+                    "parcel" => $parcel,
                     "customs_info" => array(
                         "description" => $ship_data['shp_desc'],
                         "quantity" => $ship_data['shp_quantity'],
                         "weight" => $ship_data['shp_weight'],
                         "value" => $ship_data['shp_value'],
-                        "origin_country" => 'US'
+                        "origin_country" => 'US',
+                        "eel_pfc" => $ship_data['shp_eelpfc'],
                     ),
                     "carrier_accounts" => array(array('id' => 'ca_2bafcd3ab9b34db9a4de8040f143917f')),
                 ));
+
                 $ship_array = $shipment->__toArray(true);
                 $this->update_ep_ref($ship_array['id'],$shp_id);
+
             }else{
                 $shipment = \EasyPost\Shipment::retrieve($ship_data['shp_ep_ref']);
             }
@@ -122,22 +138,33 @@ class Shipping_model extends CI_Model
             if(!empty($ship_array['messages'])){
                 return $ship_array['messages'][0]['message'];
             }
+            return $ship_array;
 
-            if(empty($ship_array['tracking_code'])){
+        }catch(Exception $ex){
+            return $ex->getMessage();
+        }
+    }
+
+    public function purchaseship($ship_data){
+        try {
+            $shipment = \EasyPost\Shipment::retrieve($ship_data['shp_ep_ref']);
+            $ship_array = $shipment->__toArray(true);
+            if (empty($ship_array['tracking_code'])) {
                 $lowest_rate = $shipment->lowest_rate();
                 $response = $shipment->buy($lowest_rate);
-                $response = json_decode($response);
-                $tracking_code = $response->tracking_code;
-                if(is_null($tracking_code)){
+                $response = $response->__toArray(true);
+                $tracking_code = $response['tracking_code'];
+                if (is_null($tracking_code)) {
                     $tracking_code = '';
                 }
                 $tracking_code = 'EZ1000000001';
-                $label_url = $response->postage_label;
-                if(is_null($label_url)){
+                $label_url = $response['postage_label']['label_url'];
+                if (is_null($label_url)) {
                     $label_url = '';
                 }
-                $ep_ref = $response->id;
-            }else{
+                $ep_ref = $response['id'];
+                $shipment->insure(array('amount' => 100));
+            } else {
                 //$tracking_code = $ship_array['tracking_code'];
                 $tracking_code = 'EZ1000000001';
                 $label_url = $ship_array['postage_label']['label_url'];
@@ -147,8 +174,9 @@ class Shipping_model extends CI_Model
             $carrier = 'DHLExpress';
             $tracker = \EasyPost\Tracker::create(array('tracking_code' => $tracking_code, 'carrier' => $carrier));
             $tracker = json_decode($tracker);
-            $est_date = $tracker->est_delivery_date;
-            if(is_null($est_date)){
+            if(isset($tracker->est_delivery_date)){
+                $est_date = $tracker->est_delivery_date;
+            }else{
                 $est_date = '';
             }
 
@@ -159,10 +187,48 @@ class Shipping_model extends CI_Model
                 'shp_ep_ref' => $ep_ref,
             );
             return $result;
-
         }catch(Exception $ex){
             return $ex->getMessage();
         }
+    }
+
+    public function get_tracking($track_code){
+        $est_date = $status = $signed_by = $update_at = '';
+        $carrier = 'DHLExpress';
+        $tracker = \EasyPost\Tracker::create(array('tracking_code' => $track_code, 'carrier' => $carrier));
+        $tracker = $tracker->__toArray(true);
+        if(!empty($tracker['est_delivery_date'])){
+            $est_date = $tracker['est_delivery_date'];
+        }
+        if(!empty($tracker['signed_by'])){
+            $signed_by = $tracker['signed_by'];
+        }
+        $status = $tracker['status'];
+        $source = array('T', 'Z');
+        $dest = array(' ', '');
+        $update_at = str_replace($source, $dest, $tracker['updated_at']);
+        $result = array(
+            'shp_estdate' => $est_date,
+            'shp_status' => $status,
+            'shp_updateat' => $update_at,
+            'shp_signedby' => $signed_by,
+        );
+        $where = array('shp_trackingcode', $track_code);
+        $this->update($result, $where);
+        return $tracker['tracking_details'];
+    }
+
+    public function send_notify($ship_data){
+        $this->load->library('email');
+        $config['useragent'] = 'SmartDHL.net';
+        $config['mailtype'] = 'html';
+
+        $this->email->from('no-reply@smartdhl.net', 'SmartDHL');
+        $this->email->to($ship_data['shp_notify']);
+        $this->email->subject('You booking at SmartDHL with Ref No:' . $ship_data['shp_ep_ref']);
+        $this->email->message('You booking at SmartDHL with Ref No:' . $ship_data['shp_ep_ref']);
+
+        $this->email->send();
     }
 }
 

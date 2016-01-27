@@ -49,6 +49,11 @@
 </div>
     <script type="text/javascript">
         $(document).ready(function(){
+            $('.datepicker').datepicker({});
+            $('.datepicker').on('changeDate', function(ev){
+                $(this).datepicker('hide');
+            });
+
             //$('select').select2();
             $(".dhlmodal").click(function(){
                 $(this).hide();

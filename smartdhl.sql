@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 17, 2015 at 08:44 AM
+-- Generation Time: Jan 05, 2016 at 04:35 PM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -50,9 +50,32 @@ CREATE TABLE IF NOT EXISTS `sd_addresses` (
 --
 
 INSERT INTO `sd_addresses` (`adr_id`, `adr_name`, `adr_contact`, `adr_street1`, `adr_street2`, `adr_city`, `adr_state`, `adr_country`, `adr_zip`, `adr_phone`, `adr_email`, `adr_type`, `adr_userid`, `adr_default`) VALUES
-(1, 'Vimal', 'Vimal Ghorecha', 'Punit Nagar', 'Gondal Road', 1011, 12, 'IN', '360004', '7405100630', 'vimal14569@gmail.com', 'Sender', 1, 1),
+(1, 'Vimal', 'Vimal Ghorecha', 'Punit Nagar', 'Gondal Road', 1011, 12, 'IN', '360004', '7405100630', 'vimal14569@gmail.com', 'Sender', 1, 0),
 (2, 'JIN KIM', 'CHRIS KIM', '14101 SULLYFIELD CIRCLE', '#340', 46660, 3974, 'US', '20151', '7035318485', 'chriskim1975@gmail.com', 'Sender', 1, 0),
-(3, 'Vimal Ghorecha', 'Vimal', '5FL daesung bld, 55-44 songpa-gu', 'seocho-gu. Dongdarmun--gu', 25751, 2074, 'KR', '05693', '7035318485', 'vimal14569@gmail.com', 'Receiver', 1, 0);
+(3, 'Vimal Ghorecha', 'Vimal', '5FL daesung bld, 55-44 songpa', 'seocho-gu. Dongdarmun--gu', 25751, 2074, 'KR', '05693', '7035318485', 'vimal14569@gmail.com', 'Receiver', 1, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sd_admin`
+--
+
+DROP TABLE IF EXISTS `sd_admin`;
+CREATE TABLE IF NOT EXISTS `sd_admin` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(30) NOT NULL,
+  `password` varchar(32) NOT NULL,
+  `fullname` varchar(60) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `sd_admin`
+--
+
+INSERT INTO `sd_admin` (`id`, `username`, `password`, `fullname`) VALUES
+(1, 'vimal', '1e5946405b3eec6ec4ae69f8174c1455', 'Vimal Ghorecha'),
+(2, 'admin', '0192023a7bbd73250516f069df18b500', 'Chris Kim');
 
 -- --------------------------------------------------------
 
@@ -47946,14 +47969,19 @@ CREATE TABLE IF NOT EXISTS `sd_shipments` (
   `shp_payment` varchar(20) DEFAULT NULL,
   `shp_type` varchar(20) NOT NULL,
   PRIMARY KEY (`shp_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
 
 --
 -- Dumping data for table `sd_shipments`
 --
 
 INSERT INTO `sd_shipments` (`shp_id`, `shp_user`, `shp_from`, `shp_to`, `shp_rate`, `shp_date`, `shp_trackingcode`, `shp_labelurl`, `shp_length`, `shp_width`, `shp_height`, `shp_weight`, `shp_desc`, `shp_quantity`, `shp_value`, `shp_estdate`, `shp_status`, `shp_updateat`, `shp_signedby`, `shp_ep_ref`, `shp_transno`, `shp_gatewayid`, `shp_payment`, `shp_type`) VALUES
-(1, 1, 2, 3, 24.95, '2015-12-17', 'EZ1000000001', 'http://assets.geteasypost.com/postage_labels/labels/20151217/bfa8e4c3df4a462d995a6fc702addc9f.png', 2.00, 3.00, 2.00, 23.00, 'Testing', 1, 100.00, NULL, NULL, NULL, NULL, 'pl_2c084ef7d9c64a709dfbb203c05c8556', NULL, 'buyer@finan.cl', 'Pending', 'document');
+(1, 1, 2, 3, 24.95, '2015-12-17', 'EZ1000000001', 'http://assets.geteasypost.com/postage_labels/labels/20151217/bfa8e4c3df4a462d995a6fc702addc9f.png', 2.00, 3.00, 2.00, 23.00, 'Testing', 1, 100.00, NULL, NULL, NULL, NULL, 'pl_2c084ef7d9c64a709dfbb203c05c8556', NULL, 'buyer@finan.cl', 'Pending', 'document'),
+(2, 1, 2, 3, 24.95, '2016-01-05', 'EZ1000000001', 'http://assets.geteasypost.com/postage_labels/labels/20160105/c53875d7bd464d3bb3446667455d1f07.png', 2.00, 3.00, 4.00, 5.00, 'Test', 1, 10.00, '', NULL, NULL, NULL, 'pl_3d3b4becac464f729958c73673b3c1e9', '0PE588271N3574833', 'buyer@finan.cl', 'Completed', 'document'),
+(3, 1, 2, 3, 24.95, '2016-01-05', 'EZ1000000001', 'http://assets.geteasypost.com/postage_labels/labels/20160105/ffb0e566005c495894f9af0f45c3cb58.png', 3.00, 4.00, 5.00, 6.00, 'Testing', 1, 10.00, NULL, NULL, NULL, NULL, 'shp_09859bdeeb2746669b91dcf25fe4b7e3', '17247949PW7382401', 'buyer@finan.cl', 'Invalid', 'document'),
+(4, 1, 2, 3, 0.00, '2016-01-05', NULL, NULL, 2.00, 3.00, 4.00, 5.00, 'Test', 2, 20.00, NULL, NULL, NULL, NULL, 'shp_6fa7882ecfec4be7b06e7e9b9df88166', NULL, NULL, NULL, 'parcel'),
+(5, 1, 2, 3, 40.24, '2016-01-05', NULL, NULL, 2.00, 3.00, 4.00, 5.00, 'Test', 2, 20.00, NULL, NULL, NULL, NULL, 'shp_c26a77fec2ed4020b0507d3d1c1ce63f', NULL, NULL, NULL, 'parcel'),
+(6, 1, 2, 3, 40.24, '2016-01-05', 'EZ1000000001', 'http://assets.geteasypost.com/postage_labels/labels/20160105/047d5a5f577a4e2fa7e0cfcde9872733.png', 2.00, 3.00, 4.00, 5.00, 'Test', 2, 20.00, '', NULL, NULL, NULL, 'pl_4c0061dc5dfc4369904263fe1d98aee1', '43W291244H2670713', 'buyer@finan.cl', 'Completed', 'parcel');
 
 -- --------------------------------------------------------
 
@@ -52109,6 +52137,7 @@ CREATE TABLE IF NOT EXISTS `sd_users` (
   `user_name` varchar(45) NOT NULL COMMENT 'Name will display on front end.',
   `verify_code` varchar(32) DEFAULT NULL,
   `is_verified` tinyint(1) NOT NULL DEFAULT '0',
+  `is_active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `user_email_UNIQUE` (`user_email`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
@@ -52117,8 +52146,8 @@ CREATE TABLE IF NOT EXISTS `sd_users` (
 -- Dumping data for table `sd_users`
 --
 
-INSERT INTO `sd_users` (`user_id`, `user_email`, `user_pass`, `user_name`, `verify_code`, `is_verified`) VALUES
-(1, 'vimal14569@gmail.com', 'd1e831a08968c589e477cc992f2ef732', 'Vimal Ghorecha', '249af8ad59bb2b9c3e6b63f19d7a9ab6', 1);
+INSERT INTO `sd_users` (`user_id`, `user_email`, `user_pass`, `user_name`, `verify_code`, `is_verified`, `is_active`) VALUES
+(1, 'vimal@eryushion.com', 'd1e831a08968c589e477cc992f2ef732', 'Vimal Ghorecha', '1', 1, 1);
 
 -- --------------------------------------------------------
 

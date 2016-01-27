@@ -11,6 +11,8 @@
     <meta name="author" content="Eryushion TechSol Pvt Ltd">
 
     <link href="<?= RES_URL; ?>css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?= RES_URL; ?>css/datepicker.css" rel="stylesheet">
+    <link href="<?= RES_URL; ?>css/clockpicker.css" rel="stylesheet">
     <link href="<?= RES_URL; ?>css/font-awesome.min.css" rel="stylesheet">
     <link href="<?= RES_URL; ?>css/jquery.dataTables.min.css" rel="stylesheet">
     <link href="<?= RES_URL; ?>css/dataTables.responsive.css" rel="stylesheet">
@@ -26,24 +28,17 @@
 </div>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-12 col-xs-10 text-center">
-            <center><img class="img-responsive" src="<?= RES_URL; ?>images/logo.jpg"/></center>
-        </div>
-    </div>
-    <div class="row">
         <div class="col-md-12">
             <nav class="navbar navbar-default navbar-static-top" role="navigation">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <a href="<?=base_url();?>"><img src="http://localhost/smartdhl/dhl_asset/images/logo.png" class="img-responsive pull-left"></a>
+                    <button type="button" class="navbar-toggle pull-right" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                         <span class="sr-only">Toggle navigation</span><span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
                     </button>
                 </div>
 
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
-                        <li class="active">
-                            <a href="<?=base_url();?>"><i class="fa fa-home"></i> Home</a>
-                        </li>
                         <li>
                             <a href="#"><i class="fa fa-info"></i> Who Us</a>
                         </li>

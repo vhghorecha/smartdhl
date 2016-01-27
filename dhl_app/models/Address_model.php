@@ -11,6 +11,25 @@ class Address_model extends CI_Model
         $this->load->model('user_model');
     }
 
+    public function get_sender_country_combo()
+    {
+        $this->db->select('cnt_name,cnt_id');
+        $this->db->from('country');
+        $this->db->where('cnt_code', 'US');
+        $query=$this->db->get();
+        $results = $query->result();
+
+        $cnt_code = array('');
+        $cnt_name = array('Select Country');
+
+
+        foreach ($results as $result) {
+            array_push($cnt_code, $result->cnt_id);
+            array_push($cnt_name, $result->cnt_name);
+        }
+        return $country = array_combine($cnt_code, $cnt_name);
+    }
+
     public function get_country_combo()
     {
         $this->db->select('cnt_name,cnt_id');
@@ -19,7 +38,7 @@ class Address_model extends CI_Model
         $query=$this->db->get();
         $results = $query->result();
 
-        $cnt_code = array('Select');
+        $cnt_code = array('');
         $cnt_name = array('Select Country');
 
 
@@ -86,6 +105,12 @@ class Address_model extends CI_Model
     public function insert_addr($data){
         $this->db->insert('addresses', $data);
         return $this->db->insert_id();
+    }
+
+    public function update_addr($data, $where){
+        $this->db->where($where);
+        $this->db->update('addresses', $data);
+        return $this->db->affected_rows();
     }
 
     public function get_address($adr_id){

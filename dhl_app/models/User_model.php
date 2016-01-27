@@ -125,7 +125,7 @@ class User_model extends CI_Model
 
     public function get_user_trans(){
         $user_id = $this->get_current_user_id();
-        $this->datatables->select("shp_ep_ref, fa.adr_contact as sender_name, ta.adr_contact as receiver_name, DATE_FORMAT(shp_date,'%d-%m-%Y') as shp_date, shp_rate, shp_trackingcode, shp_estdate, shp_status, shp_signedby, shp_type, shp_payment")
+        $this->datatables->select("shp_id, shp_ep_ref, fa.adr_contact as sender_name, ta.adr_contact as receiver_name, DATE_FORMAT(shp_date,'%d-%m-%Y') as shp_date, shp_rate, shp_trackingcode, shp_estdate, shp_status, shp_signedby, shp_type, shp_payment, shp_labelurl")
             ->from('shipments as s')
             ->join('addresses as fa', 'fa.adr_id = shp_from')
             ->join('addresses as ta', 'ta.adr_id = shp_to')
@@ -139,22 +139,25 @@ class User_model extends CI_Model
         return $this->datatables->generate();
     }
 
-
-
-    public function all_user(){
-        $this->datatables->select("user_id,user_email,user_name,is_verified,is_active")
-        ->from('users')
-        ->edit_column('is_active','$1', "callback_user_is_active(user_id)")
-        ->edit_column('is_verified','$1', "callback_user_is_verified(is_verified)");
-       return $this->datatables->generate();
-
-    }
     public function get_userdetail($userid)
     {
         $this->db->select("user_id, user_name,user_email,user_pass,verify_code,is_verified,is_active");
         $this->db->from('users');
         $this->db->where('user_id', $userid);
         return $this->db->get()->row_array();
+    }
+
+    public function get_user_default_addr(){
+        $user_id = $this->get_current_user_id();
+        $this->db->select('adr_id');
+        $this->db->from('addresses');
+        $this->db->where('adr_userid', $user_id);
+        $this->db->where('adr_default', '1');
+        $result = $this->db->get()->row_array();
+        if(!is_null($result)){
+            return current($result);
+        }
+        return $result;
     }
 }
 

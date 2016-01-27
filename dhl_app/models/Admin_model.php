@@ -37,7 +37,7 @@ class Admin_Model extends CI_Model{
 
     public function get_trans(){
 
-        $this->datatables->select("shp_id,shp_ep_ref, fa.adr_contact as sender_name, ta.adr_contact as receiver_name, DATE_FORMAT(shp_date,'%d-%m-%Y') as shp_date, shp_rate, shp_trackingcode, shp_estdate, shp_status, shp_signedby, shp_type, shp_payment")
+        $this->datatables->select("shp_id,shp_ep_ref, fa.adr_contact as sender_name, ta.adr_contact as receiver_name, DATE_FORMAT(shp_date,'%d-%m-%Y') as shp_date, shp_rate, shp_trackingcode, shp_estdate, shp_status, shp_signedby, shp_type, shp_payment, shp_labelurl")
             ->from('shipments as s')
             ->join('addresses as fa', 'fa.adr_id = shp_from')
             ->join('addresses as ta', 'ta.adr_id = shp_to')
@@ -46,8 +46,8 @@ class Admin_Model extends CI_Model{
             ->join('city as fc', 'fa.adr_city = fc.city_id')
             ->join('country as tco', 'ta.adr_country = tco.cnt_code')
             ->join('state as ts', 'ta.adr_state = ts.state_id')
-            ->join('city as tc', 'ta.adr_city = tc.city_id')
-            ->edit_column('shp_id','$1', "callback_shipment_ref(shp_id)");
+            ->join('city as tc', 'ta.adr_city = tc.city_id');
+//            ->edit_column('shp_trackingcode', "$1", "callback_shipment_link(shp_trackingcode,shp_labelurl)");
 
         return $this->datatables->generate();
     }
@@ -60,7 +60,7 @@ class Admin_Model extends CI_Model{
         $query=$this->db->get();
         $results = $query->result();
 
-        $cnt_code = array('Select');
+        $cnt_code = array('');
         $cnt_name = array('Select Users');
 
 
@@ -69,6 +69,15 @@ class Admin_Model extends CI_Model{
             array_push($cnt_name, $result->user_name);
         }
         return $users = array_combine($cnt_code, $cnt_name);
+    }
+
+    public function all_user(){
+        $this->datatables->select("user_id,user_email,user_name,is_verified,is_active")
+            ->from('users')
+            ->edit_column('is_active','$1', "callback_user_is_active(user_id)")
+            ->edit_column('is_verified','$1', "callback_user_is_verified(is_verified)");
+        return $this->datatables->generate();
+
     }
 }
 ?>

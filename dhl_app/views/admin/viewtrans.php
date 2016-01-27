@@ -35,13 +35,13 @@
                 <div class="panel-heading">Sender Address</div>
                 <div class="panel-body">
 
-                        <p><b><?=$from['adr_contact']?></b></p>
-                        <p><?=$from['adr_street1']?></p>
-                        <p><?=$from['adr_street2']?></p>
-                        <p><?=$from['city_name']." , ".$from['adr_zip']?></p>
-                        <p><?=$from['state_name']." , ".$from['cnt_name']?></p>
-                        <p><?=$from['adr_phone']?></p>
-                        <p><?=$from['adr_email']?></p>
+                    <p><b><?=$from['adr_contact']?></b></p>
+                    <p><?=$from['adr_street1']?></p>
+                    <p><?=$from['adr_street2']?></p>
+                    <p><?=$from['city_name']." , ".$from['adr_zip']?></p>
+                    <p><?=$from['state_name']." , ".$from['cnt_name']?></p>
+                    <p><?=$from['adr_phone']?></p>
+                    <p><?=$from['adr_email']?></p>
 
 
                 </div>
@@ -98,7 +98,7 @@
                 <div class="panel-body">
                     <p><b>Shipping Date : </b><?=$shp_date;?></p>
                     <p><b>Tracing code : </b><?=$shp_trackingcode;?></p>
-                    <p><b>Label Url : </b><?=$shp_labelurl;?></p>
+                    <p><b>Label Url : </b><a href="<?=$shp_labelurl;?>" target="_blank">View</a></p>
                     <p><b>Estimate Date : </b><?=$shp_estdate;?></p>
                     <p><b>Status : </b><?=$shp_status;?></p>
                     <p><b>Updated At : </b><?=$shp_updateat;?></p>

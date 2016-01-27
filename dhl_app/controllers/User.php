@@ -22,7 +22,7 @@ class User extends CI_Controller {
         $data = array();
         $btnlogin = $this->input->post('btnlogin');
         if(!empty($btnlogin)){
-            $this->load->library('Escaptcha', array('id' => 'login'));
+            $this->load->library('escaptcha', array('id' => 'login'));
             $answer = $this->security->xss_clean($this->input->post('txtcaptcha'));
             $captcha = $this->escaptcha->check_captcha($answer);
             if($captcha){
@@ -66,7 +66,7 @@ class User extends CI_Controller {
         $is_reg = $this->input->post('btnRegister');
         $data = array();
         if($is_reg == 'Register'){
-            $this->load->library('Escaptcha', array('id' => 'register'));
+            $this->load->library('escaptcha', array('id' => 'register'));
             $answer = $this->security->xss_clean($this->input->post('txtcaptcha'));
             $captcha = $this->escaptcha->check_captcha($answer);
             if($captcha){
@@ -265,56 +265,11 @@ class User extends CI_Controller {
                     )
                 ),
                 array(
-                    'field' => 'txtlength',
-                    'label' => 'Length',
-                    'rules' => 'required|numeric|greater_than[0]',
-                    'errors' => array(
-                        'required' => 'You must provide a %s',
-                        'numeric' => '%s must be numeric',
-                    )
-                ),
-                array(
-                    'field' => 'txtwidth',
-                    'label' => 'Width',
-                    'rules' => 'required|numeric|greater_than[0]',
-                    'errors' => array(
-                        'required' => 'You must provide a %s',
-                        'numeric' => '%s must be numeric',
-                    )
-                ),
-                array(
-                    'field' => 'txtheight',
-                    'label' => 'Height',
-                    'rules' => 'required|numeric|greater_than[0]',
-                    'errors' => array(
-                        'required' => 'You must provide a %s',
-                        'numeric' => '%s must be numeric',
-                    )
-                ),
-                array(
-                    'field' => 'txtweight',
-                    'label' => 'Weight',
-                    'rules' => 'required|numeric|greater_than[0]',
-                    'errors' => array(
-                        'required' => 'You must provide a %s',
-                        'numeric' => '%s must be numeric',
-                    )
-                ),
-                array(
                     'field' => 'txtdesc',
                     'label' => 'Package Description',
                     'rules' => 'required',
                     'errors' => array(
                         'required' => 'You must provide a %s',
-                    )
-                ),
-                array(
-                    'field' => 'txtquantity',
-                    'label' => 'Quantity',
-                    'rules' => 'required|numeric|greater_than[0]',
-                    'errors' => array(
-                        'required' => 'You must provide a %s',
-                        'numeric' => '%s must be numeric',
                     )
                 ),
                 array(
@@ -326,69 +281,105 @@ class User extends CI_Controller {
                         'numeric' => '%s must be numeric',
                     )
                 ),
+                array(
+                    'field' => 'item_type',
+                    'label' => 'Item Type',
+                    'rules' => 'required',
+                    'errors' => array(
+                        'required' => 'You must provide a %s',
+                    )
+                ),
             );
 
             $this->form_validation->set_rules($config);
             if ($this->form_validation->run() == true) {
                 $user_id = $this->user_model->get_current_user_id();
+                $shp_id = intval($this->input->post('shp_id'));
 
                 //save sender address
                 $selfromaddr = $this->input->post('selfromaddr');
+                $country_code = $this->address_model->get_iso_code_from_country($this->input->post('txtscountry'));
+                $data = array(
+                    'adr_name' => $this->input->post('txtsname'),
+                    'adr_contact' => $this->input->post('txtscontact'),
+                    'adr_street1' => $this->input->post('txtsstr1'),
+                    'adr_street2' => $this->input->post('txtsstr2'),
+                    'adr_city' => $this->input->post('txtscity'),
+                    'adr_state' => $this->input->post('txtsstate'),
+                    'adr_country' => $country_code,
+                    'adr_phone' => $this->input->post('txtsphone'),
+                    'adr_zip' => $this->input->post('txtszip'),
+                    'adr_email' => $this->input->post('txtsemail'),
+                    'adr_type' => 'Sender',
+                    'adr_userid' => $user_id,
+                );
                 if(empty($selfromaddr)){
-                    $country_code = $this->address_model->get_iso_code_from_country($this->input->post('txtscountry'));
-                    $data = array(
-                        'adr_name' => $this->input->post('txtsname'),
-                        'adr_contact' => $this->input->post('txtscontact'),
-                        'adr_street1' => $this->input->post('txtsstr1'),
-                        'adr_street2' => $this->input->post('txtsstr2'),
-                        'adr_city' => $this->input->post('txtscity'),
-                        'adr_state' => $this->input->post('txtsstate'),
-                        'adr_country' => $country_code,
-                        'adr_phone' => $this->input->post('txtsphone'),
-                        'adr_zip' => $this->input->post('txtszip'),
-                        'adr_email' => $this->input->post('txtsemail'),
-                        'adr_type' => 'Sender',
-                        'adr_userid' => $user_id,
-                    );
                     $selfromaddr = $this->address_model->insert_addr($data);
+                }else{
+                    $savesaddr = $this->input->post('savesaddr');
+                    if(!empty($savesaddr)){
+                        $where = array('adr_id' => $selfromaddr);
+                        $this->address_model->update_addr($data,$where);
+                    }
                 }
 
                 //save receiver address
                 $seltoaddr = $this->input->post('seltoaddr');
+                $country_code = $this->address_model->get_iso_code_from_country($this->input->post('txtrcountry'));
+                $data = array(
+                    'adr_name' => $this->input->post('txtrname'),
+                    'adr_contact' => $this->input->post('txtrcontact'),
+                    'adr_street1' => $this->input->post('txtrstr1'),
+                    'adr_street2' => $this->input->post('txtrstr2'),
+                    'adr_city' => $this->input->post('txtrcity'),
+                    'adr_state' => $this->input->post('txtrstate'),
+                    'adr_country' => $country_code,
+                    'adr_phone' => $this->input->post('txtrphone'),
+                    'adr_zip' => $this->input->post('txtrzip'),
+                    'adr_email' => $this->input->post('txtremail'),
+                    'adr_type' => 'Receiver',
+                    'adr_userid' => $user_id,
+                );
                 if(empty($seltoaddr)){
-                    $country_code = $this->address_model->get_iso_code_from_country($this->input->post('txtrcountry'));
-                    $data = array(
-                        'adr_name' => $this->input->post('txtrname'),
-                        'adr_contact' => $this->input->post('txtrcontact'),
-                        'adr_street1' => $this->input->post('txtrstr1'),
-                        'adr_street2' => $this->input->post('txtrstr2'),
-                        'adr_city' => $this->input->post('txtrcity'),
-                        'adr_state' => $this->input->post('txtrstate'),
-                        'adr_country' => $country_code,
-                        'adr_phone' => $this->input->post('txtrphone'),
-                        'adr_zip' => $this->input->post('txtrzip'),
-                        'adr_email' => $this->input->post('txtremail'),
-                        'adr_type' => 'Receiver',
-                        'adr_userid' => $user_id,
-                    );
                     $seltoaddr = $this->address_model->insert_addr($data);
                 }else{
-                    $country_code = $this->address_model->get_iso_code_from_adrid($seltoaddr);
+                    $saveraddr = $this->input->post('saveraddr');
+                    if(!empty($saveraddr)) {
+                        $where = array('adr_id' => $seltoaddr);
+                        $this->address_model->update_addr($data, $where);
+                    }
                 }
 
                 //Package Details
-                $length = $this->input->post('txtlength');
-                $width = $this->input->post('txtwidth');
-                $height = $this->input->post('txtheight');
-                $weight = $this->input->post('txtweight');
                 $item_type = $this->input->post('item_type');
+                $length = $this->input->post('txtlength');
+                if($item_type == 'parcel'){
+                    $weight = $this->input->post('txtweight');
 
+                }else{
+                    $weight = 8;
+                }
+
+                $height = $this->input->post('txtheight');
+                $width = $this->input->post('txtwidth');
                 //Custom Information
                 $txtdesc = $this->input->post('txtdesc');
-                $quantity = $this->input->post('txtquantity');
+                //$quantity = $this->input->post('txtquantity');
+                $quantity = 1;
                 $shp_value = $this->input->post('txtvalue');
-                $rate = $this->shipping_model->get_rate($country_code,$item_type,$quantity,$weight/16);
+                $reg_code = $this->address_model->get_reg_code_from_country_code($country_code);
+                $rate = $this->shipping_model->get_rate($reg_code,$item_type,$quantity,$weight/16);
                 $rate_amount = $rate['rate_amount'];
+
+                $txtftritn = $this->input->post('txtitn');
+                if(empty($txtftritn)){
+                    $txtftritn = $this->input->post('txtftr');
+                }
+
+                $not_emails = $this->input->post('txtnotemails');
+                if(empty($not_emails)){
+                    $not_emails = $this->input->post('txtsemail');
+                }
 
                 $data = array(
                     'shp_user' => $user_id,
@@ -404,12 +395,23 @@ class User extends CI_Controller {
                     'shp_quantity' => $quantity,
                     'shp_value' => $shp_value,
                     'shp_type' => $item_type,
+                    'shp_eelpfc' => $txtftritn,
+                    'shp_notify' => $not_emails,
                 );
-                $shp_id = $this->shipping_model->insert($data);
+                if($shp_id > 0){
+                    $this->shipping_model->update($data,array('shp_id' => $shp_id));
+                }else{
+                    $shp_id = $this->shipping_model->insert($data);
+                }
+
+                $shp_result = $this->shipping_model->savebooking($shp_id);
                 $data['shp_id'] = $shp_id;
-                $data['message'] = $rate['rate'];
-                $this->load->template('payment',$data);
-                return;
+                if(is_array($shp_result)){
+                    $data['message'] = $rate['rate'];
+                    $this->load->template('payment',$data);
+                    return;
+                }
+                $error = $shp_result;
             }else{
                 $error = validation_errors();
             }
@@ -419,8 +421,10 @@ class User extends CI_Controller {
         }
         $data['last_rate'] = $this->session->userdata('last_rate');
         $data['country']=$this->address_model->get_country_combo();
+        $data['scountry'] = $this->address_model->get_sender_country_combo();
         $data['fromaddr']=$this->address_model->get_addr_combo('Sender');
         $data['toaddr']=$this->address_model->get_addr_combo('Receiver');
+        $data['def_addr'] = $this->user_model->get_user_default_addr();
         $this->load->template('booking',$data);
     }
 
@@ -540,13 +544,14 @@ class User extends CI_Controller {
         die($this->user_model->get_user_addr());
     }
 
+    public function get_trans()
+    {
+        die($this->user_model->get_user_trans());
+    }
+
     public function get_addrs_admin(){
         die($this->user_model->get_user_addr_admin());
     }
-
-
-
-
 
     public function del_addr(){
         if(!$this->is_logged) { redirect("user/login"); }
@@ -633,18 +638,223 @@ class User extends CI_Controller {
         force_download('addressbook.csv', $csv_string);
     }
 
+    public function export_ships(){
+        if(!$this->is_logged) { redirect("user/login"); }
+        $this->load->dbutil();
+        $user_id = $this->user_model->get_current_user_id();
+        $this->db->select("shp_id, shp_ep_ref, fa.adr_contact as sender_name, ta.adr_contact as receiver_name, DATE_FORMAT(shp_date,'%d-%m-%Y') as shp_date, shp_rate, shp_trackingcode, shp_estdate, shp_status, shp_signedby, shp_type, shp_payment");
+        $this->db->from('shipments as s');
+        $this->db->join('addresses as fa', 'fa.adr_id = shp_from');
+        $this->db->join('addresses as ta', 'ta.adr_id = shp_to');
+        $this->db->join('country as fco', 'fa.adr_country = fco.cnt_code');
+        $this->db->join('state as fs', 'fa.adr_state = fs.state_id');
+        $this->db->join('city as fc', 'fa.adr_city = fc.city_id');
+        $this->db->join('country as tco', 'ta.adr_country = tco.cnt_code');
+        $this->db->join('state as ts', 'ta.adr_state = ts.state_id');
+        $this->db->join('city as tc', 'ta.adr_city = tc.city_id');
+        $this->db->where('s.shp_user', $user_id);
+        $query = $this->db->get();
+        $csv_string = $this->dbutil->csv_from_result($query);
+        $csv_string = chr(239) . chr(187) . chr(191) . $csv_string;
+        // Load the download helper and send the file to your desktop
+        $this->load->helper('download');
+        force_download('shipments.csv', $csv_string);
+    }
+
+    public function print_ships(){
+        if(!$this->is_logged) { redirect("user/login"); }
+        $this->load->library('cezpdf');
+        $this->load->helper('pdf_helper');
+
+        $user_id = $this->user_model->get_current_user_id();
+        $this->db->select("shp_id, shp_ep_ref, fa.adr_contact as sender_name, ta.adr_contact as receiver_name, DATE_FORMAT(shp_date,'%d-%m-%Y') as shp_date, shp_rate, shp_trackingcode, shp_estdate, shp_status, shp_signedby, shp_type, shp_payment");
+        $this->db->from('shipments as s');
+        $this->db->join('addresses as fa', 'fa.adr_id = shp_from');
+        $this->db->join('addresses as ta', 'ta.adr_id = shp_to');
+        $this->db->join('country as fco', 'fa.adr_country = fco.cnt_code');
+        $this->db->join('state as fs', 'fa.adr_state = fs.state_id');
+        $this->db->join('city as fc', 'fa.adr_city = fc.city_id');
+        $this->db->join('country as tco', 'ta.adr_country = tco.cnt_code');
+        $this->db->join('state as ts', 'ta.adr_state = ts.state_id');
+        $this->db->join('city as tc', 'ta.adr_city = tc.city_id');
+        $this->db->where('s.shp_user', $user_id);
+        $query = $this->db->get();
+        $data = $query->result_array();
+
+        $titlecolumn = array(
+            'shp_id' => 'Shipment ID',
+            'shp_ep_ref' => 'Shipment Reference',
+            'sender_name' => 'Sender',
+            'receiver_name' => 'Receiver',
+            'shp_date' => 'Date',
+            'shp_rate' => 'Price',
+            'shp_trackingcode' => 'Tracking Code',
+            'shp_estdate' => 'Delivery Date',
+            'shp_status' => 'Status',
+            'shp_signedby' => 'Signed By',
+            'shp_type' => 'Type',
+            'shp_payment' => 'Payment Status'
+        );
+        prep_pdf();
+        $this->cezpdf->ezTable($data, $titlecolumn, 'Shipment Data', array('fontSize' => 5));
+        $this->cezpdf->ezStream();
+    }
+
     public function view_trans($usrid){
         if(!$this->is_logged) { redirect("user/login"); }
         //$this->load->template("viewtrans");
-
         $shiping_data = $this->shipping_model->get_shipment($usrid);
         $sender_data = $this->address_model->get_address($shiping_data['shp_from']);
         $receiver_data = $this->address_model->get_address($shiping_data['shp_to']);
         $shiping_data['from']=$sender_data;
         $shiping_data['to']=$receiver_data;
-        $this->load->template("viewtrans",$shiping_data);
+        $this->load->view("viewtrans",$shiping_data);
     }
 
+    public function viewtrans($shp_id){
+        if(!$this->is_logged) { redirect("user/login"); }
+        $user_id = $this->user_model->get_current_user_id();
+        $shiping_data = $this->shipping_model->get_shipment($shp_id);
+        $sender_data = $this->address_model->get_address($shiping_data['shp_from']);
+        $receiver_data = $this->address_model->get_address($shiping_data['shp_to']);
+        $shiping_data['from']=$sender_data;
+        $shiping_data['to']=$receiver_data;
+        if($shiping_data['shp_user'] == $user_id){
+            $this->load->view("viewtrans",$shiping_data);
+        }else{
+            die('Access Denied...');
+        }
+    }
 
+    public function track($shp_id){
+        if(!$this->is_logged) { redirect("user/login"); }
+        try{
+            $user_id = $this->user_model->get_current_user_id();
+            $shiping_data = $this->shipping_model->get_shipment($shp_id);
+            $sender_data = $this->address_model->get_address($shiping_data['shp_from']);
+            $receiver_data = $this->address_model->get_address($shiping_data['shp_to']);
+            $track_data = $this->shipping_model->get_tracking($shiping_data['shp_trackingcode']);
+            $shiping_data = $this->shipping_model->get_shipment($shp_id);
+            $shiping_data['from']=$sender_data;
+            $shiping_data['to']=$receiver_data;
+            $shiping_data['track_data'] = $track_data;
+            if($shiping_data['shp_user'] == $user_id){
+                $this->load->template("track",$shiping_data);
+            }else{
+                die('Access Denied...');
+            }
+        }catch(Exception $ex){
+            die($ex->getMessage());
+        }
+    }
+
+    public function pickup($shp_id){
+        if(!$this->is_logged) { redirect("user/login"); }
+        try{
+            $user_id = $this->user_model->get_current_user_id();
+            $shp_id = 30;
+            $shiping_data = $this->shipping_model->get_shipment($shp_id);
+            $shiping_data['fromaddr']=$this->address_model->get_addr_combo('Sender');
+            $shiping_data['scountry']=$this->address_model->get_country_combo();
+            if($shiping_data['shp_user'] == $user_id){
+                $shipment = \EasyPost\Shipment::retrieve($shiping_data['shp_ep_ref']);
+                $btnschedule = $this->input->post('btnschedule');
+                if(!empty($btnschedule)) {
+                    $selfromaddr = $this->input->post('selfromaddr');
+                    $country_code = $this->address_model->get_iso_code_from_country($this->input->post('txtscountry'));
+                    $data = array(
+                        'adr_name' => $this->input->post('txtsname'),
+                        'adr_contact' => $this->input->post('txtscontact'),
+                        'adr_street1' => $this->input->post('txtsstr1'),
+                        'adr_street2' => $this->input->post('txtsstr2'),
+                        'adr_city' => $this->input->post('txtscity'),
+                        'adr_state' => $this->input->post('txtsstate'),
+                        'adr_country' => $country_code,
+                        'adr_phone' => $this->input->post('txtsphone'),
+                        'adr_zip' => $this->input->post('txtszip'),
+                        'adr_email' => $this->input->post('txtsemail'),
+                        'adr_type' => 'Sender',
+                        'adr_userid' => $user_id,
+                    );
+                    if(empty($selfromaddr)){
+                        $selfromaddr = $this->address_model->insert_addr($data);
+                    }else{
+                        $savesaddr = $this->input->post('savesaddr');
+                        if(!empty($savesaddr)){
+                            $where = array('adr_id' => $selfromaddr);
+                            $this->address_model->update_addr($data,$where);
+                        }
+                    }
+                    $faddr = $this->address_model->get_booking_addr($selfromaddr);
+                    $from_address = \EasyPost\Address::create_and_verify(
+                        array(
+                            'name' => $faddr['adr_contact'],
+                            'street1' => $faddr['adr_street1'],
+                            'street2' => $faddr['adr_street2'],
+                            'city' => $faddr['city_name'],
+                            'state' => $faddr['state_name'],
+                            'zip' => $faddr['adr_zip'],
+                            'country' => 'US',
+                            'phone' => $faddr['adr_phone'],
+                            'email' => $faddr['adr_email']
+                        )
+                    );
+
+                    $instructions = $this->input->post('txtins');
+                    $min_date = $shiping_data['shp_date'] . " " . $this->input->post('txtrtime') . ":00";
+                    $max_date = $shiping_data['shp_date'] . " " . $this->input->post('txtctime') . ":00";
+                    $data = array(
+                        'address' => $from_address,
+                        'shipment' => $shipment,
+                        'max_datetime' => $max_date,
+                        'min_datetime' => $min_date,
+                        'instructions' => $instructions,
+                    );
+                    $pickup = \EasyPost\Pickup::create($data);
+                    $response = $pickup->buy(array('carrier' => 'DHLExpress'));
+                    $response = $response->__toArray(true);
+
+                    $shpdata = array(
+                        'shp_pickupid' => $response['id'],
+                        'shp_pickupconf' => $response['confirmation'],
+                        'shp_scheduled' => 1,
+
+                    );
+                    $where = array('shp_id' => $shp_id);
+
+                    $this->shipping_model->update($shpdata, $where);
+                    $data['message'] = 'Pickup Information Updated..';
+                    $this->load->template('history',$data);
+                    return;
+                }
+            }else{
+                die('Access Denied...');
+            }
+        }catch(Exception $ex){
+            $shiping_data['error'] = $ex->getMessage();
+        }
+        $this->load->template("pickup",$shiping_data);
+    }
+
+    public function refund(){
+        if(!$this->is_logged) { redirect("user/login"); }
+        $data = array();
+        $shp_id = $this->input->post('shp_id');
+        $shp_data = $this->shipping_model->get_shipment($shp_id);
+        $user_id = $this->user_model->get_current_user_id();
+        if($user_id == $shp_data['shp_user']){
+            try{
+                $shipment = \EasyPost\Shipment::retrieve($shp_data['shp_ep_ref']);
+                $response = $shipment->refund();
+                $response = $response->__toArray();
+                $data['success'] = 'Shipment Cancelled...';
+            }catch(Exception $ex){
+                $data['error'] = $ex->getMessage();
+            }
+        }else{
+            $data['error'] = 'Access Denied...';
+        }
+        die(json_encode($data));
+    }
 
 }
