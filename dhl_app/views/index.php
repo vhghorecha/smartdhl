@@ -6,8 +6,8 @@
                 <div class="form-group col-xs-12">
                     <label for="delivering" >Delivering To:</label>
                     <?php
-                    $attributes = 'class = "form-control" id = "country" name="country" ';
-                    echo form_dropdown('country',$country,set_value('country'),$attributes);?>
+                    $attributes = 'class = "form-control" id = "txtrcountry" name="txtrcountry" ';
+                    echo form_dropdown('txtrcountry',$country,set_value('txtrcountry'),$attributes);?>
                     <?php /*<label for="zipcode">&nbsp;</label>
                     <input id="zipcode" class="form-control input-group-lg reg_name" type="text" name="zipcode" placeholder="Zipcode">*/?>
                 </div>
@@ -64,7 +64,7 @@
                         $('#rate_res').html('');
                         $('#update_res').html('<div class="alert alert-success">' + data.rate + '</div>');
                         if(data.is_login){
-                            window.location = "<?=site_url('user/booking');?>";
+                            window.location = "<?=site_url('user/booking?rcountry=');?>" + $('#txtrcountry').val();
                             return false;
                         }
                         $('#hidredirect').val('<?=site_url('user/booking');?>');
@@ -108,7 +108,7 @@
 
         $('#item_type').on('change',function(){
            item_type = $(this).val();
-            if(item_type == 'documents'){
+            if(item_type == 'document'){
                 $('#weight').attr('placeholder','Weight in Oz');
             }else{
                 $('#weight').attr('placeholder','Weight in lbs');

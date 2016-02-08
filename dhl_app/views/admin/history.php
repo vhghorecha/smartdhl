@@ -127,4 +127,23 @@
         }
     });
 
+    $('#btnvoid').click(function(){
+        isVoid = confirm("Do you really want to Void this Shipment?");
+        if(isVoid){
+            $.ajax({
+                type:'POST',
+                url: '<?=site_url("admin/refund");?>',
+                dataType: 'json',
+                data: {'shp_id': selID},
+                success:function(data, textStatus, jqXHR){
+                    if(typeof data.success !== 'undefined'){
+                        $('#resmodify').html('<div class="alert alert-success">' + data.success + '</div>');
+                    }else{
+                        $('#resmodify').html('<div class="alert alert-danger">' + data.error + '</div>')
+                    }
+                }
+            });
+        }
+    });
+
 </script>

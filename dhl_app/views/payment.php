@@ -1,5 +1,5 @@
 <?php
-$attributes = 'id = "login-form" name="login-form" ';
+$attributes = 'id = "payform" name="payform" ';
 echo form_open('payment/init',$attributes);?>
     <input type="hidden" name="shp_id" value="<?=$shp_id;?>"/>
     <div class="row">
@@ -36,7 +36,7 @@ echo form_open('payment/init',$attributes);?>
 <?php $this->load->view('scripts');?>
 <script type="text/javascript">
     $(document).ready(function(){
-        $('#login-form').submit(function(){
+        $('#payform').submit(function(){
             $(".dhlmodal").show();
         })
     }); // end document.ready

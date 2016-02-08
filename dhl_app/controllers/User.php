@@ -422,6 +422,7 @@ class User extends CI_Controller {
         $data['last_rate'] = $this->session->userdata('last_rate');
         $data['country']=$this->address_model->get_country_combo();
         $data['scountry'] = $this->address_model->get_sender_country_combo();
+        $data['txtrcountry'] = $this->input->get('rcountry');
         $data['fromaddr']=$this->address_model->get_addr_combo('Sender');
         $data['toaddr']=$this->address_model->get_addr_combo('Receiver');
         $data['def_addr'] = $this->user_model->get_user_default_addr();
@@ -752,7 +753,6 @@ class User extends CI_Controller {
         if(!$this->is_logged) { redirect("user/login"); }
         try{
             $user_id = $this->user_model->get_current_user_id();
-            $shp_id = 30;
             $shiping_data = $this->shipping_model->get_shipment($shp_id);
             $shiping_data['fromaddr']=$this->address_model->get_addr_combo('Sender');
             $shiping_data['scountry']=$this->address_model->get_country_combo();

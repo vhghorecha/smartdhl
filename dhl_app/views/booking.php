@@ -1,7 +1,7 @@
 <div class="row">
     <?php
     $attributes = 'id = "booking-form" name="booking-form" ';
-    echo form_open('',$attributes);?>
+    echo form_open('user/booking',$attributes);?>
         <input type="hidden" name="shp_id" id="shp_id" value="<?=(@$shp_id > 0 ? $shp_id : 0);?>"/>
         <div class="container-fluid">
             <?php if(!empty($error)) { ?>
@@ -33,8 +33,8 @@
             <?php } ?>
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                 <div class="panel panel-primary">
-                    <div class="panel-heading">Sender Address</div>
-                    <div class="panel-body">
+                            <div class="panel-heading">Sender Address</div>
+                            <div class="panel-body">
                         <div class="col-xs-12">
                             <div class="col-xs-4 text-right"><label class="control-label" for="selfromaddr">Address from Address Book</label></div>
                             <div class="col-xs-8"><?php
@@ -237,6 +237,69 @@
                 </div>
             </div>
 
+            <div id="comdetails" class="col-xs-12" style="display: none">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Commodity Details</div>
+                    <div class="panel-body">
+                        <div id="cdcontent">
+                        <?php if(count(@$_POST['txtcdesc']) > 0){ ?>
+                            <?php for($i=1;$i<=count(@$_POST['txtcdesc']);$i++) { ?>
+                                <div class="row cdrow" id="cd<?=$i;?>">
+                                    <div class="col-sm-4 col-xs-6 form-group required" >
+                                        <label class="control-label">Description</label>
+                                        <input type="text" class="form-control input-sm" name="txtcdesc[<?=$i;?>]" value="<?=set_value('txtcdesc['.$i.']')?>" required/>
+                                    </div>
+                                    <div class="col-sm-2 col-xs-6 form-group required" >
+                                        <label class="control-label">HTS# / B#  <a href="https://sbw.dhl-usa.com/tasclient/HandlerServlet?CLIENT=IC_HANDLER" target="_blank"><i class="fa fa-question-circle"></i></a></label>
+                                        <input type="number" class="form-control input-sm" name="txtchts[<?=$i;?>]" value="<?=set_value('txtchts['.$i.']')?>" required/>
+                                    </div>
+                                    <div class="col-sm-2 col-xs-4 form-group required">
+                                        <label class="control-label">Qty</label>
+                                        <input type="number" class="form-control input-sm cqty" name="txtcqty[<?=$i;?>]" value="<?=set_value('txtcqty['.$i.']')?>" required/>
+                                    </div>
+                                    <div class="col-sm-2 col-xs-4 form-group required">
+                                        <label class="control-label">Value</label>
+                                        <input type="number" class="form-control input-sm cval" name="txtcvalue[<?=$i;?>]" value="<?=set_value('txtcvalue['.$i.']')?>" required/>
+                                    </div>
+                                    <div class="col-sm-1 col-xs-2 form-group required text-center">
+                                        <label class="control-label">Total</label>
+                                        <input type="number" class="form-control input-sm ctotal" value="<?=set_value('txtcqty['.$i.']')*set_value('txtcvalue['.$i.']');?>" disabled/>
+                                    </div>
+                                    <?php if($i>1) { ?>
+                                        <a id="cda<?=$i;?>" class="btn btn-primary col-sm-1 col-xs-2 cda">x</a>
+                                    <?php } ?>
+                                </div>
+                            <?php } ?>
+                        <?php }else{ ?>
+                            <div class="row cdrow" id="cd1">
+                                <div class="col-sm-4 col-xs-6 form-group required" >
+                                    <label class="control-label">Description</label>
+                                    <input type="text" class="form-control input-sm" name="txtcdesc[1]" value="<?=set_value('txtcdesc[1]')?>" required/>
+                                </div>
+                                <div class="col-sm-2 col-xs-6 form-group required" >
+                                    <label class="control-label">HTS# / B#  <a href="https://sbw.dhl-usa.com/tasclient/HandlerServlet?CLIENT=IC_HANDLER" target="_blank"><i class="fa fa-question-circle"></i></a></label>
+                                    <input type="number" class="form-control input-sm" name="txtchts[1]" value="<?=set_value('txtchts[1]')?>" required/>
+                                </div>
+                                <div class="col-sm-2 col-xs-4 form-group required">
+                                    <label class="control-label">Qty</label>
+                                    <input type="number" class="form-control input-sm cqty" name="txtcqty[1]" value="<?=set_value('txtcqty[1]')?>" required/>
+                                </div>
+                                <div class="col-sm-2 col-xs-4 form-group required">
+                                    <label class="control-label">Value</label>
+                                    <input type="number" class="form-control input-sm cval" name="txtcvalue[1]" value="<?=set_value('txtcvalue[1]')?>" required/>
+                                </div>
+                                <div class="col-sm-1 col-xs-2 form-group required text-center">
+                                    <label class="control-label">Total</label>
+                                    <input type="number" class="form-control input-sm ctotal" value="0.00" disabled/>
+                                </div>
+                            </div>
+                        <?php } ?>
+                        </div>
+                        <a role="button" class="btn btn-primary" id="btnaddcd">Add New Item</a>
+                    </div>
+                </div>
+            </div>
+
             <div class="col-sm-6 col-xs-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">Custom Details</div>
@@ -314,6 +377,7 @@
     $(document).ready(function(){
 
         var def_addr = '<?=$def_addr;?>';
+        var rcountry = '<?=$txtrcountry;?>';
 
         $('#lnkcaptcha').click(function(e){
             e.preventDefault();
@@ -442,9 +506,8 @@
             },
             submitHandler: function(form) {
                 // do other things for a valid form
+                $(".dhlmodal").show();
                 form.submit();
-                $("#booking-form").html('<center><img src="<?php echo RES_URL;?>/images/loading.gif" class="img-responsive"/></center>');
-
             }
         });
         //sender
@@ -691,8 +754,12 @@
         });
 
         //sender
-        if($("#seltoaddr").val() != ''){
+        if($("#seltoaddr").val() != '' && $("#seltoaddr").val() != 0){
             $("#seltoaddr").trigger("change");
+        }
+
+        if(rcountry != ''){
+            $('#txtrcountry').val(rcountry).trigger("change");
         }
 
         if(def_addr != ''){
@@ -702,8 +769,12 @@
         $("#item_type").change(function(){
            if($(this).val() == 'document' ){
                $('#txtlength, #txtwidth, #txtheight, #txtweight, #txtitn, #txtftr').prop("disabled",true);
+               $('#comdetails').hide();
+               $('#txtvalue').prop("disabled", false);
            }else{
                $('#txtlength, #txtwidth, #txtheight, #txtweight, #txtitn, #txtftr').prop("disabled",false);
+               $('#comdetails').show();
+               $('#txtvalue').prop("disabled", true);
            }
         });
 
@@ -730,5 +801,49 @@
                 }
             }
         });
+
+        $('#btnaddcd').click(function(){
+            var totalcd = $('.cdrow').length;
+            var $firstcd = $('#cd1');
+
+            var $newcd = $firstcd.clone();
+            var newcount = totalcd + 1;
+            $newcd.html($newcd.html().replace(/\[1\]/g, '[' + newcount + ']'));
+
+            var newid = 'cd' + newcount;
+            $newcd.attr('id', newid );
+
+            var newcda = $('<a/>', {
+                id: 'cda' + totalcd,
+                text: 'x',
+                class: 'btn btn-primary col-sm-1 col-xs-2',
+            });
+
+            newcda.click(function(){
+                console.log($(this).parent());
+                $(this).parent().remove();
+            });
+
+            $newcd.append(newcda)
+            $('#cdcontent').append($newcd);
+            $('.cdrow').find('.cqty, .cval').off('keyup',updatetotal);
+            $('.cdrow').find('.cqty, .cval').on('keyup',updatetotal);
+        });
+
+        $(".cda").click(function(){
+            $(this).parent().remove();
+        })
+
+        $('.cdrow').find('.cqty, .cval').on('keyup',updatetotal);
+        function updatetotal() {
+            var parent = $(this).parents('div.cdrow');
+            var quantity = parseInt(parent.find('.cqty').val())||0;
+            var price = parseInt(parent.find('.cval').val())||0;
+            parent.find('.ctotal').val(quantity*price);
+            var Total = 0;
+            $(".ctotal").each(function() { Total += $(this).val()|0; });
+            $("#txtvalue").val(Total);
+        }
+
     }); // end document.ready
 </script>

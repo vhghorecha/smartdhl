@@ -49,7 +49,9 @@
                         <li <?=$current_action == 'shipments' ? 'class="active"' : '';?>>
                             <a href="<?=site_url('admin/shipments');?>"><i class="fa fa-money"></i> Shipments</a>
                         </li>
-
+                        <li <?=$current_action == 'price' ? 'class="active"' : '';?>>
+                            <a href="<?=site_url('admin/price');?>"><i class="fa fa-dollar"></i> price</a>
+                        </li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="<?=site_url('admin/logout');?>"><i class="fa fa-sign-out"></i> Logout</a></li>

@@ -13,7 +13,7 @@ class Shipping_model extends CI_Model
         if($weight <= 1){
             $weight = 1;
         }
-        $weight = sprintf("%.2f",round($weight,0));
+        $weight = sprintf("%.0f",round($weight,0));
         $this->load->library('escsv');
         $rate_data = $this->escsv->parse_file(base_url() . 'dhl_asset/files/' . $item_type . '.csv');
         if($item_type == 'parcel'){
@@ -22,7 +22,7 @@ class Shipping_model extends CI_Model
             $result = array('rate' => "Total rate for $noitem $item_type(s) is : <b>$" . $amount  . "</b>", 'rate_amount' => $amount );
         }else{
             if($weight <= 8){
-                $rate = 24.95;
+                $rate = $rate_data['price']['document'] * $noitem;
             }else{
                 $rate = 0;
             }

@@ -153,6 +153,7 @@ class Payment extends CI_Controller {
                         }
                         $data['trans_message'] = $trans_message;
                         $data['trans_status'] = $shp_payment;
+                        $shp_result['shp_id'] = $shp_id;
                         $data['shp_result'] = $shp_result;
                         $this->session->unset_userdata('txnParams');
                         $this->session->unset_userdata('txnItems');

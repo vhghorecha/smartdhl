@@ -19,7 +19,7 @@ class Ajax extends CI_Controller {
         $this->security->xss_clean($_POST);
         $config = array(
             array(
-                'field' => 'country',
+                'field' => 'txtrcountry',
                 'label' => 'Country',
                 'rules' => 'required|numeric',
                 'errors' => array(

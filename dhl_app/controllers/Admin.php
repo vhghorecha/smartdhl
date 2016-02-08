@@ -253,4 +253,49 @@ class Admin extends CI_Controller
         $this->cezpdf->ezStream();
     }
 
+    public function refund(){
+        if(!$this->is_logged) { redirect("admin/login"); }
+        $data = array();
+        $shp_id = $this->input->post('shp_id');
+        $shp_data = $this->shipping_model->get_shipment($shp_id);
+        try{
+            $shipment = \EasyPost\Shipment::retrieve($shp_data['shp_ep_ref']);
+            $response = $shipment->refund();
+            $response = $response->__toArray();
+            $data['success'] = 'Shipment Cancelled...';
+        }catch(Exception $ex){
+            $data['error'] = $ex->getMessage();
+        }
+        die(json_encode($data));
+    }
+
+    public function price(){
+        if(!$this->is_logged) { redirect("admin/login"); }
+        $is_import = $this->input->post('btnImport');
+        $data = array();
+        if ($is_import == "Update"){
+            $config['upload_path']          = './tmp/';
+            $config['allowed_types']        = 'csv';
+            $config['max_size']             = 10240;
+            $this->load->library('upload', $config);
+            if ( ! $this->upload->do_upload())
+            {
+                $data['error'] = $this->upload->display_errors();
+            }
+            else
+            {
+                $upload_data = $this->upload->data();
+                $filepath = $upload_data['full_path'];
+                $filename = $this->input->post('filename');
+                $newpath = RESPATH . 'files/' . $filename;
+                $replaced = copy($filepath,$newpath);
+                if($replaced){
+                    unlink($filepath);
+                }
+                $data['message'] = 'Price updated successfully...';
+            }
+        }
+        $this->load->template_admin('admin/price',$data);
+    }
+
 }
