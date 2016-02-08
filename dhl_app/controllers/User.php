@@ -355,7 +355,6 @@ class User extends CI_Controller {
                 $length = $this->input->post('txtlength');
                 if($item_type == 'parcel'){
                     $weight = $this->input->post('txtweight');
-
                 }else{
                     $weight = 8;
                 }
@@ -398,10 +397,33 @@ class User extends CI_Controller {
                     'shp_eelpfc' => $txtftritn,
                     'shp_notify' => $not_emails,
                 );
+
                 if($shp_id > 0){
                     $this->shipping_model->update($data,array('shp_id' => $shp_id));
                 }else{
                     $shp_id = $this->shipping_model->insert($data);
+                }
+
+                //Insert Custom Items for Parcel
+                $cdesc = $this->input->post('txtcdesc');
+                if(is_array($cdesc)){
+                    $where = array('cst_shp_id', $shp_id);
+                    $this->shipping_model->del_cust_old($where);
+                    $chts = $this->input->post('txtchts');
+                    $cqty = $this->input->post('txtcqty');
+                    $cvalue = $this->input->post('txtcvalue');
+                    $cweight = $this->input->post('txtcweight');
+                    for($i=1;$i<=count($cdesc);$i++){
+                        $cusdata = array(
+                            'cst_desc' => $cdesc[$i],
+                            'cst_hts' => $chts[$i],
+                            'cst_weight' => $cweight[$i],
+                            'cst_qty' => $cqty[$i],
+                            'cst_value' => $cvalue[$i],
+                            'cst_shp_id' => $shp_id,
+                        );
+                        $this->shipping_model->insert_customs($cusdata);
+                    }
                 }
 
                 $shp_result = $this->shipping_model->savebooking($shp_id);

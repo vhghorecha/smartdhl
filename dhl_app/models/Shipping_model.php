@@ -13,11 +13,16 @@ class Shipping_model extends CI_Model
         if($weight <= 1){
             $weight = 1;
         }
+
         $weight = sprintf("%.0f",round($weight,0));
         $this->load->library('escsv');
         $rate_data = $this->escsv->parse_file(base_url() . 'dhl_asset/files/' . $item_type . '.csv');
         if($item_type == 'parcel'){
-            $amount = $rate_data[$weight][$reg_code] * $noitem;
+            $amount = @$rate_data[$weight][$reg_code] * $noitem;
+            if(empty($amount)){
+                $result = array('error' => "No rate found");
+                return $result;
+            }
             $weight *= 16;
             $result = array('rate' => "Total rate for $noitem $item_type(s) is : <b>$" . $amount  . "</b>", 'rate_amount' => $amount );
         }else{
@@ -97,6 +102,15 @@ class Shipping_model extends CI_Model
                     )
                 );
 
+                $custom_info = array(
+                    "description" => $ship_data['shp_desc'],
+                    "quantity" => $ship_data['shp_quantity'],
+                    "weight" => $ship_data['shp_weight'],
+                    "value" => $ship_data['shp_value'],
+                    "origin_country" => 'US',
+                    "eel_pfc" => $ship_data['shp_eelpfc'],
+                );
+
                 if($ship_data['shp_type'] == 'document'){
                     $parcel = \EasyPost\Parcel::create(
                         array(
@@ -111,20 +125,16 @@ class Shipping_model extends CI_Model
                         "height" => $ship_data['shp_height'],
                         "weight" => $ship_data['shp_weight'],
                     );
+                    $custom_info['customs_items'] = $this->get_shipping_customs($shp_id);
                 }
+
+
 
                 $shipment = \EasyPost\Shipment::create(array(
                     "to_address" => $to_address,
                     "from_address" => $from_address,
                     "parcel" => $parcel,
-                    "customs_info" => array(
-                        "description" => $ship_data['shp_desc'],
-                        "quantity" => $ship_data['shp_quantity'],
-                        "weight" => $ship_data['shp_weight'],
-                        "value" => $ship_data['shp_value'],
-                        "origin_country" => 'US',
-                        "eel_pfc" => $ship_data['shp_eelpfc'],
-                    ),
+                    "customs_info" => $custom_info,
                     "carrier_accounts" => array(array('id' => 'ca_2bafcd3ab9b34db9a4de8040f143917f')),
                 ));
 
@@ -225,10 +235,37 @@ class Shipping_model extends CI_Model
 
         $this->email->from('no-reply@smartdhl.net', 'SmartDHL');
         $this->email->to($ship_data['shp_notify']);
-        $this->email->subject('You booking at SmartDHL with Ref No:' . $ship_data['shp_ep_ref']);
-        $this->email->message('You booking at SmartDHL with Ref No:' . $ship_data['shp_ep_ref']);
+        $this->email->subject('Your booking at SmartDHL with Ref No:' . $ship_data['shp_ep_ref']);
+        $this->email->message('Your booking at SmartDHL with Ref No:' . $ship_data['shp_ep_ref']);
 
         $this->email->send();
+    }
+
+    public function insert_customs($data){
+        $this->db->insert('customs', $data);
+        return $this->db->insert_id();
+    }
+
+    public function del_cust_old($where){
+        $this->db->where($where);
+        $this->db->delete('customs');
+    }
+
+    public function get_shipping_customs($shp_id){
+        $this->db->select('cst_desc as description, cst_qty as quantity, cst_weight as weight, cst_value as value, cst_hts as hs_tariff_number, cst_id');
+        $this->db->where('cst_shp_id', $shp_id);
+        $items = $this->db->get('customs')->result_array();
+        $custom_items = array();
+        foreach($items as $item){
+            $new_item = \EasyPost\CustomsItem::create($item);
+            if(!empty($new_item->id)){
+                $this->db->set('cst_ep_ref', $new_item->id);
+                $this->db->where('cst_id', $item['cst_id']);
+                $this->db->update('customs');
+                $custom_items[] = $new_item;
+            }
+        }
+        return $custom_items;
     }
 }
 

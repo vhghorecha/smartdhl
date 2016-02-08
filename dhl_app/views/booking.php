@@ -217,7 +217,7 @@
                         </div>
                         <div class="col-sm-1 col-xs-3 form-group">
                             <label class="control-label">Weight</label>
-                            <input type="number" class="form-control input-sm" id="txtweight" name="txtweight" step="0.1" placeholder="Weight" value="<?=($last_rate['weight'] > 0 ? $last_rate['weight'] : set_value('txtweight'));?>"/>
+                            <input type="number" class="form-control input-sm" id="txtweight" name="txtweight" step="0.1" placeholder="Weight" value="<?=($last_rate['weight'] > 0 ? $last_rate['weight'] : set_value('txtweight'));?>" readonly="readonly"/>
                         </div>
                         <div class="col-sm-3 col-xs-8 form-group">
                             <label class="control-label">Signature Option:</label>
@@ -253,17 +253,22 @@
                                         <label class="control-label">HTS# / B#  <a href="https://sbw.dhl-usa.com/tasclient/HandlerServlet?CLIENT=IC_HANDLER" target="_blank"><i class="fa fa-question-circle"></i></a></label>
                                         <input type="number" class="form-control input-sm" name="txtchts[<?=$i;?>]" value="<?=set_value('txtchts['.$i.']')?>" required/>
                                     </div>
-                                    <div class="col-sm-2 col-xs-4 form-group required">
+                                    <div class="col-sm-1 col-xs-4 form-group required">
                                         <label class="control-label">Qty</label>
                                         <input type="number" class="form-control input-sm cqty" name="txtcqty[<?=$i;?>]" value="<?=set_value('txtcqty['.$i.']')?>" required/>
                                     </div>
                                     <div class="col-sm-2 col-xs-4 form-group required">
-                                        <label class="control-label">Value</label>
+                                        <label class="control-label">Unit Value</label>
                                         <input type="number" class="form-control input-sm cval" name="txtcvalue[<?=$i;?>]" value="<?=set_value('txtcvalue['.$i.']')?>" required/>
                                     </div>
+                                    <div class="col-sm-1 col-xs-4 form-group required">
+                                        <label class="control-label">Unit Weight</label>
+                                        <input type="number" class="form-control input-sm cweight" name="txtcweight[<?=$i;?>]" value="<?=set_value('txtcweight['.$i.']')?>" required/>
+                                    </div>
                                     <div class="col-sm-1 col-xs-2 form-group required text-center">
-                                        <label class="control-label">Total</label>
+                                        <label class="control-label">Total Value</label>
                                         <input type="number" class="form-control input-sm ctotal" value="<?=set_value('txtcqty['.$i.']')*set_value('txtcvalue['.$i.']');?>" disabled/>
+                                        <input type="hidden" class="ctotalw" value="<?=set_value('txtcqty['.$i.']')*set_value('txtcweight['.$i.']');?>"/>
                                     </div>
                                     <?php if($i>1) { ?>
                                         <a id="cda<?=$i;?>" class="btn btn-primary col-sm-1 col-xs-2 cda">x</a>
@@ -280,17 +285,22 @@
                                     <label class="control-label">HTS# / B#  <a href="https://sbw.dhl-usa.com/tasclient/HandlerServlet?CLIENT=IC_HANDLER" target="_blank"><i class="fa fa-question-circle"></i></a></label>
                                     <input type="number" class="form-control input-sm" name="txtchts[1]" value="<?=set_value('txtchts[1]')?>" required/>
                                 </div>
-                                <div class="col-sm-2 col-xs-4 form-group required">
+                                <div class="col-sm-1 col-xs-4 form-group required">
                                     <label class="control-label">Qty</label>
                                     <input type="number" class="form-control input-sm cqty" name="txtcqty[1]" value="<?=set_value('txtcqty[1]')?>" required/>
                                 </div>
                                 <div class="col-sm-2 col-xs-4 form-group required">
-                                    <label class="control-label">Value</label>
+                                    <label class="control-label">Unit Value</label>
                                     <input type="number" class="form-control input-sm cval" name="txtcvalue[1]" value="<?=set_value('txtcvalue[1]')?>" required/>
                                 </div>
+                                <div class="col-sm-1 col-xs-4 form-group required">
+                                    <label class="control-label">Unit Weight</label>
+                                    <input type="number" class="form-control input-sm cweight" name="txtcweight[1]" value="<?=set_value('txtcweight[1]')?>" required/>
+                                </div>
                                 <div class="col-sm-1 col-xs-2 form-group required text-center">
-                                    <label class="control-label">Total</label>
+                                    <label class="control-label">Total Value</label>
                                     <input type="number" class="form-control input-sm ctotal" value="0.00" disabled/>
+                                    <input type="hidden" class="ctotalw" value="0.00"/>
                                 </div>
                             </div>
                         <?php } ?>
@@ -314,7 +324,7 @@
                         </div>*/?>
                         <div class="col-xs-4 form-group required">
                             <label class="control-label">Value (USD)</label>
-                            <input type="number" class="form-control input-sm" id="txtvalue" name="txtvalue" placeholder="Value(USD)" value="<?=set_value('txtvalue')?>"/>
+                            <input type="number" class="form-control input-sm" id="txtvalue" name="txtvalue" placeholder="Value(USD)" value="<?=set_value('txtvalue')?>" readonly="readonly"/>
                         </div>
                         <small class="pull-left clearfix">Dutiable shipments with a single commodity valued over 2500 USD may require you to file an SED/EEI.
                             If your shipment requires you to file an SED/EEI please visit <a href="https://aesdirect.census.gov/" target="_blank">AESDirect</a> for more information.</small>
@@ -357,7 +367,7 @@
                                 <option value='30.40(d)'>30.40(d)</option>
                             </select>
                             <label class="control-label">ITN <a href="https://webship.dhl-usa.com/Shipment/DHL%20Help%20Internal.asp" target="_blank"><i class="fa fa-question-circle"></i></a></label>
-                            <input type="text" class="form-control input-sm" id="txtitn" name="txtitn"/>
+                            <input type="text" class="form-control input-sm" id="txtitn" name="txtitn" value="<?=set_value('txtitn');?>"/>
                         </div>
                     </div>
                 </div>
@@ -768,13 +778,13 @@
 
         $("#item_type").change(function(){
            if($(this).val() == 'document' ){
-               $('#txtlength, #txtwidth, #txtheight, #txtweight, #txtitn, #txtftr').prop("disabled",true);
+               $('#txtlength, #txtwidth, #txtheight, #txtitn, #txtftr').prop("disabled",true);
                $('#comdetails').hide();
-               $('#txtvalue').prop("disabled", false);
-           }else{
-               $('#txtlength, #txtwidth, #txtheight, #txtweight, #txtitn, #txtftr').prop("disabled",false);
+               $('#txtvalue').prop("readonly", false);
+           }else if($(this).val() == 'parcel'){
+               $('#txtlength, #txtwidth, #txtheight, #txtitn, #txtftr').prop("disabled",false);
                $('#comdetails').show();
-               $('#txtvalue').prop("disabled", true);
+               $('#txtvalue').prop("readonly", true);
            }
         });
 
@@ -826,24 +836,33 @@
 
             $newcd.append(newcda)
             $('#cdcontent').append($newcd);
-            $('.cdrow').find('.cqty, .cval').off('keyup',updatetotal);
-            $('.cdrow').find('.cqty, .cval').on('keyup',updatetotal);
+            $('.cdrow').find('.cqty, .cval, .cweight').off('keyup',updatetotal);
+            $('.cdrow').find('.cqty, .cval, .cweight').on('keyup',updatetotal);
         });
 
         $(".cda").click(function(){
             $(this).parent().remove();
         })
 
-        $('.cdrow').find('.cqty, .cval').on('keyup',updatetotal);
+        $('.cdrow').find('.cqty, .cval, .cweight').on('keyup',updatetotal);
         function updatetotal() {
             var parent = $(this).parents('div.cdrow');
             var quantity = parseInt(parent.find('.cqty').val())||0;
             var price = parseInt(parent.find('.cval').val())||0;
+            var weight = parseInt(parent.find('.cweight').val())||0;
             parent.find('.ctotal').val(quantity*price);
+            parent.find('.ctotalw').val(quantity*weight);
+
             var Total = 0;
             $(".ctotal").each(function() { Total += $(this).val()|0; });
             $("#txtvalue").val(Total);
+
+            Total = 0;
+            $(".ctotalw").each(function() { Total += $(this).val()|0; });
+            $("#txtweight").val(Total);
         }
+
+        $('.cdrow').find('.cqty, .cval, .cweight').trigger('keyup');
 
     }); // end document.ready
 </script>
