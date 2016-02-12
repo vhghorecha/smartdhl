@@ -267,6 +267,57 @@ class Shipping_model extends CI_Model
         }
         return $custom_items;
     }
+
+    public function fetch_shipping_commodity($shp_id)
+    {
+        $this->db->select('cst_desc as description, cst_qty as quantity, cst_weight as weight, cst_value as value, cst_hts as hs_tariff_number, cst_id,cst_invoice_id');
+        $this->db->where('cst_shp_id', $shp_id);
+        $result = $this->db->get('customs')->result_array();
+        return $result;
+    }
+
+    public function insert_invoce_detail($insert_data)
+    {
+        $this->db->insert('invoices', $insert_data);
+        return $this->db->insert_id();
+    }
+
+    public function update_invoice_id($invoice_id,$shp_id)
+    {
+        $this->db->set('cst_invoice_id',$invoice_id);
+        $this->db->where('cst_shp_id', $shp_id);
+        $this->db->update('customs');
+        return true;
+    }
+
+    public function check_shipping_id($shp_id)
+    {
+        $this->db->where('cst_shp_id', $shp_id);
+        $result = $this->db->get('customs')->num_rows();
+        return $result;
+    }
+
+    public function check_invoice_status($shp_id)
+    {
+
+        $this->db->where(array('cst_invoice_id >'=>'0','cst_shp_id'=> $shp_id));
+        $result = $this->db->get('customs')->num_rows();
+        return $result;
+
+    }
+
+    public function get_invoice_detail($inv_id)
+    {
+        //$this->db->where('inv_id', $inv_id);
+        //$result = $this->db->get('invoices')->row_array();
+
+        $this->db->select('*');
+        $this->db->from('invoices');
+        $this->db->join('sd_tradeterms', 'invoices.inv_tot = sd_tradeterms.tt_id');
+        $this->db->where('invoices.inv_id', $inv_id);
+        $result = $this->db->get()->row_array();
+        return $result;
+    }
 }
 
 ?>

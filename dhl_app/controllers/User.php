@@ -858,6 +858,81 @@ class User extends CI_Controller {
         $this->load->template("pickup",$shiping_data);
     }
 
+
+    public function invoice($shp_id){
+        if(!$this->is_logged){redirect("user/login");}
+
+        $dataSubmit= $this->input->post("btnInvoice");
+        if($dataSubmit==="Save")
+        {
+            $inv_tax_id = $this->input->post('txtTaxVatId');
+            $inv_marks = $this->input->post('txtPackageMarks');
+            $inv_sub_tot = $this->input->post('item_sub_total');
+            $inv_mist_tot = $this->input->post('txt_misc_charge');
+            $inv_misc_desc = $this->input->post('txt_misc_desc');
+            $inv_total = $this->input->post('invoice_total');
+            $inv_tot = $this->input->post('termsOftrade');
+
+
+            $insert_data = array(
+                'inv_tax_id'=>$inv_tax_id,
+                 'inv_marks'=>$inv_marks,
+                 'inv_sub_tot'=>$inv_sub_tot,
+                 'inv_mist_tot'=>$inv_mist_tot,
+                 'inv_misc_desc'=>$inv_misc_desc,
+                 'inv_total'=>$inv_total,
+                'inv_tot'=>$inv_tot,
+            );
+
+            $invoice_id = $this->shipping_model->insert_invoce_detail($insert_data);
+            $status = $this->shipping_model->update_invoice_id($invoice_id,$shp_id);
+            redirect("user/transactions");
+        }
+        else
+        {
+            //for invoice generating
+            $data= array();
+            $template = "";
+            $total_record = $this->shipping_model->check_shipping_id($shp_id);
+
+            if($total_record > 0)
+            {
+                $check_status = $this->shipping_model->check_invoice_status($shp_id);
+                if($check_status > 0)
+                {
+                    $template = "invoice_print";
+                    $data["shipment"] = $this->shipping_model->get_shipment($shp_id);
+                    $sender_id = $data["shipment"]["shp_from"];
+                    $receiver_id = $data["shipment"]["shp_to"];
+                    $data["sender_address"] = $this->address_model->get_address($sender_id);
+                    $data["receiver_address"] = $this->address_model->get_address($receiver_id);
+                    $data["customs"] = $this->shipping_model->fetch_shipping_commodity($shp_id);
+                    $invoice_id = $data["customs"][0]["cst_invoice_id"];
+                    $data["invoice"] = $this->shipping_model->get_invoice_detail($invoice_id);
+                    $this->load->view($template,$data);
+                    return;
+                }
+                else
+                {
+                    $template = "invoice";
+                    //getting all trade terms data to bind in the combobox
+                    $trade = $this->get_all_trade();
+                    $data = array_merge($data,$trade);
+                    //process for commodity fetch data from the custom table
+                    $data["commodity"] = $this->shipping_model->fetch_shipping_commodity($shp_id);
+                }
+            }
+            else
+            {
+                $template = "invoice_message";
+                $data["message"] = "Can't found any shipping reference.";
+            }
+            $this->load->template($template,$data);
+        }
+
+
+    }
+
     public function refund(){
         if(!$this->is_logged) { redirect("user/login"); }
         $data = array();
@@ -877,6 +952,28 @@ class User extends CI_Controller {
             $data['error'] = 'Access Denied...';
         }
         die(json_encode($data));
+    }
+
+
+    public function get_all_trade()
+    {
+        $this->load->model("user_model");
+        $data["trade"] = $this->user_model->all_trade_record();
+
+        $tradeTerms = array();
+        foreach( $data["trade"] as $trade)
+        {
+            $tradeTerms[$trade["tt_id"]] = $trade["tt_name"];
+        }
+        $data["tradeTerms"] = $tradeTerms;
+        return $data;
+    }
+
+    public function viewlabel($ship_id)
+    {
+        $data["shipment"] = $this->shipping_model->get_shipment($ship_id);
+        $this->load->view("view_label",$data);
+
     }
 
 }

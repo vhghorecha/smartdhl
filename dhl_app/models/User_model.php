@@ -159,6 +159,12 @@ class User_model extends CI_Model
         }
         return $result;
     }
+
+    public function all_trade_record()
+    {
+        $result = $this->db->get('sd_tradeterms');
+        return $result->result_array();
+    }
 }
 
 

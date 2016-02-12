@@ -24,6 +24,8 @@
         <button id="btntrack" class="btn btn-primary" disabled="disabled">Track</button> |
         <button id="btnvoid" class="btn btn-primary" disabled="disabled">Void</button> |
         <button id="btnpickup" class="btn btn-primary" disabled="disabled">Schedule Pickup</button> |
+        <button id="btninvoice" class="btn btn-primary" disabled="disabled">Invoice</button> |
+        <button id="btnviewlabel_shipment" class="btn btn-primary" disabled="disabled">View Label</button> |
         <a role="button" id="btnexport" class="btn btn-primary" href="<?=site_url('user/export_ships');?>">Export CSV</a> |
         <a role="button" id="btnprint" class="btn btn-primary" href="<?=site_url('user/print_ships');?>" target="_blank">Print</a>
         <a href="" id="trackurl" target="_blank"></a>
@@ -101,14 +103,14 @@
                     $(this).removeClass('selected');
                     selID = 0;
                     selUrl = '';
-                    $('#btnviewship, #btnviewlabel, #btntrack, #btnvoid, #btnpickup').prop('disabled',true);
+                    $('#btnviewship, #btnviewlabel, #btntrack, #btnvoid, #btnpickup,#btninvoice,#btnviewlabel_shipment').prop('disabled',true);
                 }
                 else {
                     table.$('tr.selected').removeClass('selected');
                     $(this).addClass('selected');
                     selID = aData[0];
                     selUrl = aData[12];
-                    $('#btnviewship, #btnviewlabel, #btntrack, #btnvoid, #btnpickup').prop('disabled',false);
+                    $('#btnviewship, #btnviewlabel, #btntrack, #btnvoid, #btnpickup,#btninvoice,#btnviewlabel_shipment').prop('disabled',false);
                 }
             });
         }
@@ -155,6 +157,24 @@
             $('#trackurl').attr('target', '_self');
             document.getElementById("trackurl").click();
         }
+    });
+
+
+    $('#btninvoice').click(function(){
+        if(selID > 0){
+            $('#trackurl').attr('href', '<?=site_url("user/invoice");?>' + '/' + selID);
+            $('#trackurl').attr('target', '_self');
+            document.getElementById("trackurl").click();
+        }
+    });
+
+    $('#btnviewlabel_shipment').click(function(){
+        if(selID > 0){
+            $('#trackurl').attr('href', '<?=site_url("user/viewlabel");?>' + '/' + selID);
+            $('#trackurl').attr('target', '_self');
+            document.getElementById("trackurl").click();
+        }
+
     });
 
     $('#btnvoid').click(function(){

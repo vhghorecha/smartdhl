@@ -92,7 +92,7 @@
 
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
                             <div class="col-xs-4 text-right"><label class="control-label" for="txtsphone">Phone</label></div>
-                            <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtsphone" id="txtsphone" value="<?=set_value('txtsphone')?>"></div>
+                            <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtsphone" title="Phone No. eg: 7405100630" id="txtsphone" value="<?=set_value('txtsphone')?>"></div>
                         </div>
 
                         <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
@@ -297,7 +297,7 @@
                                     <label class="control-label">Unit Weight</label>
                                     <input type="number" class="form-control input-sm cweight" name="txtcweight[1]" value="<?=set_value('txtcweight[1]')?>" required/>
                                 </div>
-                                <div class="col-sm-1 col-xs-2 form-group required text-center">
+                                <div class="  form-group required text-center">
                                     <label class="control-label">Total Value</label>
                                     <input type="number" class="form-control input-sm ctotal" value="0.00" disabled/>
                                     <input type="hidden" class="ctotalw" value="0.00"/>
@@ -495,6 +495,11 @@
                     number:true,
                 }
             },
+            messages:{
+                txtsphone:{
+                    digits  : 'Phone No. eg: 7405100630'
+                }
+            },
             showErrors: function(errorMap, errorList) {
                 $.each(this.successList, function(index, value) {
                     $(value).addClass('valid').removeClass('warning');
@@ -502,7 +507,7 @@
                 });
                 return $.each(errorList, function(index, value) {
                     $(value.element).addClass('warning').removeClass('valid');
-                    /*var _popover;
+                    var _popover;
                     _popover = $(value.element).popover({
                         trigger: "manual",
                         placement: "top",
@@ -511,7 +516,7 @@
                     });
                     // Bootstrap 3.x :
                     _popover.data("bs.popover").options.content = value.message;
-                    return $(value.element).popover("show");*/
+                    return $(value.element).popover("show");
                 });
             },
             submitHandler: function(form) {
