@@ -14,6 +14,7 @@
                         <tr>
                             <th>Trackign Code</th>
                             <th>Label URL</th>
+                            <th>Invoice</th>
                             <th>Estimate Delivery</th>
                             <th>Pickup</th>
                         </tr>
@@ -21,7 +22,8 @@
                     <tbody>
                         <tr>
                             <td><?=$shp_result['shp_trackingcode'];?></td>
-                            <td><a href="<?=$shp_result['shp_labelurl'];?>" target="_blank">Click Here</a></td>
+                            <td><a href="<?=site_url('user/viewlabel/'. $shp_result['shp_id']);?>" target="_blank">Click Here</a></td>
+                            <th><a href="<?=site_url('user/invoice/' . $shp_result['shp_id']);?>">Generate Invoice</a></th>
                             <td><?=$shp_result['shp_estdate'];?></td>
                             <td><a href="<?=site_url('user/pickup/'.$shp_result['shp_id']);?>">Schedule Pickup</a></td>
                         </tr>

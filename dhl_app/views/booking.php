@@ -217,7 +217,7 @@
                         </div>
                         <div class="col-sm-1 col-xs-3 form-group">
                             <label class="control-label">Weight</label>
-                            <input type="number" class="form-control input-sm" id="txtweight" name="txtweight" step="0.1" placeholder="Weight" value="<?=($last_rate['weight'] > 0 ? $last_rate['weight'] : set_value('txtweight'));?>" readonly="readonly"/>
+                            <input type="number" class="form-control input-sm" id="txtweight" name="txtweight" step="0.1" placeholder="Weight" value="<?=($last_rate['weight'] > 0 ? $last_rate['weight'] : set_value('txtweight'));?>"/>
                         </div>
                         <div class="col-sm-3 col-xs-8 form-group">
                             <label class="control-label">Signature Option:</label>
@@ -227,9 +227,13 @@
                             <label class="control-label">Insurance?</label><br/>
                             <input type="checkbox" name="insurance" id="insurance" value="1" checked disabled="disabled"/>
                         </div>
+                        <div class="col-sm-1 col-xs-12 form-group">
+                            <label class="control-label">Duties By:</label>
+                            <input type="textbox" class="form-control" value="Receiver" disabled/>
+                        </div>
                         <div class="col-xs-12 text-danger">
                             <strong>
-                                *All dimensions in INCH, *Weight in Oz
+                                *All dimensions in INCH, *Weight in Lbs
                                 <br/>*Maximum of 8 oz. allowed for DHL Document shipment.
                             </strong>
                         </div>
@@ -261,14 +265,9 @@
                                         <label class="control-label">Unit Value</label>
                                         <input type="number" class="form-control input-sm cval" name="txtcvalue[<?=$i;?>]" value="<?=set_value('txtcvalue['.$i.']')?>" required/>
                                     </div>
-                                    <div class="col-sm-1 col-xs-4 form-group required">
-                                        <label class="control-label">Unit Weight</label>
-                                        <input type="number" class="form-control input-sm cweight" name="txtcweight[<?=$i;?>]" value="<?=set_value('txtcweight['.$i.']')?>" required/>
-                                    </div>
-                                    <div class="col-sm-1 col-xs-2 form-group required text-center">
+                                    <div class="col-sm-2 col-xs-2 form-group required text-center">
                                         <label class="control-label">Total Value</label>
                                         <input type="number" class="form-control input-sm ctotal" value="<?=set_value('txtcqty['.$i.']')*set_value('txtcvalue['.$i.']');?>" disabled/>
-                                        <input type="hidden" class="ctotalw" value="<?=set_value('txtcqty['.$i.']')*set_value('txtcweight['.$i.']');?>"/>
                                     </div>
                                     <?php if($i>1) { ?>
                                         <a id="cda<?=$i;?>" class="btn btn-primary col-sm-1 col-xs-2 cda">x</a>
@@ -293,14 +292,9 @@
                                     <label class="control-label">Unit Value</label>
                                     <input type="number" class="form-control input-sm cval" name="txtcvalue[1]" value="<?=set_value('txtcvalue[1]')?>" required/>
                                 </div>
-                                <div class="col-sm-1 col-xs-4 form-group required">
-                                    <label class="control-label">Unit Weight</label>
-                                    <input type="number" class="form-control input-sm cweight" name="txtcweight[1]" value="<?=set_value('txtcweight[1]')?>" required/>
-                                </div>
-                                <div class="  form-group required text-center">
+                                <div class="col-sm-2 col-xs-2 form-group required text-center">
                                     <label class="control-label">Total Value</label>
                                     <input type="number" class="form-control input-sm ctotal" value="0.00" disabled/>
-                                    <input type="hidden" class="ctotalw" value="0.00"/>
                                 </div>
                             </div>
                         <?php } ?>
@@ -505,18 +499,25 @@
                     $(value).addClass('valid').removeClass('warning');
                     return $(value).popover("hide");
                 });
+
+                var value = errorList[0];
+                if(value !== 'undefined'){
+
+                }
                 return $.each(errorList, function(index, value) {
+                    if(index == 0){
+                        var _popover;
+                        _popover = $(value.element).popover({
+                            trigger: "manual",
+                            placement: "top",
+                            content: value.message,
+                            template: "<div class=\"popover\"><div class=\"arrow\"></div><div class=\"popover-inner\"><div class=\"popover-content\"><p></p></div></div></div>"
+                        });
+                        // Bootstrap 3.x :
+                        _popover.data("bs.popover").options.content = value.message;
+                        $(value.element).popover("show");
+                    }
                     $(value.element).addClass('warning').removeClass('valid');
-                    var _popover;
-                    _popover = $(value.element).popover({
-                        trigger: "manual",
-                        placement: "top",
-                        content: value.message,
-                        template: "<div class=\"popover\"><div class=\"arrow\"></div><div class=\"popover-inner\"><div class=\"popover-content\"><p></p></div></div></div>"
-                    });
-                    // Bootstrap 3.x :
-                    _popover.data("bs.popover").options.content = value.message;
-                    return $(value.element).popover("show");
                 });
             },
             submitHandler: function(form) {
@@ -793,6 +794,10 @@
            }
         });
 
+        if($("#item_type").val() != ""){
+            $("#item_type").trigger("change");
+        }
+
         $("#btnsender").click(function(){
             $notify = $("#txtnotemails").val();
             $email =$("#txtsemail").val();
@@ -841,33 +846,27 @@
 
             $newcd.append(newcda)
             $('#cdcontent').append($newcd);
-            $('.cdrow').find('.cqty, .cval, .cweight').off('keyup',updatetotal);
-            $('.cdrow').find('.cqty, .cval, .cweight').on('keyup',updatetotal);
+            $('.cdrow').find('.cqty, .cval').off('keyup',updatetotal);
+            $('.cdrow').find('.cqty, .cval').on('keyup',updatetotal);
         });
 
         $(".cda").click(function(){
             $(this).parent().remove();
         })
 
-        $('.cdrow').find('.cqty, .cval, .cweight').on('keyup',updatetotal);
+        $('.cdrow').find('.cqty, .cval').on('keyup',updatetotal);
         function updatetotal() {
             var parent = $(this).parents('div.cdrow');
             var quantity = parseInt(parent.find('.cqty').val())||0;
             var price = parseInt(parent.find('.cval').val())||0;
-            var weight = parseInt(parent.find('.cweight').val())||0;
             parent.find('.ctotal').val(quantity*price);
-            parent.find('.ctotalw').val(quantity*weight);
 
             var Total = 0;
             $(".ctotal").each(function() { Total += $(this).val()|0; });
             $("#txtvalue").val(Total);
-
-            Total = 0;
-            $(".ctotalw").each(function() { Total += $(this).val()|0; });
-            $("#txtweight").val(Total);
         }
 
-        $('.cdrow').find('.cqty, .cval, .cweight').trigger('keyup');
+        $('.cdrow').find('.cqty, .cval').trigger('keyup');
 
     }); // end document.ready
 </script>

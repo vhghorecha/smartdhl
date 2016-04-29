@@ -30,7 +30,7 @@
                 </div>*/ ?>
                 <div class="form-group col-lg-6 col-md-6 col-sm-12 col-xs-12">
                     <label for="weight" >Weight:</label>
-                    <input id="weight" class="form-control input-group-lg reg_name" type="number" name="weight" placeholder="Weight in Oz" min="1" step="0.01" max="150.00" required>
+                    <input id="txtweight" class="form-control input-group-lg reg_name" type="number" name="txtweight" placeholder="Weight in Oz" min="1" step="0.01" max="150.00" required>
                 </div>
             </div>
             <div class="row"></div>
@@ -63,11 +63,12 @@
                     if(typeof data.rate !== 'undefined'){
                         $('#rate_res').html('');
                         $('#update_res').html('<div class="alert alert-success">' + data.rate + '</div>');
+                        var redurl = "<?=site_url('user/booking?rcountry=');?>" + $('#txtrcountry').val();
                         if(data.is_login){
-                            window.location = "<?=site_url('user/booking?rcountry=');?>" + $('#txtrcountry').val();
+                            window.location = redurl;
                             return false;
                         }
-                        $('#hidredirect').val('<?=site_url('user/booking');?>');
+                        $('#hidredirect').val(redurl);
                         $('#modal-container-575041').modal('show');
                     }else{
                         $('#rate_res').html('<div class="alert alert-danger">' + data.error + '</div>')
@@ -109,9 +110,9 @@
         $('#item_type').on('change',function(){
            item_type = $(this).val();
             if(item_type == 'document'){
-                $('#weight').attr('placeholder','Weight in Oz');
+                $('#txtweight').attr('placeholder','Weight in Oz');
             }else{
-                $('#weight').attr('placeholder','Weight in lbs');
+                $('#txtweight').attr('placeholder','Weight in lbs');
             }
         });
         

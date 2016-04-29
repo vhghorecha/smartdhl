@@ -18,12 +18,17 @@ class Shipping_model extends CI_Model
         $this->load->library('escsv');
         $rate_data = $this->escsv->parse_file(base_url() . 'dhl_asset/files/' . $item_type . '.csv');
         if($item_type == 'parcel'){
-            $amount = @$rate_data[$weight][$reg_code] * $noitem;
+			foreach($rate_data as $key => $rd){
+                if(intval($key) == intval($weight)){
+                    $amount = $rd[$reg_code] * $noitem;
+                    break;
+                }
+            }
+            //$amount = $rate_data[$weight][$reg_code] * $noitem;
             if(empty($amount)){
                 $result = array('error' => "No rate found");
                 return $result;
             }
-            $weight *= 16;
             $result = array('rate' => "Total rate for $noitem $item_type(s) is : <b>$" . $amount  . "</b>", 'rate_amount' => $amount );
         }else{
             if($weight <= 8){

@@ -24,7 +24,7 @@
                 <div class="row-container">
                     <div class="form-group required">
                         <label class="control-label">Password</label>
-                        <input type="password" class="form-control" name="txtpass" id="txtpass" placeholder="Email Address" required/>
+                        <input type="password" class="form-control" name="txtpass" id="txtpass" placeholder="Password" required/>
                     </div>
                 </div>
                 <div class="row-container">

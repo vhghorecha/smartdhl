@@ -367,7 +367,7 @@ class User extends CI_Controller {
                 $quantity = 1;
                 $shp_value = $this->input->post('txtvalue');
                 $reg_code = $this->address_model->get_reg_code_from_country_code($country_code);
-                $rate = $this->shipping_model->get_rate($reg_code,$item_type,$quantity,$weight/16);
+                $rate = $this->shipping_model->get_rate($reg_code,$item_type,$quantity,$weight);
                 $rate_amount = $rate['rate_amount'];
 
                 $txtftritn = $this->input->post('txtitn');
@@ -379,7 +379,7 @@ class User extends CI_Controller {
                 if(empty($not_emails)){
                     $not_emails = $this->input->post('txtsemail');
                 }
-
+                $weight *= 16;
                 $data = array(
                     'shp_user' => $user_id,
                     'shp_from' => $selfromaddr,
@@ -407,17 +407,17 @@ class User extends CI_Controller {
                 //Insert Custom Items for Parcel
                 $cdesc = $this->input->post('txtcdesc');
                 if(is_array($cdesc)){
+                    $cweight = $weight / count($cdesc);
                     $where = array('cst_shp_id', $shp_id);
                     $this->shipping_model->del_cust_old($where);
                     $chts = $this->input->post('txtchts');
                     $cqty = $this->input->post('txtcqty');
                     $cvalue = $this->input->post('txtcvalue');
-                    $cweight = $this->input->post('txtcweight');
                     for($i=1;$i<=count($cdesc);$i++){
                         $cusdata = array(
                             'cst_desc' => $cdesc[$i],
                             'cst_hts' => $chts[$i],
-                            'cst_weight' => $cweight[$i],
+                            'cst_weight' => $cweight,
                             'cst_qty' => $cqty[$i],
                             'cst_value' => $cvalue[$i],
                             'cst_shp_id' => $shp_id,
@@ -886,51 +886,46 @@ class User extends CI_Controller {
 
             $invoice_id = $this->shipping_model->insert_invoce_detail($insert_data);
             $status = $this->shipping_model->update_invoice_id($invoice_id,$shp_id);
-            redirect("user/transactions");
         }
-        else
-        {
-            //for invoice generating
-            $data= array();
-            $template = "";
-            $total_record = $this->shipping_model->check_shipping_id($shp_id);
 
-            if($total_record > 0)
+        //for invoice generating
+        $data= array();
+        $template = "";
+        $total_record = $this->shipping_model->check_shipping_id($shp_id);
+
+        if($total_record > 0)
+        {
+            $check_status = $this->shipping_model->check_invoice_status($shp_id);
+            if($check_status > 0)
             {
-                $check_status = $this->shipping_model->check_invoice_status($shp_id);
-                if($check_status > 0)
-                {
-                    $template = "invoice_print";
-                    $data["shipment"] = $this->shipping_model->get_shipment($shp_id);
-                    $sender_id = $data["shipment"]["shp_from"];
-                    $receiver_id = $data["shipment"]["shp_to"];
-                    $data["sender_address"] = $this->address_model->get_address($sender_id);
-                    $data["receiver_address"] = $this->address_model->get_address($receiver_id);
-                    $data["customs"] = $this->shipping_model->fetch_shipping_commodity($shp_id);
-                    $invoice_id = $data["customs"][0]["cst_invoice_id"];
-                    $data["invoice"] = $this->shipping_model->get_invoice_detail($invoice_id);
-                    $this->load->view($template,$data);
-                    return;
-                }
-                else
-                {
-                    $template = "invoice";
-                    //getting all trade terms data to bind in the combobox
-                    $trade = $this->get_all_trade();
-                    $data = array_merge($data,$trade);
-                    //process for commodity fetch data from the custom table
-                    $data["commodity"] = $this->shipping_model->fetch_shipping_commodity($shp_id);
-                }
+                $template = "invoice_print";
+                $data["shipment"] = $this->shipping_model->get_shipment($shp_id);
+                $sender_id = $data["shipment"]["shp_from"];
+                $receiver_id = $data["shipment"]["shp_to"];
+                $data["sender_address"] = $this->address_model->get_address($sender_id);
+                $data["receiver_address"] = $this->address_model->get_address($receiver_id);
+                $data["customs"] = $this->shipping_model->fetch_shipping_commodity($shp_id);
+                $invoice_id = $data["customs"][0]["cst_invoice_id"];
+                $data["invoice"] = $this->shipping_model->get_invoice_detail($invoice_id);
+                $this->load->view($template,$data);
+                return;
             }
             else
             {
-                $template = "invoice_message";
-                $data["message"] = "Can't found any shipping reference.";
+                $template = "invoice";
+                //getting all trade terms data to bind in the combobox
+                $trade = $this->get_all_trade();
+                $data = array_merge($data,$trade);
+                //process for commodity fetch data from the custom table
+                $data["commodity"] = $this->shipping_model->fetch_shipping_commodity($shp_id);
             }
-            $this->load->template($template,$data);
         }
-
-
+        else
+        {
+            $template = "invoice_message";
+            $data["message"] = "Can't found any shipping reference.";
+        }
+        $this->load->template($template,$data);
     }
 
     public function refund(){

@@ -30,11 +30,17 @@
             border-bottom: 1px solid #333333;
             margin-bottom: 5px;
         }
+        @media print {
+            .noPrint {
+                display:none;
+            }
+        }
     </style>
 
 </head>
 <body topmargin="90">
 <div id='wrapper'>
+    <center><div class="noPrint"><input type="button" id="btnprint" class="btn btn-primary"  name="btnprint"  onclick="window.print();" style="background-color: #002a80;color: #ffffff;font-size:16px" value="Print"></div></center>
     <table align="center" class="mytable">
         <tr><td class="mytd highlight" colspan="4" align="center"><h2>Commercial Invoice</h2></td></tr>
         <tr>
@@ -42,8 +48,8 @@
             <td class="mytd" colspan="2" width="50%"><table width="100%"><tr><td><span>Destination Country:</span></td><td align="right"><?php echo $receiver_address["cnt_name"]; ?></td></tr></table></td>
         </tr>
         <tr>
-            <td class="mytd" colspan="2" width="50%"><table width="100%"><tr><td align="left"><?php echo $sender_address["adr_contact"]; ?></td></tr></table></td>
-            <td class="mytd" colspan="2" width="50%"><table width="100%"><tr><td align="left"><?php echo $receiver_address["adr_contact"]; ?></td></tr></table></td>
+            <td class="mytd" colspan="2" width="50%"><table width="100%"><tr><td align="left">Shipper: <?php echo $sender_address["adr_contact"]; ?></td></tr></table></td>
+            <td class="mytd" colspan="2" width="50%"><table width="100%"><tr><td align="left">Consignee: <?php echo $receiver_address["adr_contact"]; ?></td></tr></table></td>
         </tr>
 
         <tr>
@@ -70,7 +76,7 @@
             <td class="mytd" width="25%"><table width="100%"><tr><td><span>Carrier:</span></td><td align="right">DHL&nbsp;</td></tr></table></td>
             <td class="mytd" width="25%"><table width="100%"><tr><td><span>Shipper Ref:</span></td><td align="right"></td></tr></table></td>
             <td class="mytd" width="25%">
-                <table width="100%"><tr><td><span>ITN#:</span></td><td align="right"></td></tr></table>
+                <table width="100%"><tr><td><span>ITN#:</span></td><td align="right"><?php echo $shipment["shp_eelpfc"]; ?></td></tr></table>
             </td>
             <td class="mytd" width="25%"><table width="100%"><tr><td><span>Terms of Trade:</span></td><td align="right"><?php echo $invoice["tt_name"]; ?></td></tr></table></td>
         </tr>
@@ -150,7 +156,6 @@
                 <br/><br/>
             </td>
         </tr>
-        <tr><td align="center" colspan="4" ><input type="button" id="btnprint" class="btn btn-primary"  name="btnprint"  onclick="window.print();" style="background-color: #002a80;color: #ffffff;font-size:16px" value="Print"> </td></tr>
     </table>
 </div>
 </body>

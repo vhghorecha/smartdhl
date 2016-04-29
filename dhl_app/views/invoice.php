@@ -15,9 +15,6 @@
                     </div>
                 <?php } ?>
 
-
-
-
                 <div class="col-xs-12">
 
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
@@ -47,7 +44,6 @@
                     <div class="col-xs-12">
                         <div class="col-sm-4 col-xs-6 text-center"><label class="control-label" for="Commodity description">Descritpion</label></div>
                         <div class="col-sm-2 col-xs-6 text-center"><label class="control-label" for="HTS / B">HTS# / B#</label></div>
-                        <div class="col-sm-1 col-xs-4 text-center"><label class="control-label" for="vat">Weight</label></div>
                         <div class="col-sm-2 col-xs-4 text-center"><label class="control-label" for="Qunatity">Qty</label></div>
                         <div class="col-sm-1 col-xs-4 text-center"><label class="control-label" for="Unit value">Unit value</label></div>
                         <div class="col-sm-1 col-xs-2 text-center"><label class="control-label" for="Total">Total</label></div>
@@ -68,7 +64,6 @@
                             <div class="col-xs-12">
                                 <div class="col-sm-4 col-xs-6 text-center"><?php echo $items["description"]; ?></div>
                                 <div class="col-sm-2 col-xs-6 text-center"><?php echo $items["hs_tariff_number"]; ?></div>
-                                <div class="col-sm-1 col-xs-4 text-center"><?php echo $items["weight"]; ?></div>
                                 <div class="col-sm-2 col-xs-4 text-center"><?php echo $items["quantity"]; ?></div>
                                 <div class="col-sm-1 col-xs-4 text-center"><?php echo $items["value"]; ?></div>
                                 <div class="col-sm-1 col-xs-2 text-center"><?php echo $item_total; ?></div>

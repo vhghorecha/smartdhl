@@ -44,7 +44,7 @@ class Ajax extends CI_Controller {
                 )
             ),*/
             array(
-                'field' => 'weight',
+                'field' => 'txtweight',
                 'label' => 'Weight',
                 'rules' => 'required|numeric|greater_than[0.99]|less_than[150]',
                 'errors' => array(
@@ -54,8 +54,8 @@ class Ajax extends CI_Controller {
         );
         $this->form_validation->set_rules($config);
         if ($this->form_validation->run() == true) {
-            $weight = $this->input->post('weight');
-            $country = $this->input->post('country');
+            $weight = $this->input->post('txtweight');
+            $country = $this->input->post('txtrcountry');
             $reg_code = $this->address_model->get_reg_code_from_country($country);
             $item_type = $this->input->post('item_type');
             //$noitem = intval($this->input->post('noitem'));
