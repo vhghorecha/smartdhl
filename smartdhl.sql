@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 05, 2016 at 04:35 PM
+-- Generation Time: Apr 30, 2016 at 06:03 AM
 -- Server version: 5.5.27
 -- PHP Version: 5.4.7
 
@@ -26,7 +26,6 @@ SET time_zone = "+00:00";
 -- Table structure for table `sd_addresses`
 --
 
-DROP TABLE IF EXISTS `sd_addresses`;
 CREATE TABLE IF NOT EXISTS `sd_addresses` (
   `adr_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Address Unique ID in System',
   `adr_name` varchar(45) NOT NULL,
@@ -51,8 +50,8 @@ CREATE TABLE IF NOT EXISTS `sd_addresses` (
 
 INSERT INTO `sd_addresses` (`adr_id`, `adr_name`, `adr_contact`, `adr_street1`, `adr_street2`, `adr_city`, `adr_state`, `adr_country`, `adr_zip`, `adr_phone`, `adr_email`, `adr_type`, `adr_userid`, `adr_default`) VALUES
 (1, 'Vimal', 'Vimal Ghorecha', 'Punit Nagar', 'Gondal Road', 1011, 12, 'IN', '360004', '7405100630', 'vimal14569@gmail.com', 'Sender', 1, 0),
-(2, 'JIN KIM', 'CHRIS KIM', '14101 SULLYFIELD CIRCLE', '#340', 46660, 3974, 'US', '20151', '7035318485', 'chriskim1975@gmail.com', 'Sender', 1, 0),
-(3, 'Vimal Ghorecha', 'Vimal', '5FL daesung bld, 55-44 songpa', 'seocho-gu. Dongdarmun--gu', 25751, 2074, 'KR', '05693', '7035318485', 'vimal14569@gmail.com', 'Receiver', 1, 0);
+(2, 'JIN KIM', 'CHRIS KIM', '14101 SULLYFIELD CIRCLE', '#340', 46660, 3974, 'US', '20151', '7035318486', 'chriskim1975@gmail.com', 'Sender', 1, 0),
+(3, 'Vimal Ghorecha', 'Vimal', '5FL daesung bld, 55-44 songpa', 'seocho-gu. Dongdarmun--gu', 25751, 2074, 'KR', '05693', '7035318487', 'vimal14569@gmail.com', 'Receiver', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -60,7 +59,6 @@ INSERT INTO `sd_addresses` (`adr_id`, `adr_name`, `adr_contact`, `adr_street1`, 
 -- Table structure for table `sd_admin`
 --
 
-DROP TABLE IF EXISTS `sd_admin`;
 CREATE TABLE IF NOT EXISTS `sd_admin` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(30) NOT NULL,
@@ -83,7 +81,6 @@ INSERT INTO `sd_admin` (`id`, `username`, `password`, `fullname`) VALUES
 -- Table structure for table `sd_city`
 --
 
-DROP TABLE IF EXISTS `sd_city`;
 CREATE TABLE IF NOT EXISTS `sd_city` (
   `city_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `city_name` varchar(60) NOT NULL,
@@ -47702,7 +47699,6 @@ INSERT INTO `sd_city` (`city_id`, `city_name`, `city_state_id`) VALUES
 -- Table structure for table `sd_country`
 --
 
-DROP TABLE IF EXISTS `sd_country`;
 CREATE TABLE IF NOT EXISTS `sd_country` (
   `cnt_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `cnt_code` char(2) NOT NULL,
@@ -47939,10 +47935,67 @@ INSERT INTO `sd_country` (`cnt_id`, `cnt_code`, `cnt_name`, `cnt_regcode`) VALUE
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `sd_customs`
+--
+
+CREATE TABLE IF NOT EXISTS `sd_customs` (
+  `cst_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `cst_ep_ref` varchar(100) NOT NULL,
+  `cst_desc` text NOT NULL,
+  `cst_hts` varchar(15) NOT NULL,
+  `cst_weight` smallint(5) NOT NULL,
+  `cst_qty` smallint(5) NOT NULL,
+  `cst_value` double(8,2) NOT NULL,
+  `cst_shp_id` bigint(20) unsigned NOT NULL,
+  `cst_invoice_id` bigint(20) unsigned NOT NULL,
+  PRIMARY KEY (`cst_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+
+--
+-- Dumping data for table `sd_customs`
+--
+
+INSERT INTO `sd_customs` (`cst_id`, `cst_ep_ref`, `cst_desc`, `cst_hts`, `cst_weight`, `cst_qty`, `cst_value`, `cst_shp_id`, `cst_invoice_id`) VALUES
+(1, '', 'Test1', '123456', 3, 2, 5.00, 38, 0),
+(2, '', 'Test2', '456789', 4, 3, 11.00, 38, 0),
+(3, '', 'Test1', '123456', 3, 2, 5.00, 39, 0),
+(4, '', 'Test2', '456789', 4, 3, 11.00, 39, 0),
+(5, 'cstitem_5117afa7a62640c68eaa07efcb1ac080', 'Test1', '123456', 3, 2, 5.00, 40, 0),
+(6, 'cstitem_73158cc3d8c046b8a37dac1cfbdf060d', 'Test2', '456789', 4, 3, 11.00, 40, 0),
+(7, 'cstitem_53617402438d4fad98c8061e5abfacf5', 'Test1', '123456', 18, 2, 10.00, 41, 1),
+(8, 'cstitem_028453c2e4534b5aa527f533cbcbbd1e', 'Test2', '456789', 18, 3, 15.00, 41, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sd_invoices`
+--
+
+CREATE TABLE IF NOT EXISTS `sd_invoices` (
+  `inv_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `inv_tax_id` varchar(25) NOT NULL,
+  `inv_tot` bigint(20) unsigned NOT NULL,
+  `inv_marks` text NOT NULL,
+  `inv_sub_tot` double(8,2) NOT NULL,
+  `inv_misc_desc` varchar(100) NOT NULL,
+  `inv_mist_tot` double(8,2) NOT NULL,
+  `inv_total` double(8,2) NOT NULL,
+  PRIMARY KEY (`inv_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+
+--
+-- Dumping data for table `sd_invoices`
+--
+
+INSERT INTO `sd_invoices` (`inv_id`, `inv_tax_id`, `inv_tot`, `inv_marks`, `inv_sub_tot`, `inv_misc_desc`, `inv_mist_tot`, `inv_total`) VALUES
+(1, '234253226246', 1, 'Test', 65.00, 'Extra', 15.00, 80.00);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `sd_shipments`
 --
 
-DROP TABLE IF EXISTS `sd_shipments`;
 CREATE TABLE IF NOT EXISTS `sd_shipments` (
   `shp_id` bigint(40) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Shipment UniqueID in system',
   `shp_user` int(10) unsigned NOT NULL,
@@ -47964,24 +48017,64 @@ CREATE TABLE IF NOT EXISTS `sd_shipments` (
   `shp_updateat` varchar(45) DEFAULT NULL COMMENT 'Status update datetime',
   `shp_signedby` varchar(100) DEFAULT NULL COMMENT 'The name of the person who signed for the package (if available)',
   `shp_ep_ref` varchar(45) DEFAULT NULL,
+  `shp_scheduled` tinyint(1) NOT NULL DEFAULT '0',
+  `shp_pickupconf` varchar(20) DEFAULT NULL,
+  `shp_pickupid` varchar(50) DEFAULT NULL,
+  `shp_eelpfc` varchar(30) DEFAULT NULL,
   `shp_transno` varchar(45) DEFAULT NULL,
   `shp_gatewayid` varchar(255) DEFAULT NULL,
   `shp_payment` varchar(20) DEFAULT NULL,
   `shp_type` varchar(20) NOT NULL,
+  `shp_notify` text,
   PRIMARY KEY (`shp_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=42 ;
 
 --
 -- Dumping data for table `sd_shipments`
 --
 
-INSERT INTO `sd_shipments` (`shp_id`, `shp_user`, `shp_from`, `shp_to`, `shp_rate`, `shp_date`, `shp_trackingcode`, `shp_labelurl`, `shp_length`, `shp_width`, `shp_height`, `shp_weight`, `shp_desc`, `shp_quantity`, `shp_value`, `shp_estdate`, `shp_status`, `shp_updateat`, `shp_signedby`, `shp_ep_ref`, `shp_transno`, `shp_gatewayid`, `shp_payment`, `shp_type`) VALUES
-(1, 1, 2, 3, 24.95, '2015-12-17', 'EZ1000000001', 'http://assets.geteasypost.com/postage_labels/labels/20151217/bfa8e4c3df4a462d995a6fc702addc9f.png', 2.00, 3.00, 2.00, 23.00, 'Testing', 1, 100.00, NULL, NULL, NULL, NULL, 'pl_2c084ef7d9c64a709dfbb203c05c8556', NULL, 'buyer@finan.cl', 'Pending', 'document'),
-(2, 1, 2, 3, 24.95, '2016-01-05', 'EZ1000000001', 'http://assets.geteasypost.com/postage_labels/labels/20160105/c53875d7bd464d3bb3446667455d1f07.png', 2.00, 3.00, 4.00, 5.00, 'Test', 1, 10.00, '', NULL, NULL, NULL, 'pl_3d3b4becac464f729958c73673b3c1e9', '0PE588271N3574833', 'buyer@finan.cl', 'Completed', 'document'),
-(3, 1, 2, 3, 24.95, '2016-01-05', 'EZ1000000001', 'http://assets.geteasypost.com/postage_labels/labels/20160105/ffb0e566005c495894f9af0f45c3cb58.png', 3.00, 4.00, 5.00, 6.00, 'Testing', 1, 10.00, NULL, NULL, NULL, NULL, 'shp_09859bdeeb2746669b91dcf25fe4b7e3', '17247949PW7382401', 'buyer@finan.cl', 'Invalid', 'document'),
-(4, 1, 2, 3, 0.00, '2016-01-05', NULL, NULL, 2.00, 3.00, 4.00, 5.00, 'Test', 2, 20.00, NULL, NULL, NULL, NULL, 'shp_6fa7882ecfec4be7b06e7e9b9df88166', NULL, NULL, NULL, 'parcel'),
-(5, 1, 2, 3, 40.24, '2016-01-05', NULL, NULL, 2.00, 3.00, 4.00, 5.00, 'Test', 2, 20.00, NULL, NULL, NULL, NULL, 'shp_c26a77fec2ed4020b0507d3d1c1ce63f', NULL, NULL, NULL, 'parcel'),
-(6, 1, 2, 3, 40.24, '2016-01-05', 'EZ1000000001', 'http://assets.geteasypost.com/postage_labels/labels/20160105/047d5a5f577a4e2fa7e0cfcde9872733.png', 2.00, 3.00, 4.00, 5.00, 'Test', 2, 20.00, '', NULL, NULL, NULL, 'pl_4c0061dc5dfc4369904263fe1d98aee1', '43W291244H2670713', 'buyer@finan.cl', 'Completed', 'parcel');
+INSERT INTO `sd_shipments` (`shp_id`, `shp_user`, `shp_from`, `shp_to`, `shp_rate`, `shp_date`, `shp_trackingcode`, `shp_labelurl`, `shp_length`, `shp_width`, `shp_height`, `shp_weight`, `shp_desc`, `shp_quantity`, `shp_value`, `shp_estdate`, `shp_status`, `shp_updateat`, `shp_signedby`, `shp_ep_ref`, `shp_scheduled`, `shp_pickupconf`, `shp_pickupid`, `shp_eelpfc`, `shp_transno`, `shp_gatewayid`, `shp_payment`, `shp_type`, `shp_notify`) VALUES
+(1, 1, 2, 3, 24.95, '2015-12-17', 'EZ1000000001', 'http://assets.geteasypost.com/postage_labels/labels/20151217/bfa8e4c3df4a462d995a6fc702addc9f.png', 2.00, 3.00, 2.00, 23.00, 'Testing', 1, 100.00, NULL, NULL, NULL, NULL, 'pl_2c084ef7d9c64a709dfbb203c05c8556', 0, NULL, NULL, NULL, NULL, 'buyer@finan.cl', 'Pending', 'document', NULL),
+(2, 1, 2, 3, 24.95, '2016-01-05', 'EZ1000000001', 'http://assets.geteasypost.com/postage_labels/labels/20160105/c53875d7bd464d3bb3446667455d1f07.png', 2.00, 3.00, 4.00, 5.00, 'Test', 1, 10.00, '', NULL, NULL, NULL, 'pl_3d3b4becac464f729958c73673b3c1e9', 0, NULL, NULL, NULL, '0PE588271N3574833', 'buyer@finan.cl', 'Completed', 'document', NULL),
+(3, 1, 2, 3, 24.95, '2016-01-05', 'EZ1000000001', 'http://assets.geteasypost.com/postage_labels/labels/20160105/ffb0e566005c495894f9af0f45c3cb58.png', 3.00, 4.00, 5.00, 6.00, 'Testing', 1, 10.00, NULL, NULL, NULL, NULL, 'shp_09859bdeeb2746669b91dcf25fe4b7e3', 0, NULL, NULL, NULL, '17247949PW7382401', 'buyer@finan.cl', 'Invalid', 'document', NULL),
+(4, 1, 2, 3, 0.00, '2016-01-05', NULL, NULL, 2.00, 3.00, 4.00, 5.00, 'Test', 2, 20.00, NULL, NULL, NULL, NULL, 'shp_6fa7882ecfec4be7b06e7e9b9df88166', 0, NULL, NULL, NULL, NULL, NULL, NULL, 'parcel', NULL),
+(5, 1, 2, 3, 40.24, '2016-01-05', NULL, NULL, 2.00, 3.00, 4.00, 5.00, 'Test', 2, 20.00, NULL, NULL, NULL, NULL, 'shp_c26a77fec2ed4020b0507d3d1c1ce63f', 0, NULL, NULL, NULL, NULL, NULL, NULL, 'parcel', NULL),
+(6, 1, 2, 3, 40.24, '2016-01-05', 'EZ1000000001', 'http://assets.geteasypost.com/postage_labels/labels/20160105/047d5a5f577a4e2fa7e0cfcde9872733.png', 2.00, 3.00, 4.00, 5.00, 'Test', 2, 20.00, '', NULL, NULL, NULL, 'pl_4c0061dc5dfc4369904263fe1d98aee1', 0, NULL, NULL, NULL, '43W291244H2670713', 'buyer@finan.cl', 'Completed', 'parcel', NULL),
+(7, 1, 2, 3, 20.12, '2016-01-08', NULL, NULL, 1.00, 2.00, 3.00, 4.00, '1', 1, 10.00, NULL, NULL, NULL, NULL, 'shp_d894cec6f5284d91a9af2aa85830b329', 0, NULL, NULL, NULL, NULL, NULL, NULL, 'parcel', NULL),
+(8, 1, 2, 3, 120.72, '2016-01-08', NULL, NULL, 1.00, 2.00, 3.00, 4.00, '5', 6, 7.00, NULL, NULL, NULL, NULL, 'shp_491c2c5fbe8c454393531d0ee38c0cf5', 0, NULL, NULL, NULL, NULL, NULL, NULL, 'parcel', NULL),
+(9, 1, 2, 3, 24.95, '2016-01-08', NULL, NULL, 1.00, 1.00, 1.00, 1.00, '1', 1, 1.00, NULL, NULL, NULL, NULL, 'shp_8474513e865d462885e2b4b4e7a591bf', 0, NULL, NULL, NULL, NULL, NULL, NULL, 'document', NULL),
+(10, 1, 2, 3, 24.95, '2016-01-08', NULL, NULL, 1.00, 1.00, 1.00, 1.00, '1', 1, 1.00, NULL, NULL, NULL, NULL, 'shp_c6ea8454c4b1490eaa492a495f891f30', 0, NULL, NULL, NULL, NULL, NULL, NULL, 'document', NULL),
+(11, 1, 2, 3, 24.95, '2016-01-08', NULL, NULL, 1.00, 1.00, 1.00, 1.00, '1', 1, 1.00, NULL, NULL, NULL, NULL, 'shp_108bb5e7cde94583983afeccc136ded2', 0, NULL, NULL, NULL, NULL, NULL, NULL, 'document', NULL),
+(12, 1, 2, 3, 24.95, '2016-01-21', NULL, NULL, NULL, NULL, NULL, NULL, 'Test', 1, 20.00, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'document', 'chriskim1975@gmail.com'),
+(13, 1, 2, 3, 24.95, '2016-01-21', NULL, NULL, NULL, NULL, NULL, NULL, 'Test', 1, 20.00, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'document', 'chriskim1975@gmail.com'),
+(14, 1, 2, 3, 24.95, '2016-01-21', NULL, NULL, NULL, NULL, NULL, NULL, 'Test', 1, 20.00, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'document', 'chriskim1975@gmail.com'),
+(15, 1, 2, 3, 24.95, '2016-01-21', NULL, NULL, NULL, NULL, NULL, NULL, 'Test', 1, 20.00, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'document', 'chriskim1975@gmail.com'),
+(16, 1, 2, 3, 24.95, '2016-01-21', NULL, NULL, NULL, NULL, NULL, NULL, 'TEST', 1, 25.00, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'document', 'chriskim1975@gmail.com'),
+(17, 1, 2, 3, 24.95, '2016-01-21', NULL, NULL, NULL, 8.00, NULL, NULL, 'TEST', 1, 25.00, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'document', 'chriskim1975@gmail.com'),
+(18, 1, 2, 3, 24.95, '2016-01-21', NULL, NULL, NULL, 8.00, NULL, NULL, 'TEST', 1, 25.00, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'document', 'chriskim1975@gmail.com'),
+(19, 1, 2, 3, 24.95, '2016-01-21', NULL, NULL, NULL, 8.00, NULL, NULL, 'TEST', 1, 25.00, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'document', 'chriskim1975@gmail.com'),
+(20, 1, 2, 3, 24.95, '2016-01-21', NULL, NULL, NULL, 8.00, NULL, NULL, 'TEST', 1, 25.00, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'document', 'chriskim1975@gmail.com'),
+(21, 1, 2, 3, 24.95, '2016-01-21', NULL, NULL, NULL, 8.00, NULL, NULL, 'TEST', 1, 25.00, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'document', 'chriskim1975@gmail.com'),
+(22, 1, 2, 3, 24.95, '2016-01-21', NULL, NULL, NULL, 8.00, NULL, NULL, 'TEST', 1, 25.00, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'document', 'chriskim1975@gmail.com'),
+(23, 1, 2, 3, 24.95, '2016-01-21', NULL, NULL, NULL, 8.00, NULL, NULL, 'TEST', 1, 25.00, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'document', 'chriskim1975@gmail.com'),
+(24, 1, 2, 3, 24.95, '2016-01-21', NULL, NULL, NULL, 8.00, NULL, NULL, 'TEST', 1, 25.00, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'document', 'chriskim1975@gmail.com'),
+(25, 1, 2, 3, 24.95, '2016-01-21', NULL, NULL, NULL, NULL, NULL, 8.00, 'TEST', 1, 25.00, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'document', 'chriskim1975@gmail.com'),
+(26, 1, 2, 3, 24.95, '2016-01-21', NULL, NULL, NULL, NULL, NULL, 8.00, 'TEST', 1, 25.00, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'document', 'chriskim1975@gmail.com'),
+(27, 1, 2, 3, 24.95, '2016-01-21', NULL, NULL, NULL, NULL, NULL, 8.00, 'TEST', 1, 25.00, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, NULL, NULL, NULL, NULL, 'document', 'chriskim1975@gmail.com'),
+(28, 1, 2, 3, 24.95, '2016-01-21', NULL, NULL, NULL, NULL, NULL, 8.00, 'TEST', 1, 25.00, NULL, NULL, NULL, NULL, 'shp_6ad901afdbf945fba63d2774b7cfd323', 0, NULL, NULL, NULL, NULL, NULL, NULL, 'document', 'chriskim1975@gmail.com'),
+(29, 1, 2, 3, 24.95, '2016-01-21', NULL, NULL, NULL, NULL, NULL, 8.00, 'TEST', 1, 25.00, NULL, NULL, NULL, NULL, 'shp_575a267a6bcc44499f6bc1d080d990b9', 0, NULL, NULL, NULL, NULL, NULL, NULL, 'document', 'chriskim1975@gmail.com'),
+(30, 1, 2, 3, 24.95, '2016-01-22', 'EZ1000000001', 'http://assets.geteasypost.com/postage_labels/labels/20160121/f3b193bfdc5243d7825824272da667f7.png', NULL, NULL, NULL, 8.00, 'TEST', 1, 25.00, '', NULL, NULL, NULL, 'shp_ffd0313352cf4168a3195d4578ec4b0f', 0, '123412', 'pickup_bb83632b7af74e1582973cd351f726ee', NULL, '', 'buyer@finan.cl', 'Completed', 'document', 'chriskim1975@gmail.com'),
+(31, 1, 2, 3, 24.95, '2016-01-22', NULL, NULL, 0.00, 0.00, 0.00, 8.00, 'Test', 1, 20.00, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, '', NULL, NULL, NULL, '', 'chriskim1975@gmail.com'),
+(32, 1, 2, 3, 0.00, '2016-01-23', NULL, NULL, 2.00, 3.00, 4.00, 5.00, 'Test', 1, 100.00, NULL, NULL, NULL, NULL, 'shp_6197fa969a8f4804bbd311e7dd06175e', 0, NULL, NULL, '30.2(d)(2)', NULL, NULL, NULL, 'parcel', 'chriskim1975@gmail.com'),
+(33, 1, 2, 3, 20.12, '2016-01-22', NULL, NULL, 2.00, 3.00, 4.00, 5.00, 'Test', 1, 100.00, NULL, NULL, NULL, NULL, 'shp_48b9efb3b35346b18703b5fcbaf02339', 0, NULL, NULL, '30.2(d)(2)', NULL, NULL, NULL, 'parcel', 'chriskim1975@gmail.com'),
+(34, 1, 2, 3, 0.00, '2016-02-08', NULL, NULL, 6.00, 4.00, 5.00, 18.00, 'Test', 1, 43.00, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, '78965423165192', NULL, NULL, NULL, 'parcel', 'chriskim1975@gmail.com,vimal14569@gmail.com'),
+(35, 1, 2, 3, 20.12, '2016-02-08', NULL, NULL, 6.00, 4.00, 5.00, 18.00, 'Test', 1, 43.00, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, '78965423165192', NULL, NULL, NULL, 'parcel', 'chriskim1975@gmail.com,vimal14569@gmail.com'),
+(36, 1, 2, 3, 20.12, '2016-02-08', NULL, NULL, 6.00, 4.00, 5.00, 18.00, 'Test', 1, 43.00, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, '78965423165192', NULL, NULL, NULL, 'parcel', 'chriskim1975@gmail.com,vimal14569@gmail.com'),
+(37, 1, 2, 3, 20.12, '2016-02-08', NULL, NULL, 6.00, 4.00, 5.00, 18.00, 'Test', 1, 43.00, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, '78965423165192', NULL, NULL, NULL, 'parcel', 'chriskim1975@gmail.com,vimal14569@gmail.com'),
+(38, 1, 2, 3, 20.12, '2016-02-08', NULL, NULL, 6.00, 4.00, 5.00, 18.00, 'Test', 1, 43.00, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, '78965423165192', NULL, NULL, NULL, 'parcel', 'chriskim1975@gmail.com,vimal14569@gmail.com'),
+(39, 1, 2, 3, 20.12, '2016-02-08', NULL, NULL, 6.00, 4.00, 5.00, 18.00, 'Test', 1, 43.00, NULL, NULL, NULL, NULL, NULL, 0, NULL, NULL, '78965423165192', NULL, NULL, NULL, 'parcel', 'chriskim1975@gmail.com,vimal14569@gmail.com'),
+(40, 1, 2, 3, 20.12, '2016-02-08', 'EZ1000000001', 'http://assets.geteasypost.com/postage_labels/labels/20160208/99c3dd5aac9b437ab31c0aa8b54fab5a.png', 6.00, 4.00, 5.00, 18.00, 'Test', 1, 43.00, '', NULL, NULL, NULL, 'shp_33e1dfbec4444ea4b4c5f55700f0d6f7', 0, NULL, NULL, '78965423165192', '', 'buyer@finan.cl', 'Completed', 'parcel', 'chriskim1975@gmail.com,vimal14569@gmail.com'),
+(41, 1, 2, 3, 23.48, '2016-02-19', 'EZ1000000001', 'http://assets.geteasypost.com/postage_labels/labels/20160219/aa6de73846d14c89b39e8febb3c3477a.png', 2.00, 3.00, 2.00, 36.00, 'Test', 1, 65.00, '', NULL, NULL, NULL, 'shp_bb0e4b64e7614c919f850ccea7d8573e', 0, NULL, NULL, '30.40(a)', '', 'buyer@finan.cl', 'Completed', 'parcel', 'vimal14569@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -47989,7 +48082,6 @@ INSERT INTO `sd_shipments` (`shp_id`, `shp_user`, `shp_from`, `shp_to`, `shp_rat
 -- Table structure for table `sd_state`
 --
 
-DROP TABLE IF EXISTS `sd_state`;
 CREATE TABLE IF NOT EXISTS `sd_state` (
   `state_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `state_name` varchar(60) NOT NULL,
@@ -52126,10 +52218,42 @@ INSERT INTO `sd_state` (`state_id`, `state_name`, `state_cnt_id`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `sd_tradeterms`
+--
+
+CREATE TABLE IF NOT EXISTS `sd_tradeterms` (
+  `tt_id` smallint(5) unsigned NOT NULL AUTO_INCREMENT,
+  `tt_name` varchar(50) NOT NULL,
+  PRIMARY KEY (`tt_id`),
+  UNIQUE KEY `tt_name` (`tt_name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=15 ;
+
+--
+-- Dumping data for table `sd_tradeterms`
+--
+
+INSERT INTO `sd_tradeterms` (`tt_id`, `tt_name`) VALUES
+(1, 'CFR - Cost & Freight'),
+(2, 'CIF - Cost, Insurance'),
+(3, 'CIP - Carriage & Insurance Paid To'),
+(4, 'CPT - Carriage Paid To'),
+(5, 'DAF - Delivered At Frontier'),
+(6, 'DAP - Delivered at Place'),
+(7, 'DAT - Delivered at Terminal'),
+(8, 'DDP - Deliver Duty Paid'),
+(9, 'DDU - Deliver Duty Unpaid'),
+(10, 'DEQ - Delivered Ex Quay'),
+(11, 'Eax - Ex Works'),
+(12, 'FAS - Free Alongside Ship'),
+(13, 'FCA - Free Carrier'),
+(14, 'FOB - Free on Board');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `sd_users`
 --
 
-DROP TABLE IF EXISTS `sd_users`;
 CREATE TABLE IF NOT EXISTS `sd_users` (
   `user_id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Unique UserID for join with other tables',
   `user_email` varchar(255) NOT NULL COMMENT 'Email address which will be used for login',
@@ -52155,7 +52279,6 @@ INSERT INTO `sd_users` (`user_id`, `user_email`, `user_pass`, `user_name`, `veri
 -- Table structure for table `sd_user_addr`
 --
 
-DROP TABLE IF EXISTS `sd_user_addr`;
 CREATE TABLE IF NOT EXISTS `sd_user_addr` (
   `ua_id` bigint(40) unsigned NOT NULL AUTO_INCREMENT,
   `ua_user_id` int(11) DEFAULT NULL,

@@ -1,181 +1,190 @@
-<div class="row">
-    <div id="resmodify"></div>
-    <div class="col-xs-12 text-center">
-        <a role="button" href="#model-addr" id="btnadd" class="btn btn-primary" data-toggle="modal">Add</a> |
-        <button id="btnedit" class="btn btn-primary" disabled="disabled">Edit</button> |
-        <button id="btndelete" class="btn btn-primary" disabled="disabled">Delete</button> |
-        <button id="btnimport" class="btn btn-primary">Import</button> |
-        <a role="button" id="btnexport" class="btn btn-primary" href="<?=site_url('user/export_addr');?>">Export CSV</a> |
-        <button id="btnrall" class="btn btn-primary">Remove All</button>
-    </div>
-</div>
-<table id="tbladdr">
-    <thead>
-    <tr>
-        <th class="never">ID</th>
-        <th class="all">Address Name</th>
-        <th>Contact Name</th>
-        <th>Street 1</th>
-        <th>Street 2</th>
-        <th>City</th>
-        <th>State</th>
-        <th>Country</th>
-        <th>Zipcode</th>
-        <th>Phone</th>
-        <th>Type</th>
-        <th>Email</th>
-    </tr>
-    </thead>
-    <tfoot>
-    <tr>
-        <th>ID</th>
-        <th>Address Name</th>
-        <th>Contact Name</th>
-        <th>Street 1</th>
-        <th>Street 2</th>
-        <th>City</th>
-        <th>State</th>
-        <th>Country</th>
-        <th>Zipcode</th>
-        <th>Phone</th>
-        <th>Type</th>
-        <th>Email</th>
-    </tr>
-    </tfoot>
-</table>
-
-<div class="modal fade" id="model-addr" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <?php echo form_open('user/updateaddr',array('class' => 'form-group','id' => 'frmaddr'));?>
-            <input type="hidden" name="hidadrid" id="hidadrid" value=""/>
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    <i class="fa fa-close"></i>
-                </button>
-                <h4 class="modal-title" id="myModalLabel">
-                    Address Entry
-                </h4>
+<div id="registe-new">
+    <center><h2>Address book</h2></center>
+    <div class="container">
+        <div class="row">
+            <div id="resmodify"></div>
+            <div class="col-xs-12 text-center">
+                <a role="button" href="#model-addr" id="btnadd" class="btn btn-primary" data-toggle="modal">Add</a> |
+                <button id="btnedit" class="btn btn-primary" disabled="disabled">Edit</button> |
+                <button id="btndelete" class="btn btn-primary" disabled="disabled">Delete</button> |
+                <button id="btnimport" class="btn btn-primary">Import</button> |
+                <a role="button" id="btnexport" class="btn btn-primary" href="<?=site_url('user/export_addr');?>">Export CSV</a> |
+                <button id="btnrall" class="btn btn-primary">Remove All</button>
             </div>
-            <div class="modal-body">
-                <div id="update_res"></div>
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group required">
-                            <label class="control-label">Name your address</label>
-                            <div class="col-xs-12"><input type="text" class="form-control" name="txtname" id="txtname" placeholder="Name your address" required/></div>
+        </div>
+        <table id="tbladdr">
+            <thead>
+            <tr>
+                <th class="never">ID</th>
+                <th class="all">Address Name</th>
+                <th>Contact Name</th>
+                <th>Street 1</th>
+                <th>Street 2</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Country</th>
+                <th>Zipcode</th>
+                <th>Phone</th>
+                <th>Type</th>
+                <th>Email</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <th>ID</th>
+                <th>Address Name</th>
+                <th>Contact Name</th>
+                <th>Street 1</th>
+                <th>Street 2</th>
+                <th>City</th>
+                <th>State</th>
+                <th>Country</th>
+                <th>Zipcode</th>
+                <th>Phone</th>
+                <th>Type</th>
+                <th>Email</th>
+            </tr>
+            </tfoot>
+        </table>
+
+        <div class="modal fade" id="model-addr" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <?php echo form_open('user/updateaddr',array('class' => 'form-group','id' => 'frmaddr'));?>
+                    <input type="hidden" name="hidadrid" id="hidadrid" value=""/>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            <i class="fa fa-close"></i>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            Address Entry
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="update_res"></div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group required">
+                                    <label class="control-label">Name your address</label>
+                                    <div class="col-xs-12"><input type="text" class="form-control" name="txtname" id="txtname" placeholder="Name your address" required/></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group required">
+                                    <label class="control-label">Contact Name</label>
+                                    <div class="col-xs-12"><input type="text" class="form-control" name="txtcontact" id="txtcontact" placeholder="Contact Person Name" required/></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group required">
+                                    <label class="control-label">Street 1</label>
+                                    <div class="col-xs-12"><input type="text" class="form-control" name="txtstr1" id="txtstr1" placeholder="Street Address 1" required/></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group">
+                                    <label class="control-label">Street 2</label>
+                                    <div class="col-xs-12"><input type="text" class="form-control" name="txtstr2" id="txtstr2" placeholder="Street Address 2"/></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="form-group required">
+                                    <label class="control-label">Zipcode</label>
+                                    <div class="col-xs-12"><input type="number" class="form-control" name="txtzip" id="txtzip" placeholder="Zipcode" max="999999" required/></div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="form-group">
+                                    <label class="control-label">Country</label>
+                                    <div class="col-xs-12"><?php
+                                        $attributes = ' id = "txtcountry" name="txtcountry" class="form-control"';
+                                        echo form_dropdown('txtcountry',$country,set_value('txtcountry'),$attributes);?></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="form-group required">
+                                    <label class="control-label">State</label>
+                                    <div class="col-xs-12">
+                                        <select id="txtstate" name="txtstate" class="form-control">
+                                            <option value="">Select State</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="form-group required">
+                                    <label class="control-label">City</label>
+                                    <div class="col-xs-12">
+                                        <select id="txtcity" name="txtcity" class="form-control">
+                                            <option value="">Select City</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group required">
+                                    <label class="control-label">Phone</label>
+                                    <div class="col-xs-12">
+                                        <input type="number" class="form-control" name="txtphone" id="txtphone" value="<?=set_value('txtphone')?>">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                <div class="form-group required">
+                                    <label class="control-label">Email</label>
+                                    <div class="col-xs-12">
+                                        <input type="email" class="form-control" name="txtemail" id="txtemail">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="form-group required">
+                                    <label class="control-label">Address Type</label>
+                                    <div class="col-xs-12">
+                                        <select id="txttype" name="txttype" class="form-control">
+                                            <option value="Sender">Sender</option>
+                                            <option value="Receiver">Receiver</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="form-group">
+                                    <div class="col-xs-12">
+                                        <input type="checkbox" name="isdefault" id="isdefault" value="1"/> Make this default
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group required">
-                            <label class="control-label">Contact Name</label>
-                            <div class="col-xs-12"><input type="text" class="form-control" name="txtcontact" id="txtcontact" placeholder="Contact Person Name" required/></div>
-                        </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary" id="btnsave" name="btnsave" value="Save" />
                     </div>
+                    <?php echo form_close();?>
                 </div>
 
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group required">
-                            <label class="control-label">Street 1</label>
-                            <div class="col-xs-12"><input type="text" class="form-control" name="txtstr1" id="txtstr1" placeholder="Street Address 1" required/></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group">
-                            <label class="control-label">Street 2</label>
-                            <div class="col-xs-12"><input type="text" class="form-control" name="txtstr2" id="txtstr2" placeholder="Street Address 2"/></div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                        <div class="form-group required">
-                            <label class="control-label">Zipcode</label>
-                            <div class="col-xs-12"><input type="number" class="form-control" name="txtzip" id="txtzip" placeholder="Zipcode" max="999999" required/></div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                        <div class="form-group">
-                            <label class="control-label">Country</label>
-                            <div class="col-xs-12"><?php
-                            $attributes = ' id = "txtcountry" name="txtcountry" class="form-control"';
-                            echo form_dropdown('txtcountry',$country,set_value('txtcountry'),$attributes);?></div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                        <div class="form-group required">
-                            <label class="control-label">State</label>
-                            <div class="col-xs-12">
-                                <select id="txtstate" name="txtstate" class="form-control">
-                                    <option value="">Select State</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                        <div class="form-group required">
-                            <label class="control-label">City</label>
-                            <div class="col-xs-12">
-                                <select id="txtcity" name="txtcity" class="form-control">
-                                    <option value="">Select City</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group required">
-                            <label class="control-label">Phone</label>
-                            <div class="col-xs-12">
-                                <input type="number" class="form-control" name="txtphone" id="txtphone" value="<?=set_value('txtphone')?>">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                        <div class="form-group required">
-                            <label class="control-label">Email</label>
-                            <div class="col-xs-12">
-                                <input type="email" class="form-control" name="txtemail" id="txtemail">
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                        <div class="form-group required">
-                            <label class="control-label">Address Type</label>
-                            <div class="col-xs-12">
-                                <select id="txttype" name="txttype" class="form-control">
-                                    <option value="Sender">Sender</option>
-                                    <option value="Receiver">Receiver</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                        <div class="form-group">
-                            <div class="col-xs-12">
-                                <input type="checkbox" name="isdefault" id="isdefault" value="1"/> Make this default
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-            <div class="modal-footer">
-                <input type="submit" class="btn btn-primary" id="btnsave" name="btnsave" value="Save" />
-            </div>
-            <?php echo form_close();?>
+
         </div>
 
     </div>
-
 </div>
+
+
+
 
 
 <?php $this->load->view('scripts');?>

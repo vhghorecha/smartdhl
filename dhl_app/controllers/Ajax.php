@@ -27,7 +27,7 @@ class Ajax extends CI_Controller {
                     'numeric' => 'Please select country',
                 )
             ),
-            array(
+            /*array(
                 'field' => 'item_type',
                 'label' => 'Item Type',
                 'rules' => 'required',
@@ -57,7 +57,8 @@ class Ajax extends CI_Controller {
             $weight = $this->input->post('txtweight');
             $country = $this->input->post('txtrcountry');
             $reg_code = $this->address_model->get_reg_code_from_country($country);
-            $item_type = $this->input->post('item_type');
+            //$item_type = $this->input->post('item_type');
+            $item_type = 'document';
             //$noitem = intval($this->input->post('noitem'));
             $noitem = 1;
             $result = $this->shipping_model->get_rate($reg_code,$item_type,$noitem,$weight);

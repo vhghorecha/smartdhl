@@ -1,87 +1,95 @@
-<div class="row">
-    <?php if(!empty($error)) { ?>
-        <div class="col-sm-12">
-            <div class="alert alert-danger alert-dismissable">
-                <button contenteditable="false" type="button" class="close" data-dismiss="alert"
-                        aria-hidden="true"><i class="fa fa-close"></i></button>
-                <?=$error?>
+<div id="registe-new">
+    <center><h2>Histroy</h2></center>
+        <div class="container">
+            <div class="row">
+                <?php if(!empty($error)) { ?>
+                    <div class="col-sm-12">
+                        <div class="alert alert-danger alert-dismissable">
+                            <button contenteditable="false" type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true"><i class="fa fa-close"></i></button>
+                            <?=$error?>
+                        </div>
+                    </div>
+                <?php } ?>
+                <?php if(!empty($message)) { ?>
+                    <div class="col-sm-12">
+                        <div class="alert alert-success alert-dismissable">
+                            <button contenteditable="false" type="button" class="close" data-dismiss="alert"
+                                    aria-hidden="true"><i class="fa fa-close"></i></button>
+                            <?=$message?>
+                        </div>
+                    </div>
+                <?php } ?>
+                <div id="resmodify"></div>
+                <div class="col-xs-12 text-center">
+                    <button id="btnviewship" class="btn btn-primary" disabled="disabled" data-remote="false" data-toggle="modal" data-target="#detmodal">View Details</button> |
+                    <button id="btnviewlabel" class="btn btn-primary" disabled="disabled">View Airbill</button> |
+                    <button id="btntrack" class="btn btn-primary" disabled="disabled">Track</button> |
+                    <button id="btnvoid" class="btn btn-primary" disabled="disabled">Void</button> |
+                    <button id="btnpickup" class="btn btn-primary" disabled="disabled">Schedule Pickup</button> |
+                    <button id="btninvoice" class="btn btn-primary" disabled="disabled">Invoice</button> |
+                    <button id="btnviewlabel_shipment" class="btn btn-primary" disabled="disabled">View Label</button> |
+                    <a role="button" id="btnexport" class="btn btn-primary" href="<?=site_url('user/export_ships');?>">Export CSV</a> |
+                    <a role="button" id="btnprint" class="btn btn-primary" href="<?=site_url('user/print_ships');?>" target="_blank">Print</a>
+                    <a href="" id="trackurl" target="_blank"></a>
+                </div>
             </div>
-        </div>
-    <?php } ?>
-    <?php if(!empty($message)) { ?>
-        <div class="col-sm-12">
-            <div class="alert alert-success alert-dismissable">
-                <button contenteditable="false" type="button" class="close" data-dismiss="alert"
-                        aria-hidden="true"><i class="fa fa-close"></i></button>
-                <?=$message?>
-            </div>
-        </div>
-    <?php } ?>
-    <div id="resmodify"></div>
-    <div class="col-xs-12 text-center">
-        <button id="btnviewship" class="btn btn-primary" disabled="disabled" data-remote="false" data-toggle="modal" data-target="#detmodal">View Details</button> |
-        <button id="btnviewlabel" class="btn btn-primary" disabled="disabled">View Airbill</button> |
-        <button id="btntrack" class="btn btn-primary" disabled="disabled">Track</button> |
-        <button id="btnvoid" class="btn btn-primary" disabled="disabled">Void</button> |
-        <button id="btnpickup" class="btn btn-primary" disabled="disabled">Schedule Pickup</button> |
-        <button id="btninvoice" class="btn btn-primary" disabled="disabled">Invoice</button> |
-        <button id="btnviewlabel_shipment" class="btn btn-primary" disabled="disabled">View Label</button> |
-        <a role="button" id="btnexport" class="btn btn-primary" href="<?=site_url('user/export_ships');?>">Export CSV</a> |
-        <a role="button" id="btnprint" class="btn btn-primary" href="<?=site_url('user/print_ships');?>" target="_blank">Print</a>
-        <a href="" id="trackurl" target="_blank"></a>
-    </div>
-</div>
-<table id="tbltrans">
-    <thead>
-    <tr>
-        <th class="all">ID</th>
-        <th class="all">Reference No</th>
-        <th>Sender</th>
-        <th>Receiver</th>
-        <th>Date</th>
-        <th>Rate</th>
-        <th>Tracking Code</th>
-        <th>Delivery Date</th>
-        <th>Status</th>
-        <th>Signed By</th>
-        <th>Type</th>
-        <th>Payment Status</th>
-    </tr>
-    </thead>
-    <tfoot>
-    <tr>
-        <th class="all">ID</th>
-        <th class="all">Reference No</th>
-        <th>Sender</th>
-        <th>Receiver</th>
-        <th>Date</th>
-        <th>Rate</th>
-        <th>Tracking Code</th>
-        <th>Delivery Date</th>
-        <th>Status</th>
-        <th>Signed By</th>
-        <th>Type</th>
-        <th>Payment Status</th>
-    </tr>
-    </tfoot>
-</table>
-<!-- Default bootstrap modal example -->
-<div class="modal fade" id="detmodal" tabindex="-1" role="dialog" aria-labelledby="delmodallabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Shipment Details</h4>
-            </div>
-            <div class="modal-body">
+            <table id="tbltrans">
+                <thead>
+                <tr>
+                    <th class="all">ID</th>
+                    <th class="all">Reference No</th>
+                    <th>Sender</th>
+                    <th>Receiver</th>
+                    <th>Date</th>
+                    <th>Rate</th>
+                    <th>Tracking Code</th>
+                    <th>Delivery Date</th>
+                    <th>Status</th>
+                    <th>Signed By</th>
+                    <th>Type</th>
+                    <th>Payment Status</th>
+                </tr>
+                </thead>
+                <tfoot>
+                <tr>
+                    <th class="all">ID</th>
+                    <th class="all">Reference No</th>
+                    <th>Sender</th>
+                    <th>Receiver</th>
+                    <th>Date</th>
+                    <th>Rate</th>
+                    <th>Tracking Code</th>
+                    <th>Delivery Date</th>
+                    <th>Status</th>
+                    <th>Signed By</th>
+                    <th>Type</th>
+                    <th>Payment Status</th>
+                </tr>
+                </tfoot>
+            </table>
+            <!-- Default bootstrap modal example -->
+            <div class="modal fade" id="detmodal" tabindex="-1" role="dialog" aria-labelledby="delmodallabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Shipment Details</h4>
+                        </div>
+                        <div class="modal-body">
 
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            </div>
-        </div>
-    </div>
+         </div>
 </div>
+
+
+
 <?php $this->load->view('scripts');?>
 <script type="text/javascript">
     var selID = 0;

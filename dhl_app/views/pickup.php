@@ -1,125 +1,133 @@
-<div class="row">
-        <div class="col-xs-12">
-            <div class="panel panel-primary">
-                <div class="panel-heading">Update Pickup Information</div>
-                <div class="panel-body">
-                    <?php echo form_open(current_url(),array('class' => 'form-group','id' => 'frmpickup'));?>
-                    <?php if(!empty($error)) { ?>
-                        <div class="col-sm-12">
-                            <div class="alert alert-danger alert-dismissable">
-                                <button contenteditable="false" type="button" class="close" data-dismiss="alert"
-                                        aria-hidden="true"><i class="fa fa-close"></i></button>
-                                <?=$error?>
+<div id="registe-new">
+    <center><h2>Pickup Information</h2></center>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">Update Pickup Information</div>
+                    <div class="panel-body">
+                        <?php echo form_open(current_url(),array('class' => 'form-group','id' => 'frmpickup'));?>
+                        <?php if(!empty($error)) { ?>
+                            <div class="col-sm-12">
+                                <div class="alert alert-danger alert-dismissable">
+                                    <button contenteditable="false" type="button" class="close" data-dismiss="alert"
+                                            aria-hidden="true"><i class="fa fa-close"></i></button>
+                                    <?=$error?>
+                                </div>
                             </div>
-                        </div>
-                    <?php } ?>
-                    <div class="col-sm-6 col-xs-12">
-                        <div class="col-xs-12">
-                            <div class="col-xs-4 text-right"><label class="control-label" for="selfromaddr">Address from Address Book</label></div>
-                            <div class="col-xs-8"><?php
-                                $attributes = ' id = "selfromaddr" name="selfromaddr" class="form-control input-sm"';
-                                echo form_dropdown('selfromaddr',$fromaddr,set_value('selfromaddr'),$attributes);?></div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
-                            <div class="col-xs-4 text-right"><label class="control-label" for="txtsname">Address Name</label></div>
-                            <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtsname" id="txtsname" value="<?=set_value('txtsname')?>"></div>
-                        </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
-                            <div class="col-xs-4 text-right"><label class="control-label" for="txtscontact">Contact name</label></div>
-                            <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtscontact" id="txtscontact" value="<?=set_value('txtscontact')?>"></div>
-                        </div>
-
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
-                            <div class="col-xs-4 text-right"><label class="control-label" for="txtsstr1">Street 1</label></div>
-                            <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtsstr1" id="txtsstr1" value="<?=set_value('txtsstr1')?>"></div>
-                        </div>
-
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group">
-                            <div class="col-xs-4 text-right"><label class="control-label" for="txtsstr2">Street 2</label></div>
-                            <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtsstr2" id="txtsstr2" value="<?=set_value('txtsstr2')?>"></div>
-                        </div>
-
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
-                            <div class="col-xs-4 text-right"><label class="control-label" for="txtszip">Zip code</label></div>
-                            <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtszip" id="txtszip" value="<?=set_value('txtszip')?>"></div>
-                        </div>
-
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
-                            <div class="col-xs-4 text-right"><label class="control-label" for="country">Country</label></div>
-                            <div class="col-xs-8"><?php
-                                $attributes = ' id = "txtscountry" name="txtscountry" class="form-control input-sm"';
-                                echo form_dropdown('txtscountry',$scountry,set_value('txtscountry'),$attributes);?></div>
-                        </div>
-
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
-                            <div class="col-xs-4 text-right"><label class="control-label" for="txtsstate">State</label></div>
-                            <div class="col-xs-8">
-                                <select id="txtsstate" name="txtsstate" class="form-control input-sm">
-                                    <option value="">Select State</option>
-                                </select>
+                        <?php } ?>
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="col-xs-12">
+                                <div class="col-xs-4 text-right"><label class="control-label" for="selfromaddr">Address from Address Book</label></div>
+                                <div class="col-xs-8"><?php
+                                    $attributes = ' id = "selfromaddr" name="selfromaddr" class="form-control input-sm"';
+                                    echo form_dropdown('selfromaddr',$fromaddr,set_value('selfromaddr'),$attributes);?></div>
                             </div>
-                        </div>
-
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
-                            <div class="col-xs-4 text-right"><label class="control-label" for="txtscity">City</label></div>
-                            <div class="col-xs-8">
-                                <select id="txtscity" name="txtscity" class="form-control input-sm">
-                                    <option value="">Select city</option>
-                                </select>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
+                                <div class="col-xs-4 text-right"><label class="control-label" for="txtsname">Address Name</label></div>
+                                <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtsname" id="txtsname" value="<?=set_value('txtsname')?>"></div>
                             </div>
-                        </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
+                                <div class="col-xs-4 text-right"><label class="control-label" for="txtscontact">Contact name</label></div>
+                                <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtscontact" id="txtscontact" value="<?=set_value('txtscontact')?>"></div>
+                            </div>
 
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
-                            <div class="col-xs-4 text-right"><label class="control-label" for="txtsphone">Phone</label></div>
-                            <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtsphone" id="txtsphone" value="<?=set_value('txtsphone')?>"></div>
-                        </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
+                                <div class="col-xs-4 text-right"><label class="control-label" for="txtsstr1">Street 1</label></div>
+                                <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtsstr1" id="txtsstr1" value="<?=set_value('txtsstr1')?>"></div>
+                            </div>
 
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
-                            <div class="col-xs-4 text-right"><label class="control-label" for="txtsemail">Email</label></div>
-                            <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtsemail" id="txtsemail" value="<?=set_value('txtsemail')?>"></div>
-                        </div>
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group">
+                                <div class="col-xs-4 text-right"><label class="control-label" for="txtsstr2">Street 2</label></div>
+                                <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtsstr2" id="txtsstr2" value="<?=set_value('txtsstr2')?>"></div>
+                            </div>
 
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            <div class="form-group">
-                                <div class="col-xs-12">
-                                    <input type="checkbox" name="savesaddr" id="savesaddr" value="1"/> Save this address
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
+                                <div class="col-xs-4 text-right"><label class="control-label" for="txtszip">Zip code</label></div>
+                                <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtszip" id="txtszip" value="<?=set_value('txtszip')?>"></div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
+                                <div class="col-xs-4 text-right"><label class="control-label" for="country">Country</label></div>
+                                <div class="col-xs-8"><?php
+                                    $attributes = ' id = "txtscountry" name="txtscountry" class="form-control input-sm"';
+                                    echo form_dropdown('txtscountry',$scountry,set_value('txtscountry'),$attributes);?></div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
+                                <div class="col-xs-4 text-right"><label class="control-label" for="txtsstate">State</label></div>
+                                <div class="col-xs-8">
+                                    <select id="txtsstate" name="txtsstate" class="form-control input-sm">
+                                        <option value="">Select State</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
+                                <div class="col-xs-4 text-right"><label class="control-label" for="txtscity">City</label></div>
+                                <div class="col-xs-8">
+                                    <select id="txtscity" name="txtscity" class="form-control input-sm">
+                                        <option value="">Select city</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
+                                <div class="col-xs-4 text-right"><label class="control-label" for="txtsphone">Phone</label></div>
+                                <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtsphone" id="txtsphone" value="<?=set_value('txtsphone')?>"></div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 form-group required">
+                                <div class="col-xs-4 text-right"><label class="control-label" for="txtsemail">Email</label></div>
+                                <div class="col-xs-8"><input type="text" class="form-control input-sm" name="txtsemail" id="txtsemail" value="<?=set_value('txtsemail')?>"></div>
+                            </div>
+
+                            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
+                                <div class="form-group">
+                                    <div class="col-xs-12">
+                                        <input type="checkbox" name="savesaddr" id="savesaddr" value="1"/> Save this address
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-sm-6 col-xs-12">
-                        <div class="col-xs-4 text-right"><label class="control-label" for="txtrtime">Ready Time</label></div>
-                        <div class="col-xs-8">
-                            <div class="input-group clockpicker">
-                                <input type="text" id="txtrtime" name="txtrtime" class="form-control" value="<?=set_value('txtrtime')?>">
+                        <div class="col-sm-6 col-xs-12">
+                            <div class="col-xs-4 text-right"><label class="control-label" for="txtrtime">Ready Time</label></div>
+                            <div class="col-xs-8">
+                                <div class="input-group clockpicker">
+                                    <input type="text" id="txtrtime" name="txtrtime" class="form-control" value="<?=set_value('txtrtime')?>">
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-time"></span>
                                 </span>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-xs-4 text-right"><label class="control-label" for="txtctime">Close Time</label></div>
-                        <div class="col-xs-8">
-                            <div class="input-group clockpicker">
-                                <input type="text" id="txtctime" name="txtctime" class="form-control" value="<?=set_value('txtctime')?>">
+                            <div class="col-xs-4 text-right"><label class="control-label" for="txtctime">Close Time</label></div>
+                            <div class="col-xs-8">
+                                <div class="input-group clockpicker">
+                                    <input type="text" id="txtctime" name="txtctime" class="form-control" value="<?=set_value('txtctime')?>">
                                 <span class="input-group-addon">
                                     <span class="glyphicon glyphicon-time"></span>
                                 </span>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 text-right"><label class="control-label" for="txtins">Instructions</label></div>
+                            <div class="col-xs-8">
+                                <textarea class="form-control input-sm" id="txtins" name="txtins" placeholder="Special Instructions" style="resize: none;" rows="3"><?=set_value('txtins')?></textarea>
+                            </div>
+                            <div class="col-xs-12 text-right">
+                                <!--<input type="submit" class="btn btn-danger btn-large" name="btnschedule" value="Schedule" />-->
+                                <button  type="submit" class="btn btn-danger btn-large" name="btnschedule" value="Schedule">Schedule</button>
                             </div>
                         </div>
-                        <div class="col-xs-4 text-right"><label class="control-label" for="txtins">Instructions</label></div>
-                        <div class="col-xs-8">
-                            <textarea class="form-control input-sm" id="txtins" name="txtins" placeholder="Special Instructions" style="resize: none;" rows="3"><?=set_value('txtins')?></textarea>
-                        </div>
-                        <div class="col-xs-12 text-right">
-                            <input type="submit" class="btn btn-danger btn-large" name="btnschedule" value="Schedule" />
-                        </div>
+                        <?php echo form_close();?>
                     </div>
-                    <?php echo form_close();?>
                 </div>
             </div>
         </div>
     </div>
+     </div>
 </div>
+
+
 <?php $this->load->view('scripts');?>
 <script type="text/javascript">
     $(document).ready(function(){

@@ -1,87 +1,94 @@
-<div class="row">
-    <div id="resmodify"></div>
-    <div class="col-xs-12 text-center">
-        <a role="button" href="#model-addr" id="btnadd" class="btn btn-primary" data-toggle="modal">Add</a> |
-        <button id="btnedit" class="btn btn-primary" disabled="disabled">Edit</button> |
-        <button id="btndelete" class="btn btn-primary" disabled="disabled">Delete</button> |
-        <!--<button id="btnimport" class="btn btn-primary">Import</button> |-->
-        <a role="button" id="btnexport" class="btn btn-primary" href="<?=site_url('admin/export_user');?>">Export CSV</a> <!--|
+<div id="registe-new">
+    <center><h2>USER DETAIL</h2></center>
+    <div class="container">
+        <div class="row">
+            <div id="resmodify"></div>
+            <div class="col-xs-12 text-center">
+                <a role="button" href="#model-addr" id="btnadd" class="btn btn-primary" data-toggle="modal">Add</a> |
+                <button id="btnedit" class="btn btn-primary" disabled="disabled">Edit</button> |
+                <button id="btndelete" class="btn btn-primary" disabled="disabled">Delete</button> |
+                <!--<button id="btnimport" class="btn btn-primary">Import</button> |-->
+                <a role="button" id="btnexport" class="btn btn-primary" href="<?=site_url('admin/export_user');?>">Export CSV</a> <!--|
         <button id="btnrall" class="btn btn-primary">Remove All</button>-->
-    </div>
-</div>
-<table id="tbluser">
-    <thead>
-    <tr>
-        <th class="never">User Id</th>
-        <th class="all">User Email</th>
-        <th>User name</th>
-        <th>Is verfied</th>
-        <th>Is active</th>
-     </tr>
-    </thead>
-    <tfoot>
-    <tr>
-        <th class="never">User Id</th>
-        <th class="all">User Email</th>
-        <th>User name</th>
-        <th>Is verfied</th>
-        <th>Is active</th>
-    </tr>
-    </tfoot>
-</table>
-
-<div class="modal fade" id="model-addr" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <?php echo form_open('admin/updateuser',array('class' => 'form-group','id' => 'frmaddr'));?>
-            <input type="hidden" name="hidadrid" id="hidadrid" value=""/>
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                    <i class="fa fa-close"></i>
-                </button>
-                <h4 class="modal-title" id="myModalLabel">
-                   User
-                </h4>
             </div>
-            <div class="modal-body">
-                <div id="update_res"></div>
+        </div>
+        <table id="tbluser">
+            <thead>
+            <tr>
+                <th class="never">User Id</th>
+                <th class="all">User Email</th>
+                <th>User name</th>
+                <th>Is verfied</th>
+                <th>Is active</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <th class="never">User Id</th>
+                <th class="all">User Email</th>
+                <th>User name</th>
+                <th>Is verfied</th>
+                <th>Is active</th>
+            </tr>
+            </tfoot>
+        </table>
 
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="form-group required">
-                            <label class="control-label">Username</label>
-                            <div class="col-xs-12"><input type="text" class="form-control" name="txtusername" id="txtusername" placeholder="Username" required/></div>
-                        </div>
+        <div class="modal fade" id="model-addr" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <?php echo form_open('admin/updateuser',array('class' => 'form-group','id' => 'frmaddr'));?>
+                    <input type="hidden" name="hidadrid" id="hidadrid" value=""/>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                            <i class="fa fa-close"></i>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">
+                            User
+                        </h4>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="form-group required">
-                            <label class="control-label">Email</label>
-                            <div class="col-xs-12"><input type="text" class="form-control" name="txtemail" id="txtemail" placeholder="Email address" required email/></div>
+                    <div class="modal-body">
+                        <div id="update_res"></div>
+
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group required">
+                                    <label class="control-label">Username</label>
+                                    <div class="col-xs-12"><input type="text" class="form-control" name="txtusername" id="txtusername" placeholder="Username" required/></div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <div class="form-group required">
-                            <label class="control-label">Password</label>
-                            <div class="col-xs-12"><input type="password" class="form-control" name="txtpassword" id="txtpassword" placeholder="Password" required email/></div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group required">
+                                    <label class="control-label">Email</label>
+                                    <div class="col-xs-12"><input type="text" class="form-control" name="txtemail" id="txtemail" placeholder="Email address" required email/></div>
+                                </div>
+                            </div>
                         </div>
+                        <div class="row">
+                            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                <div class="form-group required">
+                                    <label class="control-label">Password</label>
+                                    <div class="col-xs-12"><input type="password" class="form-control" name="txtpassword" id="txtpassword" placeholder="Password" required email/></div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
+                    <div class="modal-footer">
+                        <input type="hidden" id="userid" name="userid" value="" />
+                        <input type="submit" class="btn btn-primary" id="btnsave" name="btnsave" value="Save" />
+                    </div>
+                    <?php echo form_close();?>
                 </div>
 
             </div>
-            <div class="modal-footer">
-                <input type="hidden" id="userid" name="userid" value="" />
-                <input type="submit" class="btn btn-primary" id="btnsave" name="btnsave" value="Save" />
-            </div>
-            <?php echo form_close();?>
+
         </div>
 
     </div>
-
 </div>
+
 
 
 <?php $this->load->view('scripts');?>

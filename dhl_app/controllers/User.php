@@ -22,9 +22,11 @@ class User extends CI_Controller {
         $data = array();
         $btnlogin = $this->input->post('btnlogin');
         if(!empty($btnlogin)){
+
             $this->load->library('escaptcha', array('id' => 'login'));
             $answer = $this->security->xss_clean($this->input->post('txtcaptcha'));
             $captcha = $this->escaptcha->check_captcha($answer);
+
             if($captcha){
                 // Validate the user can login
                 $user_data = $this->user_model->validate();

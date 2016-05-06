@@ -1,0 +1,77 @@
+.valid{
+    background: url(../images/valid.png) no-repeat 99% center;
+}
+.warning{
+    background: url(../images/error.png) no-repeat 99% center;
+}
+.form-group.required .control-label:after {
+    content:"*";
+    color:red;
+}
+.select2-container--default .select2-selection--single {
+    height: 34px !important;
+}
+
+.dhlmodal
+{
+    position: fixed;
+    z-index: 99999;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    left: 0;
+    background-color: Black;
+    filter: alpha(opacity=60);
+    opacity: 0.6;
+    -moz-opacity: 0.8;
+}
+.dhlcenter
+{
+    z-index: 99999;
+    margin: 300px auto;
+    padding: 10px;
+    width: 130px;
+    background-color: White;
+    border-radius: 10px;
+    filter: alpha(opacity=100);
+    opacity: 1;
+    -moz-opacity: 1;
+    text-align:center;
+}
+
+.payment-selector input{
+    position:absolute;
+    z-index:999;
+}
+
+.payment-selector input:active +.drinkcard-cc{opacity: .9;}
+.payment-selector input:checked +.drinkcard-cc{
+    -webkit-filter: none;
+    -moz-filter: none;
+    filter: none;
+}
+
+.drinkcard-cc{
+    cursor:pointer;
+    background-size:contain;
+    background-repeat:no-repeat;
+    display:inline-block;
+    width:190px;height:75px;
+    -webkit-transition: all 100ms ease-in;
+    -moz-transition: all 100ms ease-in;
+    transition: all 100ms ease-in;
+    -webkit-filter: brightness(1.8) grayscale(1) opacity(.7);
+    -moz-filter: brightness(1.8) grayscale(1) opacity(.7);
+    filter: brightness(1.8) grayscale(1) opacity(.7);
+}
+.drinkcard-cc:hover{
+    -webkit-filter: brightness(1.2) grayscale(.5) opacity(.9);
+    -moz-filter: brightness(1.2) grayscale(.5) opacity(.9);
+    filter: brightness(1.2) grayscale(.5) opacity(.9);
+}
+
+.payment-selector input{ margin: 5px 0 0 12px; }
+.payment-selector label{ margin-left: 30px; margin-top:-17px; }
+
+.paypal{background-image:url('../images/paypal.png');}
+.authorize{background-image:url('../images/authorizenet.png');}
